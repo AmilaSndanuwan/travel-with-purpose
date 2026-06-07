@@ -27,7 +27,7 @@ export default function Gallery() {
     <main className="min-h-screen bg-white">
 
       {/* Header */}
-      <section className="bg-green-700 py-16 text-center text-white">
+      <section className="py-16 text-center text-white gradient-green">
         <h1 className="text-4xl font-bold">Gallery</h1>
         <p className="text-lg mt-3">Moments from our journeys across Sri Lanka</p>
       </section>

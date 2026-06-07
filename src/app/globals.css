@@ -1,3 +1,15 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&display=swap');
+
+* {
+  font-family: 'Lato', sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', serif;
+}
+
+
 @import "tailwindcss";
 
 :root {
@@ -49,4 +61,28 @@ body {
 
 .card-hover:hover {
   transform: translateY(-5px);
+}
+/* Image Zoom Effect */
+.img-zoom {
+  overflow: hidden;
+}
+
+.img-zoom img {
+  transition: transform 0.4s ease;
+}
+
+.img-zoom img:hover {
+  transform: scale(1.08);
+}
+/* Gradient Backgrounds */
+.gradient-green {
+  background: linear-gradient(135deg, #065f46 0%, #10b981 100%);
+}
+
+.gradient-hero {
+  background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%);
+}
+
+.gradient-card {
+  background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.7) 100%);
 }

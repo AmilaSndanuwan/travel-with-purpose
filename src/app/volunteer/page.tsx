@@ -8,7 +8,7 @@ export default function Volunteer() {
     <main className="min-h-screen bg-white">
 
       {/* Header */}
-      <section className="bg-green-700 py-16 text-center text-white">
+      <section className="py-16 text-center text-white gradient-green">
         <h1 className="text-4xl font-bold">Volunteer Programs</h1>
         <p className="text-lg mt-3">Make a difference while exploring Sri Lanka</p>
       </section>

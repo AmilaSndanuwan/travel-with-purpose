@@ -1,3 +1,8 @@
+
+import CountUp from "@/components/CountUp"
+import Reveal from "@/components/Reveal"
+
+
 export default function Home()
 
 
@@ -8,14 +13,18 @@ export default function Home()
     <main className="min-h-screen bg-white">
 
 {/* Hero Section */}
-      <section
-        className="relative flex flex-col items-center justify-center text-center py-48 fade-in"
-        style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
+      <section className="relative flex flex-col items-center justify-center text-center py-48 fade-in overflow-hidden">
+
+        {/* Image Background */}
+        <div
+          className="absolute inset-0 w-full h-full"
+          style={{
+            backgroundImage: "url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        ></div>
+
         {/* Overlay */}
         <div className="absolute inset-0 bg-black opacity-50"></div>
 
@@ -41,9 +50,11 @@ export default function Home()
 
 {/* Program Categories */}
       <section className="py-20 px-10 bg-white">
+        <Reveal>
         <h2 className="text-3xl font-bold text-center text-green-800 mb-12">
           Explore Our Programs
         </h2>
+        </Reveal> 
         <div className="grid grid-cols-2 md:grid-cols-5 gap-6 text-center">
 
           <a href="/programs" className="p-6 border rounded-xl hover:shadow-xl transition cursor-pointer hover:border-green-700">
@@ -99,45 +110,18 @@ export default function Home()
         </div>
       </section>
 
-
-
-
-{/* Impact Numbers */}
-      <section className="py-20 bg-green-700 text-white text-center">
-        <h2 className="text-3xl font-bold mb-12">Our Impact In Numbers</h2>
-        <div className="flex justify-center gap-16 flex-wrap">
-
-          <div>
-            <p className="text-5xl font-bold">12,450</p>
-            <p className="text-lg mt-2">Trees Planted</p>
-          </div>
-
-          <div>
-            <p className="text-5xl font-bold">8,320</p>
-            <p className="text-lg mt-2">Students Supported</p>
-          </div>
-
-          <div>
-            <p className="text-5xl font-bold">68</p>
-            <p className="text-lg mt-2">Villages Supported</p>
-          </div>
-
-          <div>
-            <p className="text-5xl font-bold">45,600</p>
-            <p className="text-lg mt-2">Volunteer Hours</p>
-          </div>
-
-        </div>
-      </section>
-
 {/* Featured Programs */}
       <section className="py-20 px-10 bg-white">
+        <Reveal>
         <h2 className="text-3xl font-bold text-center text-green-800 mb-12">
           Featured Programs
         </h2>
+        </Reveal>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
 
-          <div className="border rounded-xl p-5 shadow-md hover:shadow-xl transition card-hover">
+          <div className="border rounded-xl overflow-hidden shadow-md hover:shadow-xl transition card-hover">
+  <div className="img-zoom">
+    </div>
             <img src="https://images.unsplash.com/photo-1545389336-cf090694435e?w=400" className="h-40 w-full object-cover rounded-lg mb-4" />
 <h3 className="text-lg font-bold text-green-800">7-Day Silent Retreat</h3>
             <p className="text-gray-500 text-sm mt-1">Kandy, Sri Lanka</p>
@@ -148,7 +132,9 @@ export default function Home()
             </button>
           </div>
 
-          <div className="border rounded-xl p-5 shadow-md hover:shadow-xl transition card-hover">
+          <div className="border rounded-xl overflow-hidden shadow-md hover:shadow-xl transition card-hover">
+  <div className="img-zoom">
+    </div>
             <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=400" className="h-40 w-full object-cover rounded-lg mb-4" />
 <h3 className="text-lg font-bold text-green-800">Knuckles Hiking</h3>
             <p className="text-gray-500 text-sm mt-1">Kandy, Sri Lanka</p>
@@ -159,7 +145,9 @@ export default function Home()
             </button>
           </div>
 
-          <div className="border rounded-xl p-5 shadow-md hover:shadow-xl transition card-hover">
+          <div className="border rounded-xl overflow-hidden shadow-md hover:shadow-xl transition card-hover">
+  <div className="img-zoom">
+    </div>
             <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=400" className="h-40 w-full object-cover rounded-lg mb-4" />
 <h3 className="text-lg font-bold text-green-800">Village Homestay</h3>
             <p className="text-gray-500 text-sm mt-1">Udawalawe, Sri Lanka</p>
@@ -170,7 +158,9 @@ export default function Home()
             </button>
           </div>
 
-          <div className="border rounded-xl p-5 shadow-md hover:shadow-xl transition card-hover">
+          <div className="border rounded-xl overflow-hidden shadow-md hover:shadow-xl transition card-hover">
+  <div className="img-zoom">
+    </div>
             <img src="https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=400" className="h-40 w-full object-cover rounded-lg mb-4" />
 <h3 className="text-lg font-bold text-green-800">Elephant Safari</h3>
             <p className="text-gray-500 text-sm mt-1">Udawalawe, Sri Lanka</p>
@@ -183,12 +173,45 @@ export default function Home()
 
         </div>
       </section>
+
+
+{/* Impact Numbers */}
+      <section className="py-20 text-white text-center gradient-green">
+        <h2 className="text-3xl font-bold mb-12">Our Impact In Numbers</h2>
+        <div className="flex justify-center gap-16 flex-wrap">
+
+          <div>
+            <p className="text-5xl font-bold"><CountUp end={12450} /></p>
+            <p className="text-lg mt-2">Trees Planted</p>
+          </div>
+
+          <div>
+            <p className="text-5xl font-bold"><CountUp end={8320} /></p>
+            <p className="text-lg mt-2">Students Supported</p>
+          </div>
+
+          <div>
+            <p className="text-5xl font-bold"><CountUp end={68} /></p>
+            <p className="text-lg mt-2">Villages Supported</p>
+          </div>
+
+          <div>
+            <p className="text-5xl font-bold"><CountUp end={45600} /></p>
+            <p className="text-lg mt-2">Volunteer Hours</p>
+          </div>
+
+        </div>
+      </section>
+
+
 {/* Popular Destinations */}
       <section className="py-20 px-10 bg-green-50">
+        <Reveal>
         <div className="flex justify-between items-center mb-12">
           <h2 className="text-3xl font-bold text-green-800">Popular Destinations</h2>
           <a href="/destinations" className="text-green-700 hover:underline">View All Destinations →</a>
         </div>
+        </Reveal>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
 
           <div className="rounded-xl overflow-hidden shadow-md hover:shadow-xl transition cursor-pointer">

@@ -28,7 +28,7 @@ export default function Programs() {
     <main className="min-h-screen bg-white">
 
       {/* Header */}
-      <section className="bg-green-700 py-16 text-center text-white">
+      <section className="py-16 text-center text-white gradient-green"> 
         <h1 className="text-4xl font-bold">Our Programs</h1>
         <p className="text-lg mt-3">Find the perfect experience for your journey</p>
       </section>
@@ -108,8 +108,10 @@ export default function Programs() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {filtered.map(program => (
-                <div key={program.id} className="border rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
-                  <img src={program.image} className="h-48 w-full object-cover" />
+                <div key={program.id} className="border rounded-xl overflow-hidden shadow-md hover:shadow-xl transition card-hover">
+  <div className="img-zoom">
+    <img src={program.image} className="h-48 w-full object-cover" />
+  </div>
                   <div className="p-5">
                     <h3 className="text-lg font-bold text-green-800">{program.title}</h3>
                     <p className="text-gray-500 text-sm mt-1">{program.location}</p>

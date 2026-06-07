@@ -4,7 +4,7 @@ export default function Destinations() {
 
    
       {/* Header */}
-      <section className="bg-green-700 py-16 text-center text-white">
+      <section className="py-16 text-center text-white gradient-green">
         <h1 className="text-4xl font-bold">Explore Destinations</h1>
         <p className="text-lg mt-3">Discover beautiful places across Sri Lanka</p>
       </section>
@@ -60,7 +60,7 @@ export default function Destinations() {
             <p className="font-bold text-green-800 mt-1">Haputale</p>
           </div>
         </div>
-      </section>
+      </section>   
 
 
 
