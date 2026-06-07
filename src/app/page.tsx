@@ -9,7 +9,7 @@ export default function Home()
 
 {/* Hero Section */}
       <section
-        className="relative flex flex-col items-center justify-center text-center py-48"
+        className="relative flex flex-col items-center justify-center text-center py-48 fade-in"
         style={{
           backgroundImage: "url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600')",
           backgroundSize: "cover",
@@ -37,6 +37,70 @@ export default function Home()
           </div>
         </div>
       </section>
+
+
+{/* Program Categories */}
+      <section className="py-20 px-10 bg-white">
+        <h2 className="text-3xl font-bold text-center text-green-800 mb-12">
+          Explore Our Programs
+        </h2>
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 text-center">
+
+          <a href="/programs" className="p-6 border rounded-xl hover:shadow-xl transition cursor-pointer hover:border-green-700">
+            <div className="text-4xl mb-3">🧘</div>
+            <p className="font-bold text-green-800">Meditation</p>
+          </a>
+
+          <a href="/wellness" className="p-6 border rounded-xl hover:shadow-xl transition cursor-pointer hover:border-green-700">
+            <div className="text-4xl mb-3">🌿</div>
+            <p className="font-bold text-green-800">Yoga & Wellness</p>
+          </a>
+
+          <a href="/programs" className="p-6 border rounded-xl hover:shadow-xl transition cursor-pointer hover:border-green-700">
+            <div className="text-4xl mb-3">🏔️</div>
+            <p className="font-bold text-green-800">Adventure</p>
+          </a>
+
+          <a href="/programs" className="p-6 border rounded-xl hover:shadow-xl transition cursor-pointer hover:border-green-700">
+            <div className="text-4xl mb-3">🏛️</div>
+            <p className="font-bold text-green-800">Cultural Tours</p>
+          </a>
+
+          <a href="/volunteer" className="p-6 border rounded-xl hover:shadow-xl transition cursor-pointer hover:border-green-700">
+            <div className="text-4xl mb-3">🤝</div>
+            <p className="font-bold text-green-800">Volunteer</p>
+          </a>
+
+          <a href="/programs" className="p-6 border rounded-xl hover:shadow-xl transition cursor-pointer hover:border-green-700">
+            <div className="text-4xl mb-3">🌱</div>
+            <p className="font-bold text-green-800">Eco Tourism</p>
+          </a>
+
+          <a href="/programs" className="p-6 border rounded-xl hover:shadow-xl transition cursor-pointer hover:border-green-700">
+            <div className="text-4xl mb-3">🐘</div>
+            <p className="font-bold text-green-800">Wildlife Safaris</p>
+          </a>
+
+          <a href="/programs" className="p-6 border rounded-xl hover:shadow-xl transition cursor-pointer hover:border-green-700">
+            <div className="text-4xl mb-3">🌾</div>
+            <p className="font-bold text-green-800">Agriculture</p>
+          </a>
+
+          <a href="/programs" className="p-6 border rounded-xl hover:shadow-xl transition cursor-pointer hover:border-green-700">
+            <div className="text-4xl mb-3">⛺</div>
+            <p className="font-bold text-green-800">Youth Camps</p>
+          </a>
+
+          <a href="/programs" className="p-6 border rounded-xl hover:shadow-xl transition cursor-pointer hover:border-green-700">
+            <div className="text-4xl mb-3">🛕</div>
+            <p className="font-bold text-green-800">Monastery Stay</p>
+          </a>
+
+        </div>
+      </section>
+
+
+
 
 {/* Impact Numbers */}
       <section className="py-20 bg-green-700 text-white text-center">
@@ -73,7 +137,7 @@ export default function Home()
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
 
-          <div className="border rounded-xl p-5 shadow-md hover:shadow-xl transition">
+          <div className="border rounded-xl p-5 shadow-md hover:shadow-xl transition card-hover">
             <img src="https://images.unsplash.com/photo-1545389336-cf090694435e?w=400" className="h-40 w-full object-cover rounded-lg mb-4" />
 <h3 className="text-lg font-bold text-green-800">7-Day Silent Retreat</h3>
             <p className="text-gray-500 text-sm mt-1">Kandy, Sri Lanka</p>
@@ -84,7 +148,7 @@ export default function Home()
             </button>
           </div>
 
-          <div className="border rounded-xl p-5 shadow-md hover:shadow-xl transition">
+          <div className="border rounded-xl p-5 shadow-md hover:shadow-xl transition card-hover">
             <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=400" className="h-40 w-full object-cover rounded-lg mb-4" />
 <h3 className="text-lg font-bold text-green-800">Knuckles Hiking</h3>
             <p className="text-gray-500 text-sm mt-1">Kandy, Sri Lanka</p>
@@ -95,7 +159,7 @@ export default function Home()
             </button>
           </div>
 
-          <div className="border rounded-xl p-5 shadow-md hover:shadow-xl transition">
+          <div className="border rounded-xl p-5 shadow-md hover:shadow-xl transition card-hover">
             <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=400" className="h-40 w-full object-cover rounded-lg mb-4" />
 <h3 className="text-lg font-bold text-green-800">Village Homestay</h3>
             <p className="text-gray-500 text-sm mt-1">Udawalawe, Sri Lanka</p>
@@ -106,7 +170,7 @@ export default function Home()
             </button>
           </div>
 
-          <div className="border rounded-xl p-5 shadow-md hover:shadow-xl transition">
+          <div className="border rounded-xl p-5 shadow-md hover:shadow-xl transition card-hover">
             <img src="https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=400" className="h-40 w-full object-cover rounded-lg mb-4" />
 <h3 className="text-lg font-bold text-green-800">Elephant Safari</h3>
             <p className="text-gray-500 text-sm mt-1">Udawalawe, Sri Lanka</p>
@@ -216,7 +280,74 @@ export default function Home()
 
         </div>
       </section>
+{/* Latest Blog */}
+      <section className="py-20 px-10 bg-green-50">
+        <div className="flex justify-between items-center mb-12">
+          <h2 className="text-3xl font-bold text-green-800">Latest From Our Blog</h2>
+          <a href="/blog" className="text-green-700 hover:underline">View All Articles →</a>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
+          <div className="bg-white border rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
+            <img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400" className="h-48 w-full object-cover" />
+            <div className="p-5">
+              <p className="text-green-700 text-xs font-bold mb-2">TRAVEL STORIES</p>
+              <h3 className="text-lg font-bold text-gray-800">10 Hidden Places You Must Visit in Sri Lanka</h3>
+              <p className="text-gray-400 text-xs mt-3">May 10, 2024</p>
+            </div>
+          </div>
+
+          <div className="bg-white border rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
+            <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400" className="h-48 w-full object-cover" />
+            <div className="p-5">
+              <p className="text-green-700 text-xs font-bold mb-2">MEDITATION</p>
+              <h3 className="text-lg font-bold text-gray-800">How Meditation Retreats Can Transform Your Mind</h3>
+              <p className="text-gray-400 text-xs mt-3">May 5, 2024</p>
+            </div>
+          </div>
+
+          <div className="bg-white border rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
+            <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400" className="h-48 w-full object-cover" />
+            <div className="p-5">
+              <p className="text-green-700 text-xs font-bold mb-2">VOLUNTEER STORIES</p>
+              <h3 className="text-lg font-bold text-gray-800">Volunteer Abroad: Stories That Inspire</h3>
+              <p className="text-gray-400 text-xs mt-3">Apr 28, 2024</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+{/* Call To Action */}
+      <section
+        className="relative py-32 text-center"
+        style={{
+          backgroundImage: "url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-green-900 opacity-70"></div>
+
+        {/* Content */}
+        <div className="relative z-10">
+          <h2 className="text-4xl font-bold text-white mb-4">
+            Ready To Make A Difference?
+          </h2>
+          <p className="text-xl text-gray-200 mb-8">
+            Start your meaningful journey today!
+          </p>
+          
+            <a href="/booking"
+            className="bg-white text-green-800 px-10 py-4 rounded-full text-lg font-bold hover:bg-green-100 transition"
+          >
+            Book Your Experience
+          </a>
+        </div>
+      </section>
+
+      
     </main>
   )
 }

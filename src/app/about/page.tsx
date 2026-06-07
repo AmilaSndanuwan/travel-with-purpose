@@ -8,6 +8,15 @@ export default function About() {
         <p className="text-lg mt-3">Our story, mission and values</p>
       </section>
 
+{/* Hero Image */}
+      <section className="relative">
+        <img
+          src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1600"
+          className="w-full h-72 object-cover"
+        />
+        <div className="absolute inset-0 bg-black opacity-30"></div>
+      </section>
+
       {/* Our Story */}
       <section className="py-16 px-10 max-w-4xl mx-auto">
         <h2 className="text-3xl font-bold text-green-800 mb-6">Our Story</h2>
@@ -84,11 +93,11 @@ export default function About() {
       <section className="py-16 px-10 text-center">
         <h2 className="text-3xl font-bold text-green-800 mb-12">Our Partners</h2>
         <div className="flex justify-center gap-10 flex-wrap">
-          <div className="bg-gray-100 w-32 h-16 rounded-lg"></div>
-          <div className="bg-gray-100 w-32 h-16 rounded-lg"></div>
-          <div className="bg-gray-100 w-32 h-16 rounded-lg"></div>
-          <div className="bg-gray-100 w-32 h-16 rounded-lg"></div>
-          <div className="bg-gray-100 w-32 h-16 rounded-lg"></div>
+          <div className="bg-gray-100 w-32 h-16 rounded-lg flex items-center justify-center text-gray-500 font-bold">Partner 1</div>
+          <div className="bg-gray-100 w-32 h-16 rounded-lg flex items-center justify-center text-gray-500 font-bold">Partner 2</div>
+          <div className="bg-gray-100 w-32 h-16 rounded-lg flex items-center justify-center text-gray-500 font-bold">Partner 3</div>
+          <div className="bg-gray-100 w-32 h-16 rounded-lg flex items-center justify-center text-gray-500 font-bold">Partner 4</div>
+          <div className="bg-gray-100 w-32 h-16 rounded-lg flex items-center justify-center text-gray-500 font-bold">Partner 5</div>
         </div>
       </section>
 

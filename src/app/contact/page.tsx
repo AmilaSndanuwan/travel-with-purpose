@@ -1,5 +1,6 @@
 export default function Contact() {
   return (
+    
     <main className="min-h-screen bg-white">
 
       {/* Header */}
@@ -109,6 +110,24 @@ export default function Contact() {
 
         </div>
       </section>
+
+{/* Google Map */}
+      <section className="py-16 px-10 bg-green-50">
+        <h2 className="text-3xl font-bold text-center text-green-800 mb-8">Find Us</h2>
+        <div className="rounded-xl overflow-hidden shadow-xl max-w-4xl mx-auto">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.7!2d80.6337!3d7.2906!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae366266498acd3%3A0x411a3818a1e03c35!2sKandy!5e0!3m2!1sen!2slk!4v1234567890"
+            width="100%"
+            height="400"
+            style={{border: 0}}
+            allowFullScreen
+            loading="lazy"
+          ></iframe>
+        </div>
+      </section>
+
+
+
 
     </main>
   )
