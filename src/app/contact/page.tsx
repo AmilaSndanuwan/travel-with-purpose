@@ -21,7 +21,11 @@ export default function Contact() {
                 <div className="bg-green-100 p-3 rounded-full text-2xl">📱</div>
                 <div>
                   <p className="font-bold text-gray-800">WhatsApp</p>
-                  <p className="text-gray-500">+94 77 123 4567</p>
+                 <a href="https://wa.me/94771234567"
+                    target="_blank"
+                        className="bg-green-500 text-white px-4 py-2 rounded-full text-sm hover:bg-green-600 inline-block mt-1">
+                            💬 Chat on WhatsApp
+                </a>
                 </div>
               </div>
 

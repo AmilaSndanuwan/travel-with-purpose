@@ -119,54 +119,103 @@ export default function Home()
 
         </div>
       </section>
-{/* Footer */}
-      <footer className="bg-gray-900 text-white py-16 px-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+{/* Popular Destinations */}
+      <section className="py-20 px-10 bg-green-50">
+        <div className="flex justify-between items-center mb-12">
+          <h2 className="text-3xl font-bold text-green-800">Popular Destinations</h2>
+          <a href="/destinations" className="text-green-700 hover:underline">View All Destinations →</a>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
 
-          <div>
-            <h3 className="text-xl font-bold text-green-400 mb-4">Travel With Purpose</h3>
-            <p className="text-gray-400 text-sm">
-              Travel with purpose. Create impact. Inspire change.
+          <div className="rounded-xl overflow-hidden shadow-md hover:shadow-xl transition cursor-pointer">
+            <img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400" className="h-40 w-full object-cover" />
+            <div className="p-3 text-center">
+              <h3 className="font-bold text-green-800">Kandy</h3>
+            </div>
+          </div>
+
+          <div className="rounded-xl overflow-hidden shadow-md hover:shadow-xl transition cursor-pointer">
+            <img src="https://images.unsplash.com/photo-1586016413664-864c0dd76f53?w=400" className="h-40 w-full object-cover" />
+            <div className="p-3 text-center">
+              <h3 className="font-bold text-green-800">Ella</h3>
+            </div>
+          </div>
+
+          <div className="rounded-xl overflow-hidden shadow-md hover:shadow-xl transition cursor-pointer">
+            <img src="https://images.unsplash.com/photo-1567157577867-05ccb1388e66?w=400" className="h-40 w-full object-cover" />
+            <div className="p-3 text-center">
+              <h3 className="font-bold text-green-800">Sigiriya</h3>
+            </div>
+          </div>
+
+          <div className="rounded-xl overflow-hidden shadow-md hover:shadow-xl transition cursor-pointer">
+            <img src="https://images.unsplash.com/photo-1559628233-100c798642d5?w=400" className="h-40 w-full object-cover" />
+            <div className="p-3 text-center">
+              <h3 className="font-bold text-green-800">Galle</h3>
+            </div>
+          </div>
+
+          <div className="rounded-xl overflow-hidden shadow-md hover:shadow-xl transition cursor-pointer">
+            <img src="https://images.unsplash.com/photo-1562602833-0f4ab2fc46e3?w=400" className="h-40 w-full object-cover" />
+            <div className="p-3 text-center">
+              <h3 className="font-bold text-green-800">Nuwara Eliya</h3>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-20 px-10 bg-white">
+        <h2 className="text-3xl font-bold text-center text-green-800 mb-12">
+          Traveler Testimonials
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+          <div className="border rounded-xl p-8 shadow-md hover:shadow-xl transition">
+            <p className="text-gray-600 italic text-lg leading-relaxed">
+              "This journey changed my life. The people, the culture, and the
+              impact we created together will stay with me forever."
             </p>
+            <div className="mt-6 flex items-center gap-4">
+              <div className="bg-green-700 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">S</div>
+              <div>
+                <p className="font-bold text-green-800">Sarah J.</p>
+                <p className="text-gray-400 text-sm">Australia</p>
+              </div>
+            </div>
           </div>
 
-          <div>
-            <h4 className="font-bold mb-4">Quick Links</h4>
-            <ul className="text-gray-400 text-sm space-y-2">
-              <li>Home</li>
-              <li>Programs</li>
-              <li>Destinations</li>
-              <li>About Us</li>
-              <li>Contact</li>
-            </ul>
+          <div className="border rounded-xl p-8 shadow-md hover:shadow-xl transition">
+            <p className="text-gray-600 italic text-lg leading-relaxed">
+              "The meditation retreat was absolutely transformative. I found
+              peace and clarity I never knew was possible."
+            </p>
+            <div className="mt-6 flex items-center gap-4">
+              <div className="bg-green-700 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">M</div>
+              <div>
+                <p className="font-bold text-green-800">Mark T.</p>
+                <p className="text-gray-400 text-sm">United Kingdom</p>
+              </div>
+            </div>
           </div>
 
-          <div>
-            <h4 className="font-bold mb-4">Programs</h4>
-            <ul className="text-gray-400 text-sm space-y-2">
-              <li>Meditation</li>
-              <li>Adventure</li>
-              <li>Volunteer</li>
-              <li>Wildlife</li>
-              <li>Wellness</li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="font-bold mb-4">Contact Us</h4>
-            <ul className="text-gray-400 text-sm space-y-2">
-              <li>📱 WhatsApp: +94 77 123 4567</li>
-              <li>✉️ info@travelwithpurpose.com</li>
-              <li>📍 Kandy, Sri Lanka</li>
-            </ul>
+          <div className="border rounded-xl p-8 shadow-md hover:shadow-xl transition">
+            <p className="text-gray-600 italic text-lg leading-relaxed">
+              "Volunteering with local communities was the most rewarding
+              experience of my travels. Highly recommended!"
+            </p>
+            <div className="mt-6 flex items-center gap-4">
+              <div className="bg-green-700 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg">A</div>
+              <div>
+                <p className="font-bold text-green-800">Anna K.</p>
+                <p className="text-gray-400 text-sm">Germany</p>
+              </div>
+            </div>
           </div>
 
         </div>
-
-        <div className="border-t border-gray-700 mt-10 pt-6 text-center text-gray-500 text-sm">
-          © 2024 Travel With Purpose. All rights reserved.
-        </div>
-      </footer>
+      </section>
 
     </main>
   )
