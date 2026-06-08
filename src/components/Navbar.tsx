@@ -62,7 +62,7 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Book Now */}
-        <Link href="/booking" className="hidden md:block bg-green-700 text-white px-5 py-2 rounded-full hover:bg-green-800">
+        <Link href="/booking" className="hidden md:block text-white px-5 py-2 rounded-full hover:opacity-90 transition" style={{background: "linear-gradient(135deg, #8B6914, #C4962A)"}}>
           Book Now
         </Link>
 

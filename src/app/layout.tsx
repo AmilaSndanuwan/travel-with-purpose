@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Playfair_Display, Lato } from "next/font/google"
+import { Montserrat, Dancing_Script } from "next/font/google"
 import "./globals.css"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
@@ -7,15 +7,16 @@ import BackToTop from "@/components/BackToTop"
 import WhatsAppButton from "@/components/WhatsAppButton"
 import Loading from "@/components/Loading"
 
-const playfair = Playfair_Display({
+const montserrat = Montserrat({
   subsets: ["latin"],
-  variable: "--font-playfair",
+  weight: ["400", "500", "700", "900"],
+  variable: "--font-montserrat",
 })
 
-const lato = Lato({
+const dancing = Dancing_Script({
   subsets: ["latin"],
   weight: ["400", "700"],
-  variable: "--font-lato",
+  variable: "--font-dancing",
 })
 
 export const metadata: Metadata = {
@@ -30,7 +31,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${playfair.variable} ${lato.variable} font-lato`}>
+      <body className={`${montserrat.variable} ${dancing.variable}`}>
         <Loading />
         <Navbar />
         {children}
@@ -40,4 +41,4 @@ export default function RootLayout({
       </body>
     </html>
   )
-} 
+}
