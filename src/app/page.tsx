@@ -13,39 +13,53 @@ export default function Home()
     <main className="min-h-screen bg-white">
 
 {/* Hero Section */}
-      <section className="relative flex flex-col items-center justify-center text-center py-48 fade-in overflow-hidden">
+      <section className="relative h-screen overflow-hidden fade-in">
 
         {/* Image Background */}
         <div
           className="absolute inset-0 w-full h-full"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600')",
+            backgroundImage: "url('/hero.png')",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
         ></div>
 
         {/* Overlay */}
-        <div className="absolute inset-0 bg-black opacity-50"></div>
+        <div className="absolute inset-0 bg-black opacity-40"></div>
 
-        {/* Content */}
-        <div className="relative z-10">
-          <h2 className="text-5xl font-bold text-white mb-4">
-            Travel With Purpose
-          </h2>
-          <p className="text-xl text-gray-200 mb-8">
-            Transform Your Journey Through Impact Tourism
+        {/* Content — Left Aligned */}
+        <div className="relative z-10 h-full flex flex-col justify-center px-10 md:px-24 max-w-3xl">
+          <p className="text-green-400 font-bold text-sm tracking-widest mb-4 uppercase">
+            Sri Lanka Impact Tourism
           </p>
-          <div className="flex gap-4 justify-center">
-            <a href="/programs" className="bg-green-700 text-white px-8 py-3 rounded-full text-lg hover:bg-green-800">
+          <h2 className="text-6xl md:text-8xl font-bold text-white leading-tight mb-6">
+            Travel<br />
+            <span className="text-green-400 italic">With</span><br />
+            Purpose
+          </h2>
+          <p className="text-gray-200 text-lg mb-8 max-w-lg">
+            Giving you the opportunity to give back, learn and grow as you experience
+            the most amazing places in Sri Lanka.
+          </p>
+          <div className="flex gap-4 flex-wrap">
+            <a href="/programs" className="bg-green-600 text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-green-700 transition">
               Explore Programs
             </a>
-            <a href="/volunteer" className="border-2 border-white text-white px-8 py-3 rounded-full text-lg hover:bg-white hover:text-green-700">
+            <a href="/volunteer" className="border-2 border-white text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-white hover:text-green-800 transition">
               Volunteer Now
             </a>
           </div>
         </div>
+
+        {/* Scroll Down Indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white text-center animate-bounce">
+          <p className="text-xs tracking-widest mb-1">SCROLL</p>
+          <p className="text-2xl">↓</p>
+        </div>
+
       </section>
+      
 
 
 {/* Program Categories */}

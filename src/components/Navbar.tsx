@@ -1,28 +1,37 @@
 "use client"
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
   const [dropdown, setDropdown] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50)
+    }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   return (
-    <nav className="bg-white shadow-md relative z-50">
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? "bg-white shadow-md" : "bg-transparent"}`}>
       <div className="flex justify-between items-center px-6 py-4">
 
         {/* Logo */}
-        <Link href="/" className="text-xl font-bold text-green-700">
+        <Link href="/" className={`text-xl font-bold ${scrolled ? "text-green-700" : "text-white"}`}>
           Travel With Purpose
         </Link>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex gap-6 text-gray-700 items-center">
-          <Link href="/" className="hover:text-green-700">Home</Link>
+        <div className={`hidden md:flex gap-6 items-center ${scrolled ? "text-gray-700" : "text-white"}`}>
+          <Link href="/" className="hover:text-green-500">Home</Link>
 
           {/* Programs Dropdown */}
           <div className="relative">
             <button
-              className="hover:text-green-700 flex items-center gap-1"
+              className="hover:text-green-500 flex items-center gap-1"
               onMouseEnter={() => setDropdown(true)}
               onMouseLeave={() => setDropdown(false)}
             >
@@ -34,22 +43,22 @@ export default function Navbar() {
                 onMouseEnter={() => setDropdown(true)}
                 onMouseLeave={() => setDropdown(false)}
               >
-                <Link href="/programs" className="hover:text-green-700 text-sm">🧘 Meditation</Link>
-                <Link href="/programs" className="hover:text-green-700 text-sm">🏔️ Adventure</Link>
-                <Link href="/wellness" className="hover:text-green-700 text-sm">🌿 Yoga & Wellness</Link>
-                <Link href="/volunteer" className="hover:text-green-700 text-sm">🤝 Volunteer</Link>
-                <Link href="/programs" className="hover:text-green-700 text-sm">🏛️ Culture</Link>
-                <Link href="/programs" className="hover:text-green-700 text-sm">🐘 Wildlife</Link>
+                <Link href="/programs" className="hover:text-green-700 text-gray-700 text-sm">🧘 Meditation</Link>
+                <Link href="/programs" className="hover:text-green-700 text-gray-700 text-sm">🏔️ Adventure</Link>
+                <Link href="/wellness" className="hover:text-green-700 text-gray-700 text-sm">🌿 Yoga & Wellness</Link>
+                <Link href="/volunteer" className="hover:text-green-700 text-gray-700 text-sm">🤝 Volunteer</Link>
+                <Link href="/programs" className="hover:text-green-700 text-gray-700 text-sm">🏛️ Culture</Link>
+                <Link href="/programs" className="hover:text-green-700 text-gray-700 text-sm">🐘 Wildlife</Link>
               </div>
             )}
           </div>
 
-          <Link href="/destinations" className="hover:text-green-700">Destinations</Link>
-          <Link href="/wellness" className="hover:text-green-700">Wellness</Link>
-          <Link href="/gallery" className="hover:text-green-700">Gallery</Link>
-          <Link href="/blog" className="hover:text-green-700">Blog</Link>
-          <Link href="/about" className="hover:text-green-700">About Us</Link>
-          <Link href="/contact" className="hover:text-green-700">Contact</Link>
+          <Link href="/destinations" className="hover:text-green-500">Destinations</Link>
+          <Link href="/wellness" className="hover:text-green-500">Wellness</Link>
+          <Link href="/gallery" className="hover:text-green-500">Gallery</Link>
+          <Link href="/blog" className="hover:text-green-500">Blog</Link>
+          <Link href="/about" className="hover:text-green-500">About Us</Link>
+          <Link href="/contact" className="hover:text-green-500">Contact</Link>
         </div>
 
         {/* Desktop Book Now */}
@@ -59,7 +68,7 @@ export default function Navbar() {
 
         {/* Mobile Hamburger Button */}
         <button
-          className="md:hidden text-green-700 text-3xl"
+          className={`md:hidden text-3xl ${scrolled ? "text-green-700" : "text-white"}`}
           onClick={() => setOpen(!open)}
         >
           {open ? "✕" : "☰"}
