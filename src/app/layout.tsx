@@ -1,11 +1,11 @@
 import type { Metadata } from "next"
 import { Montserrat, Dancing_Script } from "next/font/google"
 import "./globals.css"
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
-import BackToTop from "@/components/BackToTop"
-import WhatsAppButton from "@/components/WhatsAppButton"
-import Loading from "@/components/Loading"
+import Navbar from "../components/Navbar"
+import Footer from "../components/Footer"
+import BackToTop from "../components/BackToTop"
+import WhatsAppButton from "../components/WhatsAppButton"
+import Loading from "../components/Loading"
 
 const montserrat = Montserrat({
   subsets: ["latin"],
