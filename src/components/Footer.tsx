@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { Smartphone, Mail, MapPin } from "lucide-react"
 
 export default function Footer() {
   return (
@@ -37,9 +38,9 @@ export default function Footer() {
         <div>
           <h4 className="font-bold mb-4">Contact Us</h4>
           <ul className="text-gray-400 text-sm space-y-2">
-            <li>📱 WhatsApp: +94 77 123 4567</li>
-            <li>✉️ info@travelwithpurpose.com</li>
-            <li>📍 Kandy, Sri Lanka</li>
+            <li className="flex items-center gap-2"><Smartphone className="h-4 w-4" /> WhatsApp: +94 77 123 4567</li>
+            <li className="flex items-center gap-2"><Mail className="h-4 w-4" /> info@travelwithpurpose.com</li>
+            <li className="flex items-center gap-2"><MapPin className="h-4 w-4" /> Kandy, Sri Lanka</li>
           </ul>
         </div>
 

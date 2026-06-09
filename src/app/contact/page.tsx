@@ -1,10 +1,11 @@
+import { Phone, Mail, MapPin, MessageCircle } from "lucide-react"
+
 export default function Contact() {
   return (
-    
     <main className="min-h-screen bg-white">
 
       {/* Header */}
-     <section className="py-16 text-center text-white gradient-green">
+      <section className="py-16 text-center text-white gradient-green">
         <h1 className="text-4xl font-bold">Contact Us</h1>
         <p className="text-lg mt-3">We would love to hear from you</p>
       </section>
@@ -19,19 +20,27 @@ export default function Contact() {
             <div className="space-y-6">
 
               <div className="flex items-center gap-4">
-                <div className="bg-green-100 p-3 rounded-full text-2xl">📱</div>
+                <div className="bg-green-100 p-3 rounded-full text-green-700">
+                  <Phone className="h-5 w-5" />
+                </div>
                 <div>
                   <p className="font-bold text-gray-800">WhatsApp</p>
-                 <a href="https://wa.me/94771234567"
+                  <a
+                    href="https://wa.me/94771234567"
                     target="_blank"
-                        className="bg-green-500 text-white px-4 py-2 rounded-full text-sm hover:bg-green-600 inline-block mt-1">
-                            💬 Chat on WhatsApp
-                </a>
+                    rel="noreferrer"
+                    className="bg-green-500 text-white px-4 py-2 rounded-full text-sm hover:bg-green-600 inline-flex items-center gap-2 mt-1"
+                  >
+                    <MessageCircle className="h-4 w-4" />
+                    Chat on WhatsApp
+                  </a>
                 </div>
               </div>
 
               <div className="flex items-center gap-4">
-                <div className="bg-green-100 p-3 rounded-full text-2xl">✉️</div>
+                <div className="bg-green-100 p-3 rounded-full text-green-700">
+                  <Mail className="h-5 w-5" />
+                </div>
                 <div>
                   <p className="font-bold text-gray-800">Email</p>
                   <p className="text-gray-500">info@travelwithpurpose.com</p>
@@ -39,7 +48,9 @@ export default function Contact() {
               </div>
 
               <div className="flex items-center gap-4">
-                <div className="bg-green-100 p-3 rounded-full text-2xl">📍</div>
+                <div className="bg-green-100 p-3 rounded-full text-green-700">
+                  <MapPin className="h-5 w-5" />
+                </div>
                 <div>
                   <p className="font-bold text-gray-800">Address</p>
                   <p className="text-gray-500">No. 123, Kandy Road,<br/>Kandy, Sri Lanka</p>

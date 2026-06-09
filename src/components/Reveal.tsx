@@ -29,6 +29,7 @@ export default function Reveal({ children, delay = 0, className = "" }: Props) {
     <div
       ref={ref}
       className={className}
+      suppressHydrationWarning
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0px)" : "translateY(20px)",

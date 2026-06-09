@@ -24,7 +24,7 @@ export default function Home() {
         <div
           className="absolute inset-0 w-full h-full"
           style={{
-            backgroundImage: "url('/hero.png')",
+            backgroundImage: "url('/hero3.png')",
             backgroundSize: "cover",
             backgroundPosition: "right center",
           }}
@@ -38,10 +38,7 @@ export default function Home() {
           }}
         />
 
-        <div
-          className="relative z-10 h-full flex flex-col justify-center"
-          style={{ maxWidth: "1000px", paddingLeft: "250px" }}
-        >
+        <div className="relative z-10 h-full flex flex-col justify-center max-w-[1000px] pl-0 sm:pl-64 px-6">
           <p
             className="font-bold text-sm tracking-widest mb-4 uppercase"
             style={{ color: COLORS.gold }}
@@ -74,10 +71,10 @@ export default function Home() {
             experience the most amazing places in Sri Lanka.
           </p>
 
-          <div className="flex flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start w-full">
             <a
               href="/programs"
-              className="text-white px-6 py-3 rounded-full font-bold hover:opacity-90 transition"
+              className="w-full sm:w-auto text-center text-white px-6 py-3 rounded-full font-bold shadow-lg hover:shadow-2xl transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-[#E8F5E9]"
               style={{
                 background: "linear-gradient(135deg, #5E6F52, #46523D)",
               }}
@@ -87,7 +84,7 @@ export default function Home() {
 
             <a
               href="/booking"
-              className="text-white px-6 py-3 rounded-full font-bold hover:opacity-90 transition"
+              className="w-full sm:w-auto text-center text-white px-6 py-3 rounded-full font-bold shadow-lg hover:shadow-2xl transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-[#FFF3E0]"
               style={{
                 background: "linear-gradient(135deg, #A66A2C, #D89A3D)",
               }}
@@ -97,7 +94,7 @@ export default function Home() {
 
             <a
               href="/volunteer"
-              className="border-2 px-6 py-3 rounded-full font-bold hover:opacity-70 transition"
+              className="w-full sm:w-auto text-center border-2 px-6 py-3 rounded-full font-bold hover:opacity-90 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-[#FFF9F0]"
               style={{ borderColor: COLORS.gold, color: COLORS.gold }}
             >
               Volunteer Now
@@ -173,14 +170,14 @@ export default function Home() {
         <div className="max-w-6xl mx-auto mt-4">
           <a
             href="/programs"
-            className="group h-24 rounded-xl flex items-center justify-center gap-4 transition-all duration-300 hover:-translate-y-1"
+            className="group h-24 rounded-xl flex items-center justify-center gap-4 transition-all duration-300 hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-[#E8F5E9]"
             style={{
               background: COLORS.cream,
               border: `1px solid ${COLORS.border}`,
               boxShadow: "0 10px 30px rgba(58,45,36,0.06)",
             }}
           >
-            <span className="text-3xl">🌏</span>
+            <LucideIcons.Globe className="h-7 w-7 text-[#5E6F52]" />
             <div>
               <p
                 className="font-black text-xs uppercase tracking-widest"
@@ -283,8 +280,11 @@ export default function Home() {
                     <p className="text-xs mb-1" style={{ color: COLORS.muted }}>
                       {p.location}, Sri Lanka
                     </p>
-                    <p className="text-xs mb-4" style={{ color: COLORS.muted }}>
-                      ⏱ {p.days} · ♡ Medium Impact
+                    <p className="flex items-center gap-2 text-xs mb-4" style={{ color: COLORS.muted }}>
+                      <LucideIcons.Clock className="h-4 w-4" />
+                      {p.days} ·
+                      <LucideIcons.Heart className="h-4 w-4 text-rose-500" />
+                      Medium Impact
                     </p>
                     <p
                       className="font-black text-xl mb-4"

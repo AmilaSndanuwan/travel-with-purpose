@@ -1,3 +1,5 @@
+import { Leaf, Handshake, Heart, ShieldCheck, Star } from "lucide-react"
+
 export default function About() {
   return (
     <main className="min-h-screen bg-white">
@@ -34,27 +36,37 @@ export default function About() {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6 text-center">
 
           <div className="p-5">
-            <div className="text-4xl mb-3">🌿</div>
+            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-white text-green-700 shadow-sm">
+              <Leaf className="h-6 w-6" />
+            </div>
             <h3 className="font-bold text-green-800">Sustainability</h3>
           </div>
 
           <div className="p-5">
-            <div className="text-4xl mb-3">🤝</div>
+            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-white text-green-700 shadow-sm">
+              <Handshake className="h-6 w-6" />
+            </div>
             <h3 className="font-bold text-green-800">Community</h3>
           </div>
 
           <div className="p-5">
-            <div className="text-4xl mb-3">💚</div>
+            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-white text-green-700 shadow-sm">
+              <Heart className="h-6 w-6" />
+            </div>
             <h3 className="font-bold text-green-800">Authenticity</h3>
           </div>
 
           <div className="p-5">
-            <div className="text-4xl mb-3">🙏</div>
+            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-white text-green-700 shadow-sm">
+              <ShieldCheck className="h-6 w-6" />
+            </div>
             <h3 className="font-bold text-green-800">Respect</h3>
           </div>
 
           <div className="p-5">
-            <div className="text-4xl mb-3">⭐</div>
+            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-white text-green-700 shadow-sm">
+              <Star className="h-6 w-6" />
+            </div>
             <h3 className="font-bold text-green-800">Transparency</h3>
           </div>
 

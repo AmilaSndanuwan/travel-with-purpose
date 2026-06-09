@@ -1,5 +1,6 @@
 "use client"
 import { useState } from "react"
+import { Clock, Frown, MapPin } from "lucide-react"
 
 const programs = [
   { id: 1, category: "Meditation", title: "Temple Stay Experience", location: "Kandy, Sri Lanka", days: 3, price: 180, image: "https://images.unsplash.com/photo-1545389336-cf090694435e?w=400" },
@@ -102,20 +103,20 @@ export default function Programs() {
         <section className="flex-1 py-10 px-8">
           {filtered.length === 0 ? (
             <div className="text-center py-20 text-gray-400">
-              <p className="text-2xl mb-2">😔</p>
+              <Frown className="mx-auto mb-2 h-12 w-12 text-green-700" />
               <p>No programs found. Try adjusting your filters.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {filtered.map(program => (
                 <div key={program.id} className="border rounded-xl overflow-hidden shadow-md hover:shadow-xl transition card-hover">
-  <div className="img-zoom">
-    <img src={program.image} className="h-48 w-full object-cover" />
-  </div>
+                  <div className="img-zoom">
+                    <img src={program.image} className="h-48 w-full object-cover" />
+                  </div>
                   <div className="p-5">
                     <h3 className="text-lg font-bold text-green-800">{program.title}</h3>
-                    <p className="text-gray-500 text-sm mt-1">{program.location}</p>
-                    <p className="text-gray-500 text-sm">⏱ {program.days} {program.days === 1 ? "Day" : "Days"}</p>
+                    <p className="flex items-center gap-2 text-gray-500 text-sm mt-1"><MapPin className="w-4 h-4 text-green-700" />{program.location}</p>
+                    <p className="flex items-center gap-2 text-gray-500 text-sm"><Clock className="w-4 h-4 text-green-700" />{program.days} {program.days === 1 ? "Day" : "Days"}</p>
                     <p className="text-green-700 font-bold text-lg mt-2">${program.price}</p>
                     <a href="/booking" className="mt-3 block w-full bg-green-700 text-white py-2 rounded-full text-center hover:bg-green-800">
                       View Details
