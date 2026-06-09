@@ -136,3 +136,25 @@ body {
 .gradient-card {
   background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.7) 100%);
 }
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #F7F1E8;
+  color: #3A2D24;
+}
+
+.gold-glow {
+  box-shadow: 0 0 30px rgba(216,154,61,0.25);
+}
+
+.section-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(216,154,61,0.5),
+    transparent
+  );
+}
