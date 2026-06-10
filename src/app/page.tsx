@@ -24,7 +24,7 @@ export default function Home() {
         <div
           className="absolute inset-0 w-full h-full"
           style={{
-            backgroundImage: "url('/hero.png')",
+            backgroundImage: "url('/hero3.png')",
             backgroundSize: "cover",
             backgroundPosition: "right center",
           }}

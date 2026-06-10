@@ -1,139 +1,405 @@
 "use client"
+
 import Link from "next/link"
-import { useState, useEffect } from "react"
-import { Menu, X, Mountain, Leaf, Handshake, BookOpen, Feather } from "lucide-react"
+import { useEffect, useState } from "react"
+import {
+  BookOpen,
+  Camera,
+  HeartHandshake,
+  Leaf,
+  Menu,
+  Mountain,
+  Palmtree,
+  Sparkles,
+  X,
+} from "lucide-react"
+
+const COLORS = {
+  gold: "#D89A3D",
+  bronze: "#A66A2C",
+  dark: "#2A1E16",
+  cream: "#F7F1E8",
+  softCream: "#FFFDF8",
+  text: "#3A2D24",
+  muted: "#7B6B5F",
+}
+
+const programLinks = [
+  { title: "Meditation", desc: "Temple stays & silent retreats", href: "/programs", icon: Leaf },
+  { title: "Adventure", desc: "Hiking, camping & nature trips", href: "/programs", icon: Mountain },
+  { title: "Yoga & Wellness", desc: "Ayurveda, detox & healing", href: "/wellness", icon: Sparkles },
+  { title: "Volunteer", desc: "Community impact projects", href: "/volunteer", icon: HeartHandshake },
+  { title: "Culture", desc: "Village life & heritage tours", href: "/programs", icon: BookOpen },
+  { title: "Wildlife", desc: "Safari & eco experiences", href: "/programs", icon: Palmtree },
+]
+
+const mainLinks = [
+  { title: "Home", href: "/" },
+  { title: "Destinations", href: "/destinations" },
+  { title: "Wellness", href: "/wellness" },
+  { title: "Gallery", href: "/gallery" },
+  { title: "Blog", href: "/blog" },
+  { title: "About", href: "/about" },
+  { title: "Contact", href: "/contact" },
+]
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
-  const [dropdown, setDropdown] = useState(false)
+  const [programOpen, setProgramOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
-    }
+    const handleScroll = () => setScrolled(window.scrollY > 40)
+    handleScroll()
+
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  const navLinkClass = scrolled
-    ? "text-gray-700 hover:text-[#D4A373] transition"
-    : "text-white hover:underline hover:text-white transition"
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : ""
+
+    return () => {
+      document.body.style.overflow = ""
+    }
+  }, [open])
+
+  const navText = scrolled ? COLORS.text : "#ffffff"
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? "bg-white shadow-md" : "bg-transparent"}`}>
-      <div className="flex justify-between items-center px-6 py-4">
-
-        {/* Logo */}
-        <Link href="/" className={`text-xl font-bold ${scrolled ? "text-green-700" : "text-white"}`}>
-          Travel With Purpose
-        </Link>
-
-        {/* Desktop Links */}
-        <div className={`hidden md:flex gap-6 items-center`}>
-          <Link href="/" className={`${navLinkClass}`}>Home</Link>
-
-          {/* Programs Dropdown */}
-          <div className="relative">
-            <button
-              className={`${navLinkClass} flex items-center gap-1`}
-              onMouseEnter={() => setDropdown(true)}
-              onMouseLeave={() => setDropdown(false)}
-            >
-              Programs ▾
-            </button>
-            {dropdown && (
+    <>
+      <nav
+        className="fixed top-0 left-0 w-full transition-all duration-300"
+        style={{
+          zIndex: 9999,
+          background: scrolled
+            ? "rgba(255,253,248,0.94)"
+            : "rgba(42,30,22,0.14)",
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
+          borderBottom: scrolled
+            ? "1px solid rgba(58,45,36,0.10)"
+            : "1px solid rgba(255,255,255,0.10)",
+          boxShadow: scrolled ? "0 12px 35px rgba(58,45,36,0.08)" : "none",
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-5 lg:px-8">
+          <div className="h-20 flex items-center justify-between gap-6">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-3">
               <div
-                className="absolute top-6 left-0 bg-white shadow-xl rounded-xl p-3 w-60 flex flex-col gap-2 border border-gray-100"
-                onMouseEnter={() => setDropdown(true)}
-                onMouseLeave={() => setDropdown(false)}
+                className="w-11 h-11 rounded-full flex items-center justify-center"
+                style={{
+                  background: scrolled
+                    ? `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`
+                    : "rgba(255,255,255,0.14)",
+                  border: scrolled
+                    ? "1px solid rgba(216,154,61,0.30)"
+                    : "1px solid rgba(255,255,255,0.25)",
+                }}
               >
-                <Link href="/programs" className="text-gray-800 text-sm flex items-center gap-2 rounded-md px-2 py-1 hover:bg-[#E8F5E9] hover:text-[#1A202C] transition">
-                  <Leaf className="w-4 h-4 text-gray-800" />
-                  Meditation
-                </Link>
-                <Link href="/programs" className="text-gray-800 text-sm flex items-center gap-2 rounded-md px-2 py-1 hover:bg-[#E8F5E9] hover:text-[#1A202C] transition">
-                  <Mountain className="w-4 h-4 text-gray-800" />
-                  Adventure
-                </Link>
-                <Link href="/wellness" className="text-gray-800 text-sm flex items-center gap-2 rounded-md px-2 py-1 hover:bg-[#E8F5E9] hover:text-[#1A202C] transition">
-                  <Leaf className="w-4 h-4 text-gray-800" />
-                  Yoga & Wellness
-                </Link>
-                <Link href="/volunteer" className="text-gray-800 text-sm flex items-center gap-2 rounded-md px-2 py-1 hover:bg-[#E8F5E9] hover:text-[#1A202C] transition">
-                  <Handshake className="w-4 h-4 text-gray-800" />
-                  Volunteer
-                </Link>
-                <Link href="/programs" className="text-gray-800 text-sm flex items-center gap-2 rounded-md px-2 py-1 hover:bg-[#E8F5E9] hover:text-[#1A202C] transition">
-                  <BookOpen className="w-4 h-4 text-gray-800" />
-                  Culture
-                </Link>
-                <Link href="/programs" className="text-gray-800 text-sm flex items-center gap-2 rounded-md px-2 py-1 hover:bg-[#E8F5E9] hover:text-[#1A202C] transition">
-                  <Feather className="w-4 h-4 text-gray-800" />
-                  Wildlife
-                </Link>
+                <Palmtree
+                  className="w-5 h-5"
+                  style={{ color: scrolled ? "#fff" : COLORS.gold }}
+                />
               </div>
-            )}
+
+              <div className="leading-tight">
+                <p
+                  className="font-black text-sm md:text-base tracking-[0.12em] uppercase"
+                  style={{ color: navText }}
+                >
+                  Travel With
+                </p>
+                <p
+                  className="script-font text-xl -mt-1"
+                  style={{ color: COLORS.gold }}
+                >
+                  Purpose
+                </p>
+              </div>
+            </Link>
+
+            {/* Desktop Nav */}
+            <div className="hidden lg:flex items-center gap-7">
+              <Link
+                href="/"
+                className="text-sm font-bold tracking-wide transition hover:opacity-70"
+                style={{ color: navText }}
+              >
+                Home
+              </Link>
+
+              {/* Programs Dropdown */}
+              <div
+                className="relative py-4.5  -my-8"
+                onMouseEnter={() => setProgramOpen(true)}
+                onMouseLeave={() => setProgramOpen(false)}
+              >
+                <button
+                  className="text-sm font-bold tracking-wide flex items-center gap-1 transition hover:opacity-70"
+                  style={{ color: navText }}
+                  type="button"
+                >
+                  Programs ▾
+                </button>
+
+                {programOpen && (
+                  <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3">
+                    <div
+                      className="w-[680px] rounded-3xl p-5 grid grid-cols-2 gap-3"
+                      style={{
+                        background: "rgba(42,30,22,0.45)",
+                        backdropFilter: "blur(24px)",
+                        WebkitBackdropFilter: "blur(24px)",
+                        border: "1px solid rgba(255,255,255,0.15)",
+                        boxShadow: "0 25px 80px rgba(0,0,0,0.28)",
+                      }}
+                    >
+                      {programLinks.map((item) => {
+                        const Icon = item.icon
+
+                        return (
+                          <Link
+                            key={item.title}
+                            href={item.href}
+                            className="flex gap-4 p-4 rounded-2xl transition hover:-translate-y-0.5"
+                            style={{
+                              background: "rgba(255,255,255,0.06)",
+                              border: "1px solid rgba(255,255,255,0.08)",
+                              backdropFilter: "blur(12px)",
+                              WebkitBackdropFilter: "blur(12px)",
+                            }}
+                          >
+                            <div
+                              className="w-11 h-11 rounded-full flex items-center justify-center shrink-0"
+                              style={{
+                                background: "rgba(216,154,61,0.15)",
+                                border: "1px solid rgba(216,154,61,0.25)",
+                                color: COLORS.gold,
+                              }}
+                            >
+                              <Icon className="w-5 h-5" />
+                            </div>
+
+                            <div>
+                              <p className="font-black text-sm text-white">
+                                {item.title}
+                              </p>
+                              <p
+                                className="text-xs mt-1 leading-relaxed"
+                                style={{ color: "rgba(255,255,255,0.75)" }}
+                              >
+                                {item.desc}
+                              </p>
+                            </div>
+                          </Link>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {mainLinks.slice(1).map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm font-bold tracking-wide transition hover:opacity-70"
+                  style={{ color: navText }}
+                >
+                  {link.title}
+                </Link>
+              ))}
+            </div>
+
+            {/* Desktop CTA */}
+            <Link
+              href="/booking"
+              className="hidden lg:inline-flex px-6 py-3 rounded-full text-white text-xs font-black tracking-widest uppercase transition hover:-translate-y-0.5"
+              style={{
+                background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
+                boxShadow: "0 12px 24px rgba(166,106,44,0.25)",
+              }}
+            >
+              Book Now
+            </Link>
+
+            {/* Mobile Button */}
+            <button
+              className="lg:hidden w-11 h-11 rounded-full flex items-center justify-center"
+              style={{
+                color: navText,
+                border: scrolled
+                  ? "1px solid rgba(58,45,36,0.12)"
+                  : "1px solid rgba(255,255,255,0.25)",
+                background: scrolled
+                  ? "rgba(255,255,255,0.6)"
+                  : "rgba(255,255,255,0.12)",
+              }}
+              onClick={() => setOpen(true)}
+              aria-label="Open menu"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
           </div>
-
-          <Link href="/destinations" className={`${navLinkClass}`}>Destinations</Link>
-          <Link href="/wellness" className={`${navLinkClass}`}>Wellness</Link>
-          <Link href="/gallery" className={`${navLinkClass}`}>Gallery</Link>
-          <Link href="/blog" className={`${navLinkClass}`}>Blog</Link>
-          <Link href="/about" className={`${navLinkClass}`}>About Us</Link>
-          <Link href="/contact" className={`${navLinkClass}`}>Contact</Link>
         </div>
-
-        {/* Desktop Book Now */}
-        <Link href="/booking" className="hidden md:block text-white px-5 py-2 rounded-full hover:opacity-90 transition" style={{background: "linear-gradient(135deg, #8B6914, #C4962A)"}}>
-          Book Now
-        </Link>
-
-        {/* Mobile Hamburger Button */}
-        <button
-          className={`md:hidden ${scrolled ? "text-green-700" : "text-white"} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white/50`}
-          onClick={() => setOpen(!open)}
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-        >
-          {open ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
-        </button>
-
-      </div>
+      </nav>
 
       {/* Mobile Menu */}
       {open && (
-        <div id="mobile-menu" className="md:hidden fixed inset-0 bg-white/95 backdrop-blur-sm p-6 flex flex-col gap-4 text-gray-800 z-40 overflow-auto">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="text-lg font-bold text-gray-800" onClick={() => setOpen(false)}>Travel With Purpose</Link>
-            <button onClick={() => setOpen(false)} aria-label="Close menu" className="p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2">
-              <X className="h-6 w-6" />
-            </button>
-          </div>
+        <div className="fixed inset-0 lg:hidden" style={{ zIndex: 99999 }}>
+          <div
+            className="absolute inset-0 bg-black/55"
+            onClick={() => setOpen(false)}
+          />
 
-          <nav className="mt-4 flex flex-col gap-2">
-            <Link href="/" className="block text-lg px-4 py-3 rounded-md hover:bg-[#E8F5E9] transition text-gray-800" onClick={() => setOpen(false)}>Home</Link>
-            <Link href="/programs" className="block text-lg px-4 py-3 rounded-md hover:bg-[#E8F5E9] transition text-gray-800" onClick={() => setOpen(false)}>Meditation</Link>
-            <Link href="/programs" className="block text-lg px-4 py-3 rounded-md hover:bg-[#E8F5E9] transition text-gray-800" onClick={() => setOpen(false)}>Adventure</Link>
-            <Link href="/wellness" className="block text-lg px-4 py-3 rounded-md hover:bg-[#E8F5E9] transition text-gray-800" onClick={() => setOpen(false)}>Yoga & Wellness</Link>
-            <Link href="/volunteer" className="block text-lg px-4 py-3 rounded-md hover:bg-[#E8F5E9] transition text-gray-800" onClick={() => setOpen(false)}>Volunteer</Link>
-            <Link href="/programs" className="block text-lg px-4 py-3 rounded-md hover:bg-[#E8F5E9] transition text-gray-800" onClick={() => setOpen(false)}>Culture</Link>
-            <Link href="/programs" className="block text-lg px-4 py-3 rounded-md hover:bg-[#E8F5E9] transition text-gray-800" onClick={() => setOpen(false)}>Wildlife</Link>
-            <Link href="/destinations" className="block text-lg px-4 py-3 rounded-md hover:bg-[#E8F5E9] transition text-gray-800" onClick={() => setOpen(false)}>Destinations</Link>
-            <Link href="/gallery" className="block text-lg px-4 py-3 rounded-md hover:bg-[#E8F5E9] transition text-gray-800" onClick={() => setOpen(false)}>Gallery</Link>
-            <Link href="/blog" className="block text-lg px-4 py-3 rounded-md hover:bg-[#E8F5E9] transition text-gray-800" onClick={() => setOpen(false)}>Blog</Link>
-            <Link href="/about" className="block text-lg px-4 py-3 rounded-md hover:bg-[#E8F5E9] transition text-gray-800" onClick={() => setOpen(false)}>About Us</Link>
-            <Link href="/contact" className="block text-lg px-4 py-3 rounded-md hover:bg-[#E8F5E9] transition text-gray-800" onClick={() => setOpen(false)}>Contact</Link>
-          </nav>
+          <div
+            className="absolute right-0 top-0 h-full w-[88%] max-w-sm overflow-y-auto p-6"
+            style={{
+              background: COLORS.softCream,
+              boxShadow: "-20px 0 60px rgba(42,30,22,0.25)",
+            }}
+          >
+            <div className="flex items-center justify-between mb-8">
+              <Link
+                href="/"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-3"
+              >
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center"
+                  style={{
+                    background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
+                  }}
+                >
+                  <Palmtree className="w-5 h-5 text-white" />
+                </div>
 
-          <div className="mt-6">
-            <Link href="/booking" className="block bg-green-700 text-white px-6 py-3 rounded-full text-center hover:bg-green-800 transition text-lg" onClick={() => setOpen(false)}>
+                <div className="leading-tight">
+                  <p
+                    className="font-black text-sm tracking-[0.12em] uppercase"
+                    style={{ color: COLORS.text }}
+                  >
+                    Travel With
+                  </p>
+                  <p
+                    className="script-font text-xl -mt-1"
+                    style={{ color: COLORS.gold }}
+                  >
+                    Purpose
+                  </p>
+                </div>
+              </Link>
+
+              <button
+                onClick={() => setOpen(false)}
+                className="w-10 h-10 rounded-full flex items-center justify-center"
+                style={{
+                  color: COLORS.text,
+                  border: "1px solid rgba(58,45,36,0.12)",
+                }}
+                aria-label="Close menu"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-2">
+              {mainLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="block px-4 py-3 rounded-2xl font-bold text-sm"
+                  style={{
+                    color: COLORS.text,
+                    background: "rgba(247,241,232,0.85)",
+                  }}
+                >
+                  {link.title}
+                </Link>
+              ))}
+            </div>
+
+            <div className="mt-8">
+              <p
+                className="text-xs font-black tracking-widest uppercase mb-3"
+                style={{ color: COLORS.bronze }}
+              >
+                Programs
+              </p>
+
+              <div className="grid grid-cols-1 gap-2">
+                {programLinks.map((item) => {
+                  const Icon = item.icon
+
+                  return (
+                    <Link
+                      key={item.title}
+                      href={item.href}
+                      onClick={() => setOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 rounded-2xl"
+                      style={{ background: "rgba(247,241,232,0.85)" }}
+                    >
+                      <Icon
+                        className="w-4 h-4"
+                        style={{ color: COLORS.bronze }}
+                      />
+                      <span
+                        className="text-sm font-bold"
+                        style={{ color: COLORS.text }}
+                      >
+                        {item.title}
+                      </span>
+                    </Link>
+                  )
+                })}
+              </div>
+            </div>
+
+            <Link
+              href="/booking"
+              onClick={() => setOpen(false)}
+              className="mt-8 flex items-center justify-center w-full px-6 py-4 rounded-full text-white text-sm font-black tracking-widest uppercase"
+              style={{
+                background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
+              }}
+            >
               Book Now
             </Link>
+
+            <div
+              className="mt-8 rounded-3xl p-5"
+              style={{
+                background: COLORS.cream,
+                border: "1px solid rgba(58,45,36,0.10)",
+              }}
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <Camera
+                  className="w-5 h-5"
+                  style={{ color: COLORS.bronze }}
+                />
+                <p
+                  className="font-black text-sm"
+                  style={{ color: COLORS.text }}
+                >
+                  Start your meaningful journey
+                </p>
+              </div>
+
+              <p
+                className="text-sm leading-relaxed"
+                style={{ color: COLORS.muted }}
+              >
+                Explore Sri Lanka through wellness, culture, nature and
+                community impact.
+              </p>
+            </div>
           </div>
         </div>
       )}
-    </nav>
+    </>
   )
 }
