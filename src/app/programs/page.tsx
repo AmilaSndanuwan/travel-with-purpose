@@ -29,7 +29,7 @@ export default function Programs() {
     <main className="min-h-screen bg-white">
 
       {/* Header */}
-      <section className="py-16 text-center text-white gradient-green"> 
+      <section className="py-30 text-center text-white gradient-green"> 
         <h1 className="text-4xl font-bold">Our Programs</h1>
         <p className="text-lg mt-3">Find the perfect experience for your journey</p>
       </section>

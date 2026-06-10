@@ -24,7 +24,7 @@ export default function Home() {
         <div
           className="absolute inset-0 w-full h-full"
           style={{
-            backgroundImage: "url('/hero3.png')",
+            backgroundImage: "url('/hero.png')",
             backgroundSize: "cover",
             backgroundPosition: "right center",
           }}
@@ -38,7 +38,7 @@ export default function Home() {
           }}
         />
 
-        <div className="relative z-10 h-full flex flex-col justify-center max-w-[1000px] pl-0 sm:pl-64 px-6">
+        <div className="relative z-10 h-full flex flex-col justify-center max-w-5xl mx-auto px-6 sm:px-10 md:px-16 lg:px-20 text-center sm:text-left items-center sm:items-start">
           <p
             className="font-bold text-sm tracking-widest mb-4 uppercase"
             style={{ color: COLORS.gold }}
@@ -48,8 +48,7 @@ export default function Home() {
 
           <div className="leading-none mb-6">
             <span
-              className="block font-black text-white tracking-widest"
-              style={{ fontSize: "clamp(5rem, 10vw, 5rem)" }}
+              className="block font-black text-white tracking-widest text-[clamp(3.5rem,8vw,5rem)] sm:text-[clamp(4.5rem,9vw,5rem)]"
             >
               TRAVEL WITH
             </span>
@@ -58,7 +57,7 @@ export default function Home() {
               className="block script-font"
               style={{
                 color: COLORS.gold,
-                fontSize: "clamp(4rem, 10vw, 9rem)",
+                fontSize: "clamp(2.75rem,7vw,5.5rem)",
                 lineHeight: "1",
               }}
             >
@@ -66,7 +65,7 @@ export default function Home() {
             </span>
           </div>
 
-          <p className="text-gray-200 text-lg mb-8 max-w-lg">
+          <p className="text-gray-200 text-base sm:text-lg mb-8 max-w-2xl leading-relaxed">
             Giving you the opportunity to give back, learn and grow as you
             experience the most amazing places in Sri Lanka.
           </p>
