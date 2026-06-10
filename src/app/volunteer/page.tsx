@@ -1,5 +1,6 @@
 "use client"
 import { useState } from "react"
+import { Clock, Home, Coffee, DollarSign, ClipboardCheck, Sparkles } from "lucide-react"
 
 export default function Volunteer() {
   const [applied, setApplied] = useState(false)
@@ -27,11 +28,11 @@ export default function Volunteer() {
             <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400" className="h-40 w-full object-cover rounded-lg mb-4" />
             <h3 className="text-xl font-bold text-green-800">English Teaching Program</h3>
             <div className="mt-4 space-y-2 text-gray-600 text-sm">
-              <p>⏱ Duration: 2-12 Weeks</p>
-              <p>🏠 Accommodation: Shared Rooms</p>
-              <p>🍽 Meals: 3 per day</p>
-              <p>💰 Fee: $200 / Week</p>
-              <p>📜 Includes Certificate</p>
+              <p className="flex items-center gap-2"><Clock className="w-4 h-4 text-green-700" /> Duration: 2-12 Weeks</p>
+              <p className="flex items-center gap-2"><Home className="w-4 h-4 text-green-700" /> Accommodation: Shared Rooms</p>
+              <p className="flex items-center gap-2"><Coffee className="w-4 h-4 text-green-700" /> Meals: 3 per day</p>
+              <p className="flex items-center gap-2"><DollarSign className="w-4 h-4 text-green-700" /> Fee: $200 / Week</p>
+              <p className="flex items-center gap-2"><ClipboardCheck className="w-4 h-4 text-green-700" /> Includes Certificate</p>
             </div>
           </div>
 
@@ -39,11 +40,11 @@ export default function Volunteer() {
             <img src="https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=400" className="h-40 w-full object-cover rounded-lg mb-4" />
             <h3 className="text-xl font-bold text-green-800">Organic Farming Program</h3>
             <div className="mt-4 space-y-2 text-gray-600 text-sm">
-              <p>⏱ Duration: 2-12 Weeks</p>
-              <p>🏠 Accommodation: Shared Rooms</p>
-              <p>🍽 Meals: 3 per day</p>
-              <p>💰 Fee: $150 / Week</p>
-              <p>📜 Includes Certificate</p>
+              <p className="flex items-center gap-2"><Clock className="w-4 h-4 text-green-700" /> Duration: 2-12 Weeks</p>
+              <p className="flex items-center gap-2"><Home className="w-4 h-4 text-green-700" /> Accommodation: Shared Rooms</p>
+              <p className="flex items-center gap-2"><Coffee className="w-4 h-4 text-green-700" /> Meals: 3 per day</p>
+              <p className="flex items-center gap-2"><DollarSign className="w-4 h-4 text-green-700" /> Fee: $150 / Week</p>
+              <p className="flex items-center gap-2"><ClipboardCheck className="w-4 h-4 text-green-700" /> Includes Certificate</p>
             </div>
           </div>
 
@@ -51,11 +52,11 @@ export default function Volunteer() {
             <img src="https://images.unsplash.com/photo-1545389336-cf090694435e?w=400" className="h-40 w-full object-cover rounded-lg mb-4" />
             <h3 className="text-xl font-bold text-green-800">Temple Support Program</h3>
             <div className="mt-4 space-y-2 text-gray-600 text-sm">
-              <p>⏱ Duration: 2-12 Weeks</p>
-              <p>🏠 Accommodation: Shared Rooms</p>
-              <p>🍽 Meals: 3 per day</p>
-              <p>💰 Fee: $180 / Week</p>
-              <p>📜 Includes Certificate</p>
+              <p className="flex items-center gap-2"><Clock className="w-4 h-4 text-green-700" /> Duration: 2-12 Weeks</p>
+              <p className="flex items-center gap-2"><Home className="w-4 h-4 text-green-700" /> Accommodation: Shared Rooms</p>
+              <p className="flex items-center gap-2"><Coffee className="w-4 h-4 text-green-700" /> Meals: 3 per day</p>
+              <p className="flex items-center gap-2"><DollarSign className="w-4 h-4 text-green-700" /> Fee: $180 / Week</p>
+              <p className="flex items-center gap-2"><ClipboardCheck className="w-4 h-4 text-green-700" /> Includes Certificate</p>
             </div>
           </div>
 
@@ -63,11 +64,11 @@ export default function Volunteer() {
             <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=400" className="h-40 w-full object-cover rounded-lg mb-4" />
             <h3 className="text-xl font-bold text-green-800">Environmental Conservation</h3>
             <div className="mt-4 space-y-2 text-gray-600 text-sm">
-              <p>⏱ Duration: 2-12 Weeks</p>
-              <p>🏠 Accommodation: Shared Rooms</p>
-              <p>🍽 Meals: 3 per day</p>
-              <p>💰 Fee: $160 / Week</p>
-              <p>📜 Includes Certificate</p>
+              <p className="flex items-center gap-2"><Clock className="w-4 h-4 text-green-700" /> Duration: 2-12 Weeks</p>
+              <p className="flex items-center gap-2"><Home className="w-4 h-4 text-green-700" /> Accommodation: Shared Rooms</p>
+              <p className="flex items-center gap-2"><Coffee className="w-4 h-4 text-green-700" /> Meals: 3 per day</p>
+              <p className="flex items-center gap-2"><DollarSign className="w-4 h-4 text-green-700" /> Fee: $160 / Week</p>
+              <p className="flex items-center gap-2"><ClipboardCheck className="w-4 h-4 text-green-700" /> Includes Certificate</p>
             </div>
           </div>
 
@@ -81,7 +82,7 @@ export default function Volunteer() {
 
           {applied ? (
             <div className="text-center py-16">
-              <p className="text-6xl mb-4">🎉</p>
+              <Sparkles className="mx-auto mb-4 h-16 w-16 text-green-700" />
               <h3 className="text-2xl font-bold text-green-800 mb-2">Application Submitted!</h3>
               <p className="text-gray-600">We will contact you within 24 hours. Thank you!</p>
             </div>
@@ -139,7 +140,6 @@ export default function Volunteer() {
           )}
         </div>
       </section>
-
     </main>
   )
 }

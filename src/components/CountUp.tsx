@@ -39,5 +39,5 @@ export default function CountUp({ end, duration = 2000 }: Props) {
     return () => observer.disconnect()
   }, [end, duration])
 
-  return <span ref={ref}>{count.toLocaleString()}</span>
+  return <span ref={ref} suppressHydrationWarning>{count.toLocaleString("en-US")}</span>
 }

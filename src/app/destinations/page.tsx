@@ -1,3 +1,5 @@
+import { MapPin } from "lucide-react"
+
 export default function Destinations() {
   return (
     <main className="min-h-screen bg-white">
@@ -28,35 +30,35 @@ export default function Destinations() {
         {/* Destination Pins */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10 max-w-3xl mx-auto">
           <div className="bg-white rounded-xl p-4 text-center shadow-md hover:shadow-xl transition cursor-pointer">
-            <p className="text-2xl">📍</p>
+            <MapPin className="mx-auto h-8 w-8 text-green-700" />
             <p className="font-bold text-green-800 mt-1">Kandy</p>
           </div>
           <div className="bg-white rounded-xl p-4 text-center shadow-md hover:shadow-xl transition cursor-pointer">
-            <p className="text-2xl">📍</p>
+            <MapPin className="mx-auto h-8 w-8 text-green-700" />
             <p className="font-bold text-green-800 mt-1">Sigiriya</p>
           </div>
           <div className="bg-white rounded-xl p-4 text-center shadow-md hover:shadow-xl transition cursor-pointer">
-            <p className="text-2xl">📍</p>
+            <MapPin className="mx-auto h-8 w-8 text-green-700" />
             <p className="font-bold text-green-800 mt-1">Ella</p>
           </div>
           <div className="bg-white rounded-xl p-4 text-center shadow-md hover:shadow-xl transition cursor-pointer">
-            <p className="text-2xl">📍</p>
+            <MapPin className="mx-auto h-8 w-8 text-green-700" />
             <p className="font-bold text-green-800 mt-1">Nuwara Eliya</p>
           </div>
           <div className="bg-white rounded-xl p-4 text-center shadow-md hover:shadow-xl transition cursor-pointer">
-            <p className="text-2xl">📍</p>
+            <MapPin className="mx-auto h-8 w-8 text-green-700" />
             <p className="font-bold text-green-800 mt-1">Galle</p>
           </div>
           <div className="bg-white rounded-xl p-4 text-center shadow-md hover:shadow-xl transition cursor-pointer">
-            <p className="text-2xl">📍</p>
+            <MapPin className="mx-auto h-8 w-8 text-green-700" />
             <p className="font-bold text-green-800 mt-1">Udawalawe</p>
           </div>
           <div className="bg-white rounded-xl p-4 text-center shadow-md hover:shadow-xl transition cursor-pointer">
-            <p className="text-2xl">📍</p>
+            <MapPin className="mx-auto h-8 w-8 text-green-700" />
             <p className="font-bold text-green-800 mt-1">Bentota</p>
           </div>
           <div className="bg-white rounded-xl p-4 text-center shadow-md hover:shadow-xl transition cursor-pointer">
-            <p className="text-2xl">📍</p>
+            <MapPin className="mx-auto h-8 w-8 text-green-700" />
             <p className="font-bold text-green-800 mt-1">Haputale</p>
           </div>
         </div>

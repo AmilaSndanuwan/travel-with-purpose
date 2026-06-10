@@ -1,5 +1,6 @@
 "use client"
 import { useState } from "react"
+import { MapPin, Clock, Leaf, Heart } from "lucide-react"
 
 export default function Booking() {
   const [persons, setPersons] = useState(1)
@@ -26,11 +27,14 @@ export default function Booking() {
               className="h-64 w-full object-cover rounded-xl mb-6"
             />
             <h2 className="text-2xl font-bold text-green-800">7-Day Silent Retreat</h2>
-            <p className="text-gray-500 mt-2">📍 Kandy, Sri Lanka</p>
+            <p className="flex items-center gap-2 text-gray-500 mt-2">
+              <MapPin className="w-4 h-4 text-green-700" />
+              Kandy, Sri Lanka
+            </p>
             <div className="mt-4 space-y-2 text-gray-600">
-              <p>⏱ 7 Days</p>
-              <p>🌿 High Impact</p>
-              <p>👥 Group Size: 10-15</p>
+              <p className="flex items-center gap-2"><Clock className="w-4 h-4 text-green-700" /> 7 Days</p>
+              <p className="flex items-center gap-2"><Leaf className="w-4 h-4 text-green-700" /> High Impact</p>
+              <p className="flex items-center gap-2"><Heart className="w-4 h-4 text-green-700" /> Group Size: 10-15</p>
             </div>
             <div className="mt-6 border-t pt-6">
               <p className="text-3xl font-bold text-green-700">${pricePerPerson}</p>
@@ -112,8 +116,9 @@ export default function Booking() {
                 Continue to Booking
               </button>
 
-              <p className="text-center text-gray-400 text-sm cursor-pointer hover:text-red-400">
-                ❤️ Add to Wishlist
+              <p className="text-center text-gray-400 text-sm cursor-pointer hover:text-red-400 flex items-center justify-center gap-2">
+                <Heart className="w-4 h-4 text-red-500" />
+                Add to Wishlist
               </p>
 
             </div>
