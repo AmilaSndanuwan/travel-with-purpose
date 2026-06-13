@@ -1,4 +1,5 @@
 "use client"
+
 import { useEffect, useRef, useState } from "react"
 
 interface Props {
@@ -7,21 +8,37 @@ interface Props {
   className?: string
 }
 
-export default function Reveal({ children, delay = 0, className = "" }: Props) {
+export default function Reveal({
+  children,
+  delay = 0,
+  className = "",
+}: Props) {
   const ref = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
+    const element = ref.current
+
+    if (!element) return
+
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setTimeout(() => setVisible(true), delay)
-          observer.disconnect()
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            setVisible(true)
+          }, delay)
+
+          observer.unobserve(element)
         }
       },
-      { threshold: 0.1 }
+      {
+        threshold: 0.15,
+        rootMargin: "0px 0px -80px 0px",
+      }
     )
-    if (ref.current) observer.observe(ref.current)
+
+    observer.observe(element)
+
     return () => observer.disconnect()
   }, [delay])
 
@@ -32,8 +49,21 @@ export default function Reveal({ children, delay = 0, className = "" }: Props) {
       suppressHydrationWarning
       style={{
         opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0px)" : "translateY(20px)",
-        transition: `opacity 0.6s ease ${delay}ms, transform 0.6s ease ${delay}ms`,
+        transform: visible
+          ? "translateY(0px)"
+          : "translateY(35px)",
+
+        filter: visible
+          ? "blur(0px)"
+          : "blur(6px)",
+
+        transition: `
+          opacity 0.9s cubic-bezier(.22,.61,.36,1) ${delay}ms,
+          transform 0.9s cubic-bezier(.22,.61,.36,1) ${delay}ms,
+          filter 0.9s cubic-bezier(.22,.61,.36,1) ${delay}ms
+        `,
+
+        willChange: "opacity, transform, filter",
       }}
     >
       {children}
