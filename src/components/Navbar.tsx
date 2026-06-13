@@ -84,11 +84,11 @@ export default function Navbar() {
         }}
       >
         <div className="max-w-7xl mx-auto px-5 lg:px-8">
-          <div className="h-20 flex items-center justify-between gap-6">
+          <div className="h-24 flex items-center justify-between gap-6">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3">
               <div
-                className="w-11 h-11 rounded-full flex items-center justify-center"
+                className="w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300"
                 style={{
                   background: scrolled
                     ? `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`
@@ -106,7 +106,7 @@ export default function Navbar() {
 
               <div className="leading-tight">
                 <p
-                  className="font-black text-sm md:text-base tracking-[0.12em] uppercase"
+                className="font-black text-base md:text-lg tracking-[0.18em] uppercase"
                   style={{ color: navText }}
                 >
                   Travel With
@@ -132,7 +132,7 @@ export default function Navbar() {
 
               {/* Programs Dropdown */}
               <div
-                className="relative py-4.5  -my-8"
+                className="relative py-6  -my-8"
                 onMouseEnter={() => setProgramOpen(true)}
                 onMouseLeave={() => setProgramOpen(false)}
               >
