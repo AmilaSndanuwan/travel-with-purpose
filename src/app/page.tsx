@@ -3,7 +3,7 @@
 import CountUp from "../components/CountUp"
 import Reveal from "../components/Reveal"
 import * as LucideIcons from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const COLORS = {
   gold: "#D89A3D",
@@ -94,83 +94,77 @@ const blogPosts = [
   },
 ]
 
-export default function Home()
- {
-  const testimonials = [
-  {
-    name: "Sarah Johnson",
-    country: "Australia",
-    image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300",
-    review:
-      "This journey completely changed my perspective on travel. I connected with local communities and experienced Sri Lanka in a meaningful way.",
-  },
-  {
-    name: "Michael Brown",
-    country: "United Kingdom",
-    image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300",
-    review:
-      "The volunteer projects were inspiring. I met amazing people and felt like I truly made a positive impact during my trip.",
-  },
-  {
-    name: "Emma Wilson",
-    country: "Canada",
-    image:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300",
-    review:
-      "The meditation retreat and cultural experiences were unforgettable. Everything was beautifully organized.",
-  },
+const testimonials = [
+{
+  name: "Sarah Johnson",
+  country: "Australia",
+  image:
+    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300",
+  review:
+    "This journey completely changed my perspective on travel. I connected with local communities and experienced Sri Lanka in a meaningful way.",
+},
+{
+  name: "Michael Brown",
+  country: "United Kingdom",
+  image:
+    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300",
+  review:
+    "The volunteer projects were inspiring. I met amazing people and felt like I truly made a positive impact during my trip.",
+},
+{
+  name: "Emma Wilson",
+  country: "Canada",
+  image:
+    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300",
+  review:
+    "The meditation retreat and cultural experiences were unforgettable. Everything was beautifully organized.",
+},
 ]
 
-const [activeTestimonial, setActiveTestimonial] = useState(0)
+export default function Home() {
+  const [activeTestimonial, setActiveTestimonial] = useState(0)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveTestimonial((prev) =>
+        prev === testimonials.length - 1 ? 0 : prev + 1
+      )
+    }, 5000)
+
+    return () => clearInterval(timer)
+  }, [])
+
   return (
     <main className="min-h-screen" style={{ background: COLORS.cream }}>
-      {/* Hero Section - Premium */}
-<section className="relative min-h-screen overflow-hidden">
+      {/* Hero Section - Premium Responsive */}
+<section className="relative min-h-[100svh] lg:min-h-screen overflow-hidden">
   <div
     className="absolute inset-0 w-full h-full"
     style={{
-      backgroundImage: "url('/hero3.png')",
+      backgroundImage: "url('/hero6.png')",
       backgroundSize: "cover",
-      backgroundPosition: "right center",
+      backgroundPosition: "center center",
     }}
   />
 
   <div
-    className="absolute inset-0"
-    style={{
-      background:
-        "linear-gradient(90deg, rgba(42,30,22,0.94) 0%, rgba(42,30,22,0.78) 38%, rgba(42,30,22,0.35) 72%, rgba(42,30,22,0.08) 100%)",
-    }}
-  />
+  className="absolute inset-0"
+  style={{
+    background:
+      "linear-gradient(90deg, rgba(42,30,22,0.55) 0%, rgba(42,30,22,0.35) 30%, rgba(42,30,22,0.12) 55%, rgba(42,30,22,0) 75%)",
+  }}
+/>
 
-  <div
-    className="absolute inset-0 opacity-25"
-    style={{
-      backgroundImage:
-        "radial-gradient(circle at 20% 25%, rgba(216,154,61,0.45), transparent 28%)",
-    }}
-  />
 
-  <div className="relative z-10 min-h-screen flex items-center pt-24">
-    <div className="container-custom grid grid-cols-1 lg:grid-cols-[1.05fr_0.75fr] gap-10 items-center">
-      <div className="text-center lg:text-left">
+
+  <div className="relative z-10 min-h-[100svh] lg:min-h-screen flex items-center pt-28 pb-10">
+    <div className="container-custom w-full">
+      <div className="max-w-3xl mx-auto lg:mx-0 text-center lg:text-left">
         <Reveal>
-          <div
-            className="inline-flex items-center gap-3 px-4 py-2 rounded-full mb-6"
-            style={{
-              background: "rgba(255,255,255,0.09)",
-              border: "1px solid rgba(216,154,61,0.22)",
-              backdropFilter: "blur(14px)",
-            }}
-          >
-            <span
-              className="w-2 h-2 rounded-full"
-              style={{ background: COLORS.gold }}
-            />
+          <div className="mb-3">
+            
             <p
-              className="font-black text-xs tracking-[0.22em] uppercase"
+              className="font-black text-[10px] sm:text-xs tracking-[0.16em] uppercase leading-relaxed"
               style={{ color: COLORS.gold }}
             >
               Transform your journey through impact tourism
@@ -179,16 +173,20 @@ const [activeTestimonial, setActiveTestimonial] = useState(0)
         </Reveal>
 
         <Reveal delay={80}>
-          <div className="leading-none mb-6">
-            <span className="block font-black text-white tracking-[0.12em] text-[clamp(3.5rem,8vw,6.3rem)]">
-              TRAVEL WITH
+          <div className="leading-none mb-5">
+            <span className="block font-black text-white tracking-[0.08em] text-[clamp(3.2rem,15vw,6.3rem)]">
+              TRAVEL
+            </span>
+
+            <span className="block font-black text-white tracking-[0.08em] text-[clamp(3.2rem,15vw,6.3rem)]">
+              WITH
             </span>
 
             <span
               className="block script-font"
               style={{
                 color: COLORS.gold,
-                fontSize: "clamp(3rem,7vw,6.5rem)",
+                fontSize: "clamp(3rem,13vw,6.5rem)",
                 lineHeight: "0.9",
               }}
             >
@@ -198,7 +196,13 @@ const [activeTestimonial, setActiveTestimonial] = useState(0)
         </Reveal>
 
         <Reveal delay={150}>
-          <p className="text-gray-200 text-base sm:text-lg mb-8 max-w-2xl leading-relaxed mx-auto lg:mx-0">
+          <p
+  className="text-base sm:text-lg mb-7 leading-relaxed"
+  style={{
+    color: "rgba(255,255,255,0.92)",
+    textShadow: "0 2px 12px rgba(0,0,0,0.35)",
+  }}
+>
             Giving you the opportunity to give back, learn and grow as you
             experience the most amazing places in Sri Lanka.
           </p>
@@ -243,7 +247,7 @@ const [activeTestimonial, setActiveTestimonial] = useState(0)
         </Reveal>
 
         <Reveal delay={300}>
-          <div className="mt-10 grid grid-cols-3 gap-3 max-w-xl mx-auto lg:mx-0">
+          <div className="mt-8 grid grid-cols-3 gap-2 sm:gap-3 max-w-xl mx-auto lg:mx-0">
             {[
               ["12K+", "Travelers"],
               ["68", "Communities"],
@@ -251,15 +255,20 @@ const [activeTestimonial, setActiveTestimonial] = useState(0)
             ].map(([number, label]) => (
               <div
                 key={label}
-                className="rounded-2xl p-4 text-center"
+                className="rounded-2xl px-2 py-4 text-center"
                 style={{
                   background: "rgba(255,255,255,0.08)",
                   border: "1px solid rgba(255,255,255,0.12)",
                   backdropFilter: "blur(14px)",
                 }}
               >
-                <p className="text-2xl font-black text-white">{number}</p>
-                <p className="text-xs mt-1" style={{ color: "rgba(255,255,255,0.65)" }}>
+                <p className="text-xl sm:text-2xl font-black text-white">
+                  {number}
+                </p>
+                <p
+                  className="text-[11px] sm:text-xs mt-1"
+                  style={{ color: "rgba(255,255,255,0.92)" }}
+                >
                   {label}
                 </p>
               </div>
@@ -267,21 +276,21 @@ const [activeTestimonial, setActiveTestimonial] = useState(0)
           </div>
         </Reveal>
       </div>
-
-     
     </div>
   </div>
 
-  <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white text-center">
-    <p className="text-xs tracking-[0.25em] mb-2">SCROLL TO EXPLORE</p>
-    <div
-      className="w-6 h-10 rounded-full mx-auto flex justify-center pt-2"
-      style={{ border: "1px solid rgba(255,255,255,0.55)" }}
-    >
-      <span className="w-1.5 h-1.5 rounded-full bg-white animate-bounce" />
-    </div>
-  </div>
+
 </section>
+
+
+
+
+
+
+
+
+
+
 
       {/* Programs - Light premium style */}
 <section
@@ -426,6 +435,119 @@ const [activeTestimonial, setActiveTestimonial] = useState(0)
   </div>
 </section>
 
+{/* Why Choose Us - Image Background Trust Section */}
+<section className="relative py-24 px-6 overflow-hidden">
+  <div
+    className="absolute inset-0"
+    style={{
+      backgroundImage:
+        "url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1600')",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+    }}
+  />
+
+  <div
+    className="absolute inset-0"
+    style={{
+      background:
+        "linear-gradient(135deg, rgba(42,30,22,0.88), rgba(42,30,22,0.62))",
+    }}
+  />
+
+  <div
+    className="absolute inset-0 opacity-25"
+    style={{
+      backgroundImage:
+        "radial-gradient(circle at 15% 20%, rgba(216,154,61,0.45), transparent 30%)",
+    }}
+  />
+
+  <div className="relative max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-10 items-center">
+    <Reveal>
+      <div>
+        <p className="script-font text-5xl" style={{ color: COLORS.gold }}>
+          Why Choose Us
+        </p>
+
+        <h2 className="text-4xl md:text-6xl font-black tracking-widest leading-none mt-2 text-white">
+          TRAVEL THAT GIVES BACK
+        </h2>
+
+        <p
+          className="mt-6 leading-relaxed max-w-xl"
+          style={{ color: "rgba(255,255,255,0.72)" }}
+        >
+          We create meaningful Sri Lanka travel experiences that connect you
+          with wellness, culture, nature and local communities.
+        </p>
+
+        <a
+          href="/about"
+          className="mt-8 inline-flex px-7 py-4 rounded-full text-sm font-black tracking-widest uppercase text-white transition hover:-translate-y-1"
+          style={{
+            background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
+          }}
+        >
+          Learn About Us
+        </a>
+      </div>
+    </Reveal>
+
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      {[
+        ["Leaf", "Eco Conscious", "Sustainable travel experiences"],
+        ["HeartHandshake", "Community Impact", "Support local communities"],
+        ["ShieldCheck", "Trusted Programs", "Carefully planned journeys"],
+        ["Sparkles", "Wellness Focus", "Mindful retreats and healing"],
+      ].map(([icon, title, desc], i) => {
+        const Icon = (LucideIcons as any)[icon]
+
+        return (
+          <Reveal key={title} delay={i * 80}>
+            <div
+              className="rounded-[2rem] p-6 transition-all duration-300 hover:-translate-y-2"
+              style={{
+                background: "rgba(255,255,255,0.10)",
+                border: "1px solid rgba(255,255,255,0.16)",
+                backdropFilter: "blur(18px)",
+                boxShadow: "0 20px 55px rgba(0,0,0,0.18)",
+              }}
+            >
+              <div
+                className="w-14 h-14 rounded-full flex items-center justify-center mb-5"
+                style={{
+                  background: "rgba(216,154,61,0.15)",
+                  border: "1px solid rgba(216,154,61,0.28)",
+                }}
+              >
+                <Icon className="w-7 h-7" style={{ color: COLORS.gold }} />
+              </div>
+
+              <h3 className="font-black text-lg mb-2 text-white">
+                {title}
+              </h3>
+
+              <p
+                className="text-sm leading-relaxed"
+                style={{ color: "rgba(255,255,255,0.68)" }}
+              >
+                {desc}
+              </p>
+            </div>
+          </Reveal>
+        )
+      })}
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
      {/* Featured Experiences - Premium Split Layout */}
 <section
   className="py-24 px-6"
@@ -439,14 +561,14 @@ const [activeTestimonial, setActiveTestimonial] = useState(0)
       <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-12">
         <div>
           <p className="script-font text-5xl" style={{ color: COLORS.bronze }}>
-            Featured Experiences
+            Featured
           </p>
 
           <h2
             className="text-4xl md:text-6xl font-black tracking-widest leading-none mt-2"
             style={{ color: COLORS.text }}
           >
-            SIGNATURE JOURNEYS
+            PROGRAMS
           </h2>
 
           <p
@@ -695,6 +817,16 @@ const [activeTestimonial, setActiveTestimonial] = useState(0)
     </div>
   </div>
 </section>
+
+
+
+
+
+
+
+
+
+
       {/* Popular Destinations - Clean Stable Layout */}
 <section
   className="py-24 px-6"
@@ -762,147 +894,249 @@ const [activeTestimonial, setActiveTestimonial] = useState(0)
   </div>
 </section>
 
-      {/* Premium Testimonials */}
+      {/* Testimonials - Premium Layered Slider */}
 <section
-  className="py-24 px-6"
+  className="relative py-28 px-6 overflow-hidden"
   style={{
     background:
-      "linear-gradient(180deg,#FFFDF8 0%,#F4EEE3 100%)",
-    borderTop: `1px solid ${COLORS.border}`,
+      "radial-gradient(circle at 12% 20%, rgba(216,154,61,0.16), transparent 26%), radial-gradient(circle at 90% 80%, rgba(94,111,82,0.14), transparent 28%), linear-gradient(135deg, #2A1E16 0%, #33251C 50%, #1C140F 100%)",
   }}
 >
-  <div className="max-w-6xl mx-auto">
+  <style jsx>{`
+    @keyframes reviewSlideIn {
+      from {
+        opacity: 0;
+        transform: translateX(28px) scale(0.97);
+        filter: blur(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+        filter: blur(0);
+      }
+    }
 
-    <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-12 items-center">
+    @keyframes miniCardIn {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  `}</style>
 
-      {/* Left Side */}
+  <div
+    className="absolute inset-0 opacity-18"
+    style={{
+      backgroundImage:
+        "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
+      backgroundSize: "60px 60px",
+    }}
+  />
+
+  <div
+    className="absolute inset-x-0 top-0 h-px"
+    style={{
+      background:
+        "linear-gradient(90deg, transparent, rgba(216,154,61,0.45), transparent)",
+    }}
+  />
+
+  <div className="relative max-w-6xl mx-auto">
+    <Reveal>
+      <div className="text-center mb-16">
+        <p className="script-font text-5xl" style={{ color: COLORS.gold }}>
+          Traveler
+        </p>
+
+        <h2 className="text-4xl md:text-6xl font-black tracking-widest leading-none mt-2 text-white">
+          TESTIMONIALS
+        </h2>
+
+        <p
+          className="mt-5 max-w-2xl mx-auto leading-relaxed"
+          style={{ color: "rgba(255,255,255,0.68)" }}
+        >
+          Real stories from travelers who experienced meaningful journeys,
+          cultural immersion and community impact across Sri Lanka.
+        </p>
+      </div>
+    </Reveal>
+
+    <div className="grid grid-cols-1 lg:grid-cols-[0.75fr_1.25fr] gap-8 items-center">
+      {/* Left stacked review cards */}
       <Reveal>
-        <div>
-          <p
-            className="script-font text-5xl"
-            style={{ color: COLORS.bronze }}
-          >
-            Traveler
-          </p>
-
-          <h2
-            className="text-4xl md:text-6xl font-black tracking-widest leading-none mt-2"
-            style={{ color: COLORS.text }}
-          >
-            TESTIMONIALS
-          </h2>
-
-          <p
-            className="mt-6 max-w-md leading-relaxed"
-            style={{ color: COLORS.muted }}
-          >
-            Real stories from travelers who experienced meaningful journeys,
-            cultural immersion and community impact across Sri Lanka.
-          </p>
-
-          <div className="flex gap-3 mt-8">
-
+        <div className="space-y-4">
+          {testimonials.map((item, i) => (
             <button
-              onClick={() =>
-                setActiveTestimonial(
-                  activeTestimonial === 0
-                    ? testimonials.length - 1
-                    : activeTestimonial - 1
-                )
-              }
-              className="w-12 h-12 rounded-full text-white text-xl"
+              key={item.name}
+              onClick={() => setActiveTestimonial(i)}
+              className="w-full text-left rounded-[1.75rem] p-5 transition-all duration-500"
               style={{
-                background: COLORS.text,
+                animation: `miniCardIn 0.7s ease ${i * 0.08}s both`,
+                background:
+                  i === activeTestimonial
+                    ? "rgba(255,255,255,0.13)"
+                    : "rgba(255,255,255,0.06)",
+                border:
+                  i === activeTestimonial
+                    ? "1px solid rgba(216,154,61,0.42)"
+                    : "1px solid rgba(255,255,255,0.10)",
+                backdropFilter: "blur(16px)",
+                boxShadow:
+                  i === activeTestimonial
+                    ? "0 24px 60px rgba(0,0,0,0.20)"
+                    : "0 12px 35px rgba(0,0,0,0.10)",
+                transform:
+                  i === activeTestimonial ? "translateX(10px)" : "translateX(0)",
               }}
             >
-              ←
-            </button>
+              <div className="flex items-center gap-4">
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="w-14 h-14 rounded-full object-cover shrink-0"
+                  style={{
+                    border:
+                      i === activeTestimonial
+                        ? `2px solid ${COLORS.gold}`
+                        : "2px solid rgba(255,255,255,0.18)",
+                  }}
+                />
 
-            <button
-              onClick={() =>
-                setActiveTestimonial(
-                  activeTestimonial === testimonials.length - 1
-                    ? 0
-                    : activeTestimonial + 1
-                )
-              }
-              className="w-12 h-12 rounded-full text-white text-xl"
-              style={{
-                background: COLORS.gold,
-              }}
-            >
-              →
-            </button>
+                <div className="min-w-0">
+                  <h4 className="font-black text-white">
+                    {item.name}
+                  </h4>
 
-          </div>
+                  <p
+                    className="text-sm"
+                    style={{ color: "rgba(255,255,255,0.58)" }}
+                  >
+                    {item.country}
+                  </p>
+                </div>
+
+                <span
+                  className="ml-auto w-9 h-9 rounded-full flex items-center justify-center text-sm transition"
+                  style={{
+                    background:
+                      i === activeTestimonial
+                        ? COLORS.gold
+                        : "rgba(255,255,255,0.08)",
+                    color: i === activeTestimonial ? "white" : "rgba(255,255,255,0.6)",
+                  }}
+                >
+                  →
+                </span>
+              </div>
+            </button>
+          ))}
         </div>
       </Reveal>
 
-      {/* Right Side */}
-      <Reveal>
-
+      {/* Right active review */}
+      <Reveal delay={120}>
         <div
-          className="rounded-[2rem] p-8 md:p-10"
+          key={activeTestimonial}
+          className="relative rounded-[2.5rem] p-8 md:p-12 overflow-hidden h-[520px] flex flex-col"
           style={{
-            background: "rgba(255,255,255,0.75)",
-            backdropFilter: "blur(18px)",
-            border: `1px solid ${COLORS.border}`,
-            boxShadow: "0 25px 70px rgba(58,45,36,0.08)",
+            animation: "reviewSlideIn 0.65s cubic-bezier(0.22, 1, 0.36, 1)",
+            background:
+              "linear-gradient(145deg, rgba(255,255,255,0.13), rgba(255,255,255,0.055))",
+            backdropFilter: "blur(22px)",
+            border: "1px solid rgba(255,255,255,0.16)",
+            boxShadow: "0 35px 95px rgba(0,0,0,0.28)",
           }}
         >
+          <div
+            className="absolute inset-x-0 top-0 h-px"
+            style={{
+              background:
+                "linear-gradient(90deg, transparent, rgba(216,154,61,0.9), transparent)",
+            }}
+          />
 
-          <div className="flex gap-1 mb-6">
-            {[1, 2, 3, 4, 5].map((star) => (
+          <div className="relative z-10 flex flex-col h-full">
+            <div className="flex items-center justify-between gap-4 mb-8">
+              <div className="flex gap-1">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <span
+                    key={star}
+                    className="text-2xl"
+                    style={{ color: COLORS.gold }}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
+
               <span
-                key={star}
-                className="text-2xl"
-                style={{ color: COLORS.gold }}
+                className="text-xs font-black tracking-widest uppercase"
+                style={{ color: "rgba(255,255,255,0.55)" }}
               >
-                ★
+                {activeTestimonial + 1} / {testimonials.length}
               </span>
-            ))}
-          </div>
+            </div>
 
-          <p
-            className="text-lg md:text-xl leading-relaxed italic mb-8"
-            style={{ color: COLORS.text }}
-          >
-            "{testimonials[activeTestimonial].review}"
-          </p>
-
-          <div className="flex items-center gap-4">
-
-            <img
-              src={testimonials[activeTestimonial].image}
-              alt={testimonials[activeTestimonial].name}
-              className="w-16 h-16 rounded-full object-cover"
-            />
-
-            <div>
-              <h4
-                className="font-black text-lg"
-                style={{ color: COLORS.text }}
-              >
-                {testimonials[activeTestimonial].name}
-              </h4>
-
-              <p style={{ color: COLORS.muted }}>
-                {testimonials[activeTestimonial].country}
+            <div className="h-[245px] md:h-[260px] flex items-start">
+              <p className="text-2xl md:text-3xl leading-relaxed italic text-white">
+                “{testimonials[activeTestimonial].review}”
               </p>
             </div>
 
+            <div className="mt-auto flex items-center justify-between gap-6">
+              <div className="flex items-center gap-4">
+                <img
+                  src={testimonials[activeTestimonial].image}
+                  alt={testimonials[activeTestimonial].name}
+                  className="w-16 h-16 rounded-full object-cover"
+                  style={{
+                    border: `2px solid ${COLORS.gold}`,
+                    boxShadow: "0 10px 25px rgba(0,0,0,0.22)",
+                  }}
+                />
+
+                <div>
+                  <h4 className="font-black text-lg text-white">
+                    {testimonials[activeTestimonial].name}
+                  </h4>
+
+                  <p style={{ color: "rgba(255,255,255,0.62)" }}>
+                    {testimonials[activeTestimonial].country}
+                  </p>
+                </div>
+              </div>
+
+              <div className="hidden sm:flex gap-2">
+                {testimonials.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveTestimonial(i)}
+                    className="h-2 rounded-full transition-all duration-300"
+                    style={{
+                      width: i === activeTestimonial ? "30px" : "8px",
+                      background:
+                        i === activeTestimonial
+                          ? COLORS.gold
+                          : "rgba(255,255,255,0.28)",
+                    }}
+                    aria-label={`Go to testimonial ${i + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
-
         </div>
-
       </Reveal>
-
     </div>
-
   </div>
 </section>
 
-      {/* Latest Blog - Travel Magazine Style */}
+      {/* Latest Blog - Polished Travel Magazine Style */}
 <section
   className="py-24 px-6"
   style={{
@@ -912,7 +1146,7 @@ const [activeTestimonial, setActiveTestimonial] = useState(0)
 >
   <div className="max-w-6xl mx-auto">
     <Reveal>
-      <div className="grid grid-cols-1 lg:grid-cols-[0.75fr_1.25fr] gap-10 items-end mb-14">
+      <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-14">
         <div>
           <p className="script-font text-5xl" style={{ color: COLORS.bronze }}>
             Latest From
@@ -924,9 +1158,14 @@ const [activeTestimonial, setActiveTestimonial] = useState(0)
           >
             OUR BLOG
           </h2>
+
+          <p className="mt-5 max-w-xl leading-relaxed" style={{ color: COLORS.muted }}>
+            Read inspiring travel stories, wellness guides and meaningful
+            experiences from Sri Lanka.
+          </p>
         </div>
 
-        <div className="flex flex-col md:flex-row md:items-center gap-5 lg:justify-end">
+        <div className="flex flex-wrap items-center gap-3">
           {["Travel Stories", "Meditation"].map((cat) => (
             <span
               key={cat}
@@ -948,11 +1187,11 @@ const [activeTestimonial, setActiveTestimonial] = useState(0)
       </div>
     </Reveal>
 
-    <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-6 items-stretch">
       <Reveal>
         <a
           href="/blog"
-          className="group relative min-h-[520px] rounded-[2rem] overflow-hidden block"
+          className="group relative h-[560px] rounded-[2rem] overflow-hidden block"
           style={{
             boxShadow: "0 30px 80px rgba(58,45,36,0.14)",
           }}
@@ -982,17 +1221,17 @@ const [activeTestimonial, setActiveTestimonial] = useState(0)
               {blogPosts[0].cat}
             </p>
 
-            <h3 className="text-3xl md:text-5xl font-black leading-tight mb-5">
+            <h3 className="text-3xl md:text-5xl font-black leading-tight mb-5 max-w-3xl">
               {blogPosts[0].title}
             </h3>
 
-            <p className="text-white/70 mb-7 max-w-xl">
+            <p className="text-white/70 mb-7 max-w-xl leading-relaxed">
               Explore hidden places, meaningful experiences and local stories
               from Sri Lanka.
             </p>
 
             <span
-              className="inline-flex items-center justify-center w-14 h-14 rounded-full text-white"
+              className="inline-flex items-center justify-center w-14 h-14 rounded-full text-white transition group-hover:translate-x-1"
               style={{ background: COLORS.gold }}
             >
               →
@@ -1006,14 +1245,14 @@ const [activeTestimonial, setActiveTestimonial] = useState(0)
           <Reveal key={b.title} delay={i * 100}>
             <a
               href="/blog"
-              className="group grid grid-cols-1 sm:grid-cols-[0.9fr_1fr] rounded-[2rem] overflow-hidden min-h-[247px]"
+              className="group grid grid-cols-1 sm:grid-cols-[0.95fr_1.05fr] rounded-[2rem] overflow-hidden h-[267px] transition-all duration-300 hover:-translate-y-2"
               style={{
                 background: COLORS.softCream,
                 border: `1px solid ${COLORS.border}`,
                 boxShadow: "0 18px 50px rgba(58,45,36,0.08)",
               }}
             >
-              <div className="relative min-h-[220px] sm:min-h-full overflow-hidden">
+              <div className="relative h-[220px] sm:h-full overflow-hidden">
                 <img
                   src={b.img}
                   className="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110"
@@ -1030,7 +1269,7 @@ const [activeTestimonial, setActiveTestimonial] = useState(0)
                 </p>
 
                 <h3
-                  className="text-xl font-black leading-tight mb-5"
+                  className="text-lg font-black leading-tight mb-4"
                   style={{ color: COLORS.text }}
                 >
                   {b.title}
@@ -1041,7 +1280,7 @@ const [activeTestimonial, setActiveTestimonial] = useState(0)
                 </p>
 
                 <span
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-white"
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-white transition group-hover:translate-x-1"
                   style={{ background: COLORS.text }}
                 >
                   →
@@ -1054,8 +1293,7 @@ const [activeTestimonial, setActiveTestimonial] = useState(0)
     </div>
   </div>
 </section>
-
-      {/* Final CTA - Premium Journey Banner */}
+{/* Final CTA - Premium Glass Journey Banner */}
 <section className="relative py-28 px-6 overflow-hidden">
   <div
     className="absolute inset-0"
