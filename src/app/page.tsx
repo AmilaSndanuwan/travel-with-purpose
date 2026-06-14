@@ -894,241 +894,210 @@ export default function Home() {
   </div>
 </section>
 
-      {/* Testimonials - Premium Layered Slider */}
+     {/* Testimonials - Light Premium Clean Carousel */}
 <section
   className="relative py-28 px-6 overflow-hidden"
   style={{
     background:
-      "radial-gradient(circle at 12% 20%, rgba(216,154,61,0.16), transparent 26%), radial-gradient(circle at 90% 80%, rgba(94,111,82,0.14), transparent 28%), linear-gradient(135deg, #2A1E16 0%, #33251C 50%, #1C140F 100%)",
+      "linear-gradient(135deg, #FFFDF8 0%, #F7F1E8 55%, #EFE2D3 100%)",
   }}
 >
-  <style jsx>{`
-    @keyframes reviewSlideIn {
-      from {
-        opacity: 0;
-        transform: translateX(28px) scale(0.97);
-        filter: blur(6px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0) scale(1);
-        filter: blur(0);
-      }
-    }
-
-    @keyframes miniCardIn {
-      from {
-        opacity: 0;
-        transform: translateY(18px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  `}</style>
-
   <div
-    className="absolute inset-0 opacity-18"
+    className="absolute inset-0 opacity-35"
     style={{
       backgroundImage:
-        "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
-      backgroundSize: "60px 60px",
-    }}
-  />
-
-  <div
-    className="absolute inset-x-0 top-0 h-px"
-    style={{
-      background:
-        "linear-gradient(90deg, transparent, rgba(216,154,61,0.45), transparent)",
+        "radial-gradient(circle at 12% 20%, rgba(216,154,61,0.16), transparent 28%), radial-gradient(circle at 88% 80%, rgba(94,111,82,0.12), transparent 30%)",
     }}
   />
 
   <div className="relative max-w-6xl mx-auto">
-    <Reveal>
-      <div className="text-center mb-16">
-        <p className="script-font text-5xl" style={{ color: COLORS.gold }}>
-          Traveler
-        </p>
-
-        <h2 className="text-4xl md:text-6xl font-black tracking-widest leading-none mt-2 text-white">
-          TESTIMONIALS
-        </h2>
-
-        <p
-          className="mt-5 max-w-2xl mx-auto leading-relaxed"
-          style={{ color: "rgba(255,255,255,0.68)" }}
-        >
-          Real stories from travelers who experienced meaningful journeys,
-          cultural immersion and community impact across Sri Lanka.
-        </p>
-      </div>
-    </Reveal>
-
-    <div className="grid grid-cols-1 lg:grid-cols-[0.75fr_1.25fr] gap-8 items-center">
-      {/* Left stacked review cards */}
+    <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-12 items-center">
       <Reveal>
-        <div className="space-y-4">
-          {testimonials.map((item, i) => (
+        <div className="text-center lg:text-left">
+          <p className="script-font text-5xl" style={{ color: COLORS.bronze }}>
+            Traveler
+          </p>
+
+          <h2
+            className="text-4xl md:text-6xl font-black tracking-widest leading-none mt-2"
+            style={{ color: COLORS.text }}
+          >
+            TESTIMONIALS
+          </h2>
+
+          <p
+            className="script-font text-4xl mt-5 leading-tight"
+            style={{ color: COLORS.bronze }}
+          >
+            Stories of Impact and Discovery
+          </p>
+
+          <p
+            className="mt-6 max-w-md mx-auto lg:mx-0 leading-relaxed"
+            style={{ color: COLORS.muted }}
+          >
+            Hear from travelers who experienced wellness, culture and community
+            impact through meaningful journeys across Sri Lanka.
+          </p>
+
+          <div className="flex justify-center lg:justify-start gap-4 mt-8">
             <button
-              key={item.name}
-              onClick={() => setActiveTestimonial(i)}
-              className="w-full text-left rounded-[1.75rem] p-5 transition-all duration-500"
+              onClick={() =>
+                setActiveTestimonial(
+                  activeTestimonial === 0
+                    ? testimonials.length - 1
+                    : activeTestimonial - 1
+                )
+              }
+              className="w-12 h-12 rounded-full text-white text-xl transition hover:-translate-y-1"
               style={{
-                animation: `miniCardIn 0.7s ease ${i * 0.08}s both`,
-                background:
-                  i === activeTestimonial
-                    ? "rgba(255,255,255,0.13)"
-                    : "rgba(255,255,255,0.06)",
-                border:
-                  i === activeTestimonial
-                    ? "1px solid rgba(216,154,61,0.42)"
-                    : "1px solid rgba(255,255,255,0.10)",
-                backdropFilter: "blur(16px)",
-                boxShadow:
-                  i === activeTestimonial
-                    ? "0 24px 60px rgba(0,0,0,0.20)"
-                    : "0 12px 35px rgba(0,0,0,0.10)",
-                transform:
-                  i === activeTestimonial ? "translateX(10px)" : "translateX(0)",
+                background: COLORS.bronze,
+                boxShadow: "0 12px 28px rgba(166,106,44,0.22)",
               }}
+              aria-label="Previous testimonial"
             >
-              <div className="flex items-center gap-4">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-14 h-14 rounded-full object-cover shrink-0"
-                  style={{
-                    border:
-                      i === activeTestimonial
-                        ? `2px solid ${COLORS.gold}`
-                        : "2px solid rgba(255,255,255,0.18)",
-                  }}
-                />
-
-                <div className="min-w-0">
-                  <h4 className="font-black text-white">
-                    {item.name}
-                  </h4>
-
-                  <p
-                    className="text-sm"
-                    style={{ color: "rgba(255,255,255,0.58)" }}
-                  >
-                    {item.country}
-                  </p>
-                </div>
-
-                <span
-                  className="ml-auto w-9 h-9 rounded-full flex items-center justify-center text-sm transition"
-                  style={{
-                    background:
-                      i === activeTestimonial
-                        ? COLORS.gold
-                        : "rgba(255,255,255,0.08)",
-                    color: i === activeTestimonial ? "white" : "rgba(255,255,255,0.6)",
-                  }}
-                >
-                  →
-                </span>
-              </div>
+              ←
             </button>
-          ))}
+
+            <button
+              onClick={() =>
+                setActiveTestimonial(
+                  activeTestimonial === testimonials.length - 1
+                    ? 0
+                    : activeTestimonial + 1
+                )
+              }
+              className="w-12 h-12 rounded-full text-white text-xl transition hover:-translate-y-1"
+              style={{
+                background: COLORS.gold,
+                boxShadow: "0 12px 28px rgba(216,154,61,0.25)",
+              }}
+              aria-label="Next testimonial"
+            >
+              →
+            </button>
+          </div>
         </div>
       </Reveal>
 
-      {/* Right active review */}
       <Reveal delay={120}>
-        <div
-          key={activeTestimonial}
-          className="relative rounded-[2.5rem] p-8 md:p-12 overflow-hidden h-[520px] flex flex-col"
-          style={{
-            animation: "reviewSlideIn 0.65s cubic-bezier(0.22, 1, 0.36, 1)",
-            background:
-              "linear-gradient(145deg, rgba(255,255,255,0.13), rgba(255,255,255,0.055))",
-            backdropFilter: "blur(22px)",
-            border: "1px solid rgba(255,255,255,0.16)",
-            boxShadow: "0 35px 95px rgba(0,0,0,0.28)",
-          }}
-        >
-          <div
-            className="absolute inset-x-0 top-0 h-px"
-            style={{
-              background:
-                "linear-gradient(90deg, transparent, rgba(216,154,61,0.9), transparent)",
-            }}
-          />
+        <div className="relative min-h-[560px] flex items-center justify-center overflow-hidden">
+          {testimonials.map((item, i) => {
+            const isActive = i === activeTestimonial
+            const isPrev =
+              i ===
+              (activeTestimonial === 0
+                ? testimonials.length - 1
+                : activeTestimonial - 1)
+            const isNext =
+              i ===
+              (activeTestimonial === testimonials.length - 1
+                ? 0
+                : activeTestimonial + 1)
 
-          <div className="relative z-10 flex flex-col h-full">
-            <div className="flex items-center justify-between gap-4 mb-8">
-              <div className="flex gap-1">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <span
-                    key={star}
-                    className="text-2xl"
-                    style={{ color: COLORS.gold }}
-                  >
-                    ★
-                  </span>
-                ))}
-              </div>
+            let transform = "translateX(0) scale(0.7)"
+            let opacity = 0
+            let zIndex = 0
 
-              <span
-                className="text-xs font-black tracking-widest uppercase"
-                style={{ color: "rgba(255,255,255,0.55)" }}
+            if (isActive) {
+              transform = "translateX(0) scale(1)"
+              opacity = 1
+              zIndex = 30
+            } else if (isPrev) {
+              transform = "translateX(-230px) scale(0.82)"
+              opacity = 0.28
+              zIndex = 10
+            } else if (isNext) {
+              transform = "translateX(230px) scale(0.82)"
+              opacity = 0.28
+              zIndex = 10
+            }
+
+            return (
+              <button
+                key={item.name}
+                onClick={() => setActiveTestimonial(i)}
+                className="absolute rounded-[2rem] transition-all duration-700 ease-out"
+                style={{
+                  width: "360px",
+                  height: "450px",
+                  background: "rgba(255,255,255,0.86)",
+                  border: `1px solid ${COLORS.border}`,
+                  boxShadow: isActive
+                    ? "0 30px 80px rgba(58,45,36,0.16)"
+                    : "0 18px 45px rgba(58,45,36,0.08)",
+                  backdropFilter: "blur(18px)",
+                  transform,
+                  opacity,
+                  zIndex,
+                  padding: "36px",
+                  pointerEvents: isActive ? "auto" : "none",
+                }}
               >
-                {activeTestimonial + 1} / {testimonials.length}
-              </span>
-            </div>
-
-            <div className="h-[245px] md:h-[260px] flex items-start">
-              <p className="text-2xl md:text-3xl leading-relaxed italic text-white">
-                “{testimonials[activeTestimonial].review}”
-              </p>
-            </div>
-
-            <div className="mt-auto flex items-center justify-between gap-6">
-              <div className="flex items-center gap-4">
-                <img
-                  src={testimonials[activeTestimonial].image}
-                  alt={testimonials[activeTestimonial].name}
-                  className="w-16 h-16 rounded-full object-cover"
-                  style={{
-                    border: `2px solid ${COLORS.gold}`,
-                    boxShadow: "0 10px 25px rgba(0,0,0,0.22)",
-                  }}
-                />
-
-                <div>
-                  <h4 className="font-black text-lg text-white">
-                    {testimonials[activeTestimonial].name}
-                  </h4>
-
-                  <p style={{ color: "rgba(255,255,255,0.62)" }}>
-                    {testimonials[activeTestimonial].country}
-                  </p>
-                </div>
-              </div>
-
-              <div className="hidden sm:flex gap-2">
-                {testimonials.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setActiveTestimonial(i)}
-                    className="h-2 rounded-full transition-all duration-300"
+                <div className="h-full flex flex-col items-center text-center">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-28 h-28 rounded-full object-cover mb-6"
                     style={{
-                      width: i === activeTestimonial ? "30px" : "8px",
-                      background:
-                        i === activeTestimonial
-                          ? COLORS.gold
-                          : "rgba(255,255,255,0.28)",
+                      border: `5px solid ${COLORS.softCream}`,
+                      boxShadow: "0 15px 35px rgba(58,45,36,0.18)",
                     }}
-                    aria-label={`Go to testimonial ${i + 1}`}
                   />
-                ))}
-              </div>
-            </div>
+
+                  <div className="flex gap-1 mb-5">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <span
+                        key={star}
+                        className="text-2xl"
+                        style={{ color: COLORS.gold }}
+                      >
+                        ★
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="h-[135px] flex items-center">
+                    <p
+                      className="text-lg leading-relaxed"
+                      style={{ color: COLORS.text }}
+                    >
+                      “{item.review}”
+                    </p>
+                  </div>
+
+                  <div className="mt-auto">
+                    <h4
+                      className="font-black text-lg"
+                      style={{ color: COLORS.text }}
+                    >
+                      {item.name}
+                    </h4>
+
+                    <p style={{ color: COLORS.muted }}>{item.country}</p>
+                  </div>
+                </div>
+              </button>
+            )
+          })}
+
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 z-40">
+            <span className="font-bold text-sm" style={{ color: COLORS.text }}>
+              {activeTestimonial + 1}/{testimonials.length}
+            </span>
+
+            {testimonials.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveTestimonial(i)}
+                className="w-3 h-3 rounded-full transition-all"
+                style={{
+                  background:
+                    i === activeTestimonial ? COLORS.gold : "rgba(58,45,36,0.22)",
+                }}
+                aria-label={`Go to testimonial ${i + 1}`}
+              />
+            ))}
           </div>
         </div>
       </Reveal>
