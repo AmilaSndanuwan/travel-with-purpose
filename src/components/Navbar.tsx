@@ -91,7 +91,7 @@ export default function Navbar() {
                 className="w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300"
                 style={{
                   background: scrolled
-                    ? `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`
+                    ? `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.text})`
                     : "rgba(255,255,255,0.14)",
                   border: scrolled
                     ? "1px solid rgba(216,154,61,0.30)"

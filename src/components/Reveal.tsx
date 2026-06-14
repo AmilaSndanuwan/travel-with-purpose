@@ -8,36 +8,22 @@ interface Props {
   className?: string
 }
 
-export default function Reveal({
-  children,
-  delay = 0,
-  className = "",
-}: Props) {
+export default function Reveal({ children, delay = 0, className = "" }: Props) {
   const ref = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    const element = ref.current
-
-    if (!element) return
-
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => {
-            setVisible(true)
-          }, delay)
-
-          observer.unobserve(element)
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setTimeout(() => setVisible(true), delay)
+          observer.disconnect()
         }
       },
-      {
-        threshold: 0.15,
-        rootMargin: "0px 0px -80px 0px",
-      }
+      { threshold: 0.12 }
     )
 
-    observer.observe(element)
+    if (ref.current) observer.observe(ref.current)
 
     return () => observer.disconnect()
   }, [delay])
@@ -46,24 +32,13 @@ export default function Reveal({
     <div
       ref={ref}
       className={className}
-      suppressHydrationWarning
       style={{
         opacity: visible ? 1 : 0,
         transform: visible
-          ? "translateY(0px)"
-          : "translateY(35px)",
-
-        filter: visible
-          ? "blur(0px)"
-          : "blur(6px)",
-
-        transition: `
-          opacity 0.9s cubic-bezier(.22,.61,.36,1) ${delay}ms,
-          transform 0.9s cubic-bezier(.22,.61,.36,1) ${delay}ms,
-          filter 0.9s cubic-bezier(.22,.61,.36,1) ${delay}ms
-        `,
-
-        willChange: "opacity, transform, filter",
+          ? "translateY(0px) scale(1)"
+          : "translateY(36px) scale(0.98)",
+        filter: visible ? "blur(0px)" : "blur(4px)",
+        transition: `opacity 0.8s ease ${delay}ms, transform 0.8s ease ${delay}ms, filter 0.8s ease ${delay}ms`,
       }}
     >
       {children}
