@@ -550,6 +550,7 @@ export default function Home() {
 
      {/* Featured Experiences - Premium Split Layout */}
 <section
+  id="program-list"
   className="py-24 px-6"
   style={{
     background:

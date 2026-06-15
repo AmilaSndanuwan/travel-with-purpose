@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo, useState, useEffect} from "react"
 import {
   ArrowRight,
   BookOpen,
@@ -155,6 +155,39 @@ const categories = [
 
 export default function Programs() {
   const [category, setCategory] = useState("All")
+  useEffect(() => {
+  const applyHashCategory = () => {
+    const hash = decodeURIComponent(
+      window.location.hash.replace("#", "")
+    ).toLowerCase()
+
+    const categoryMap: Record<string, string> = {
+      all: "All",
+      meditation: "Meditation",
+      adventure: "Adventure",
+      culture: "Culture",
+      cultural: "Culture",
+      wildlife: "Wildlife",
+    }
+
+    const nextCategory = categoryMap[hash]
+
+    if (nextCategory) {
+      setCategory(nextCategory)
+
+      setTimeout(() => {
+        document
+          .getElementById("program-list")
+          ?.scrollIntoView({ behavior: "smooth", block: "start" })
+      }, 100)
+    }
+  }
+
+  applyHashCategory()
+  window.addEventListener("hashchange", applyHashCategory)
+
+  return () => window.removeEventListener("hashchange", applyHashCategory)
+}, [])
   const [maxPrice, setMaxPrice] = useState(1000)
   const [maxDays, setMaxDays] = useState(30)
   const [search, setSearch] = useState("")

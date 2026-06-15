@@ -2,16 +2,12 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import {
-  BookOpen,
-  Camera,
   ChevronDown,
   HeartHandshake,
   Images,
-  Leaf,
   Menu,
-  Mountain,
   Newspaper,
   Palmtree,
   Sparkles,
@@ -33,25 +29,13 @@ const COLORS = {
 const programLinks = [
   {
     title: "All Programs",
-    desc: "Browse every experience",
+    desc: "Browse all meaningful travel experiences",
     href: "/programs",
     icon: Palmtree,
   },
   {
-    title: "Meditation",
-    desc: "Temple stays & silent retreats",
-    href: "/programs",
-    icon: Leaf,
-  },
-  {
-    title: "Adventure",
-    desc: "Hiking, camping & nature trips",
-    href: "/programs",
-    icon: Mountain,
-  },
-  {
     title: "Yoga & Wellness",
-    desc: "Ayurveda, detox & healing",
+    desc: "Ayurveda, detox, yoga & healing",
     href: "/wellness",
     icon: Sparkles,
   },
@@ -60,12 +44,6 @@ const programLinks = [
     desc: "Community impact projects",
     href: "/volunteer",
     icon: HeartHandshake,
-  },
-  {
-    title: "Culture",
-    desc: "Village life & heritage tours",
-    href: "/programs",
-    icon: BookOpen,
   },
 ]
 
@@ -228,7 +206,7 @@ export default function Navbar() {
                 {dropdown === "programs" && (
                   <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3">
                     <div
-                      className="w-[680px] rounded-3xl p-5 grid grid-cols-2 gap-3"
+                      className="w-[420px] rounded-3xl p-5 grid grid-cols-1 gap-3"
                       style={{
                         background: "rgba(255,253,248,0.94)",
                         backdropFilter: "blur(24px)",
