@@ -7,6 +7,7 @@ import Footer from "../components/Footer"
 import BackToTop from "../components/BackToTop"
 import WhatsAppButton from "../components/WhatsAppButton"
 
+
 const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],

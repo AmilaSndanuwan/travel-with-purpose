@@ -1,6 +1,7 @@
 "use client"
 
 import { useMemo, useState, useEffect} from "react"
+import Reveal from "../../components/Reveal"
 import {
   ArrowRight,
   BookOpen,
@@ -247,15 +248,16 @@ export default function Programs() {
         />
 
         <div className="relative max-w-6xl mx-auto w-full">
-          <div className="max-w-3xl">
-            <div
-              className="inline-flex items-center gap-3 px-4 py-2 rounded-full mb-6"
-              style={{
-                background: "rgba(255,255,255,0.10)",
-                border: "1px solid rgba(216,154,61,0.28)",
-                backdropFilter: "blur(14px)",
-              }}
-            >
+          <Reveal>
+            <div className="max-w-3xl">
+              <div
+                className="inline-flex items-center gap-3 px-4 py-2 rounded-full mb-6"
+                style={{
+                  background: "rgba(255,255,255,0.10)",
+                  border: "1px solid rgba(216,154,61,0.28)",
+                  backdropFilter: "blur(14px)",
+                }}
+              >
               <span
                 className="w-2 h-2 rounded-full"
                 style={{ background: COLORS.gold }}
@@ -306,6 +308,7 @@ export default function Programs() {
               </a>
             </div>
           </div>
+          </Reveal>
         </div>
       </section>
 
@@ -320,15 +323,16 @@ export default function Programs() {
       >
         <div className="max-w-7xl mx-auto">
           {/* Top filter bar */}
-<div
-  className="rounded-[2rem] p-5 md:p-6 mb-8"
-  style={{
-    background: "rgba(255,255,255,0.82)",
-    border: `1px solid ${COLORS.border}`,
-    boxShadow: "0 18px 50px rgba(58,45,36,0.08)",
-    backdropFilter: "blur(18px)",
-  }}
->
+          <Reveal delay={80}>
+            <div
+              className="rounded-[2rem] p-5 md:p-6 mb-8"
+              style={{
+                background: "rgba(255,255,255,0.82)",
+                border: `1px solid ${COLORS.border}`,
+                boxShadow: "0 18px 50px rgba(58,45,36,0.08)",
+                backdropFilter: "blur(18px)",
+              }}
+            >
   {/* Search input */}
   <div className="relative mb-5">
     <Search
@@ -378,6 +382,7 @@ export default function Programs() {
     })}
   </div>
 </div>
+          </Reveal>
 
           <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-8">
             {/* Sidebar */}
@@ -560,17 +565,17 @@ export default function Programs() {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7">
-                  {filtered.map((program) => (
-                    <article
-                      key={program.id}
-                      className="group rounded-[2rem] overflow-hidden transition-all duration-500 hover:-translate-y-2"
-                      style={{
-                        background: COLORS.softCream,
-                        border: `1px solid ${COLORS.border}`,
-                        boxShadow: "0 18px 50px rgba(58,45,36,0.08)",
-                      }}
-                    >
-                      <div className="relative h-64 overflow-hidden">
+                  {filtered.map((program, index) => (
+                    <Reveal key={program.id} delay={index * 65} className="block h-full">
+                      <article
+                        className="group h-full rounded-[2rem] overflow-hidden transition-all duration-500 hover:-translate-y-2 flex flex-col"
+                        style={{
+                          background: COLORS.softCream,
+                          border: `1px solid ${COLORS.border}`,
+                          boxShadow: "0 18px 50px rgba(58,45,36,0.08)",
+                        }}
+                      >
+                      <div className="relative h-64 overflow-hidden shrink-0">
                         <img
                           src={program.image}
                           alt={program.title}
@@ -608,22 +613,22 @@ export default function Programs() {
                         </div>
                       </div>
 
-                      <div className="p-6">
+                      <div className="p-6 flex flex-col flex-1">
                         <h3
-                          className="text-xl font-black leading-tight mb-3"
+                          className="text-xl font-black leading-tight mb-3 min-h-[56px]"
                           style={{ color: COLORS.text }}
                         >
                           {program.title}
                         </h3>
 
                         <p
-                          className="text-sm leading-relaxed mb-5"
+                          className="text-sm leading-relaxed mb-5 min-h-[72px]"
                           style={{ color: COLORS.muted }}
                         >
                           {program.desc}
                         </p>
 
-                        <div className="space-y-3 mb-6">
+                        <div className="space-y-3 mb-6 min-h-[96px]">
                           <p
                             className="flex items-center gap-2 text-sm"
                             style={{ color: COLORS.muted }}
@@ -652,7 +657,7 @@ export default function Programs() {
                           </p>
                         </div>
 
-                        <div className="flex items-center justify-between gap-4">
+                        <div className="flex items-center justify-between gap-4 mt-auto pt-2">
                           <div>
                             <p
                               className="text-xs uppercase tracking-widest font-black"
@@ -671,7 +676,7 @@ export default function Programs() {
 
                           <a
                             href="/booking"
-                            className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-white text-xs font-black tracking-widest uppercase transition group-hover:translate-x-1"
+                           className="inline-flex shrink-0 whitespace-nowrap items-center gap-2 px-4 sm:px-5 py-3 rounded-full text-white text-xs font-black tracking-widest uppercase transition group-hover:translate-x-1"
                             style={{
                               background: COLORS.text,
                             }}
@@ -682,6 +687,7 @@ export default function Programs() {
                         </div>
                       </div>
                     </article>
+                  </Reveal>
                   ))}
                 </div>
               )}
@@ -698,10 +704,11 @@ export default function Programs() {
             "radial-gradient(circle at 50% 0%, rgba(216,154,61,0.25), transparent 30%), linear-gradient(135deg, #2A1E16 0%, #1C140F 100%)",
         }}
       >
-        <div className="relative max-w-4xl mx-auto">
-          <p className="script-font text-5xl" style={{ color: COLORS.gold }}>
-            Need help choosing?
-          </p>
+        <Reveal>
+          <div className="relative max-w-4xl mx-auto">
+            <p className="script-font text-5xl" style={{ color: COLORS.gold }}>
+              Need help choosing?
+            </p>
 
           <h2 className="text-4xl md:text-6xl font-black tracking-widest text-white mt-2">
             BUILD YOUR OWN JOURNEY
@@ -723,6 +730,7 @@ export default function Programs() {
             <Wallet className="w-4 h-4" />
           </a>
         </div>
+        </Reveal>
       </section>
     </main>
   )
