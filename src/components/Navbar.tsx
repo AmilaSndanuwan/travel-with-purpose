@@ -1,16 +1,17 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
+import { useEffect, useMemo, useState } from "react"
 import {
-  BookOpen,
-  Camera,
+  ChevronDown,
   HeartHandshake,
-  Leaf,
+  Images,
   Menu,
-  Mountain,
+  Newspaper,
   Palmtree,
   Sparkles,
+  Target,
   X,
 } from "lucide-react"
 
@@ -22,30 +23,69 @@ const COLORS = {
   softCream: "#FFFDF8",
   text: "#3A2D24",
   muted: "#7B6B5F",
+  border: "rgba(58,45,36,0.12)",
 }
 
 const programLinks = [
-  { title: "Meditation", desc: "Temple stays & silent retreats", href: "/programs", icon: Leaf },
-  { title: "Adventure", desc: "Hiking, camping & nature trips", href: "/programs", icon: Mountain },
-  { title: "Yoga & Wellness", desc: "Ayurveda, detox & healing", href: "/wellness", icon: Sparkles },
-  { title: "Volunteer", desc: "Community impact projects", href: "/volunteer", icon: HeartHandshake },
-  { title: "Culture", desc: "Village life & heritage tours", href: "/programs", icon: BookOpen },
-  { title: "Wildlife", desc: "Safari & eco experiences", href: "/programs", icon: Palmtree },
+  {
+    title: "All Programs",
+    desc: "Browse all meaningful travel experiences",
+    href: "/programs",
+    icon: Palmtree,
+  },
+  {
+    title: "Yoga & Wellness",
+    desc: "Ayurveda, detox, yoga & healing",
+    href: "/wellness",
+    icon: Sparkles,
+  },
+  {
+    title: "Volunteer",
+    desc: "Community impact projects",
+    href: "/volunteer",
+    icon: HeartHandshake,
+  },
 ]
 
-const mainLinks = [
+const storyLinks = [
+  {
+    title: "Gallery",
+    desc: "Moments from journeys",
+    href: "/gallery",
+    icon: Images,
+  },
+  {
+    title: "Blog",
+    desc: "Stories, guides & insights",
+    href: "/blog",
+    icon: Newspaper,
+  },
+]
+
+const desktopLinks = [
   { title: "Home", href: "/" },
   { title: "Destinations", href: "/destinations" },
+  { title: "Impact", href: "/impact" },
+  { title: "About", href: "/about" },
+  { title: "Contact", href: "/contact" },
+]
+
+const mobileLinks = [
+  { title: "Home", href: "/" },
+  { title: "Programs", href: "/programs" },
+  { title: "Destinations", href: "/destinations" },
+  { title: "Impact", href: "/impact" },
   { title: "Wellness", href: "/wellness" },
+  { title: "Volunteer", href: "/volunteer" },
   { title: "Gallery", href: "/gallery" },
   { title: "Blog", href: "/blog" },
   { title: "About", href: "/about" },
   { title: "Contact", href: "/contact" },
 ]
-
 export default function Navbar() {
+  const pathname = usePathname()
   const [open, setOpen] = useState(false)
-  const [programOpen, setProgramOpen] = useState(false)
+  const [dropdown, setDropdown] = useState<"programs" | "stories" | null>(null)
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
@@ -66,6 +106,11 @@ export default function Navbar() {
 
   const navText = scrolled ? COLORS.text : "#ffffff"
 
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/"
+    return pathname === href || pathname.startsWith(`${href}/`)
+  }
+
   return (
     <>
       <nav
@@ -84,11 +129,11 @@ export default function Navbar() {
         }}
       >
         <div className="max-w-7xl mx-auto px-5 lg:px-8">
-          <div className="h-24 flex items-center justify-between gap-6">
+          <div className="h-20 lg:h-24 flex items-center justify-between gap-6">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-3 shrink-0">
               <div
-                className="w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300"
+                className="w-12 h-12 lg:w-14 lg:h-14 rounded-full flex items-center justify-center transition-all duration-300"
                 style={{
                   background: scrolled
                     ? `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.text})`
@@ -106,11 +151,12 @@ export default function Navbar() {
 
               <div className="leading-tight">
                 <p
-                className="font-black text-base md:text-lg tracking-[0.18em] uppercase"
+                  className="font-black text-sm md:text-lg tracking-[0.16em] uppercase whitespace-nowrap"
                   style={{ color: navText }}
                 >
                   Travel With
                 </p>
+
                 <p
                   className="script-font text-xl -mt-1"
                   style={{ color: COLORS.gold }}
@@ -121,39 +167,52 @@ export default function Navbar() {
             </Link>
 
             {/* Desktop Nav */}
-            <div className="hidden lg:flex items-center gap-7">
-              <Link
-                href="/"
-                className="text-sm font-bold tracking-wide transition hover:opacity-70"
-                style={{ color: navText }}
-              >
-                Home
-              </Link>
+            <div className="hidden lg:flex items-center gap-6">
+              {desktopLinks.slice(0, 1).map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm font-bold tracking-wide transition hover:opacity-70"
+                  style={{
+                    color: isActive(link.href) ? COLORS.gold : navText,
+                  }}
+                >
+                  {link.title}
+                </Link>
+              ))}
 
               {/* Programs Dropdown */}
               <div
-                className="relative py-6  -my-8"
-                onMouseEnter={() => setProgramOpen(true)}
-                onMouseLeave={() => setProgramOpen(false)}
+                className="relative py-6 -my-6"
+                onMouseEnter={() => setDropdown("programs")}
+                onMouseLeave={() => setDropdown(null)}
               >
                 <button
                   className="text-sm font-bold tracking-wide flex items-center gap-1 transition hover:opacity-70"
-                  style={{ color: navText }}
+                  style={{
+                    color:
+                      pathname.startsWith("/programs") ||
+                      pathname.startsWith("/wellness") ||
+                      pathname.startsWith("/volunteer")
+                        ? COLORS.gold
+                        : navText,
+                  }}
                   type="button"
                 >
-                  Programs ▾
+                  Programs
+                  <ChevronDown className="w-4 h-4" />
                 </button>
 
-                {programOpen && (
+                {dropdown === "programs" && (
                   <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3">
                     <div
-                      className="w-[680px] rounded-3xl p-5 grid grid-cols-2 gap-3"
+                      className="w-[420px] rounded-3xl p-5 grid grid-cols-1 gap-3"
                       style={{
-                        background: "rgba(42,30,22,0.45)",
+                        background: "rgba(255,253,248,0.94)",
                         backdropFilter: "blur(24px)",
                         WebkitBackdropFilter: "blur(24px)",
-                        border: "1px solid rgba(255,255,255,0.15)",
-                        boxShadow: "0 25px 80px rgba(0,0,0,0.28)",
+                        border: `1px solid ${COLORS.border}`,
+                        boxShadow: "0 25px 80px rgba(58,45,36,0.16)",
                       }}
                     >
                       {programLinks.map((item) => {
@@ -165,10 +224,8 @@ export default function Navbar() {
                             href={item.href}
                             className="flex gap-4 p-4 rounded-2xl transition hover:-translate-y-0.5"
                             style={{
-                              background: "rgba(255,255,255,0.06)",
-                              border: "1px solid rgba(255,255,255,0.08)",
-                              backdropFilter: "blur(12px)",
-                              WebkitBackdropFilter: "blur(12px)",
+                              background: COLORS.cream,
+                              border: `1px solid ${COLORS.border}`,
                             }}
                           >
                             <div
@@ -183,12 +240,16 @@ export default function Navbar() {
                             </div>
 
                             <div>
-                              <p className="font-black text-sm text-white">
+                              <p
+                                className="font-black text-sm"
+                                style={{ color: COLORS.text }}
+                              >
                                 {item.title}
                               </p>
+
                               <p
                                 className="text-xs mt-1 leading-relaxed"
-                                style={{ color: "rgba(255,255,255,0.75)" }}
+                                style={{ color: COLORS.muted }}
                               >
                                 {item.desc}
                               </p>
@@ -201,22 +262,103 @@ export default function Navbar() {
                 )}
               </div>
 
-              {mainLinks.slice(1).map((link) => (
+                            {desktopLinks.slice(1).map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   className="text-sm font-bold tracking-wide transition hover:opacity-70"
-                  style={{ color: navText }}
+                  style={{
+                    color: isActive(link.href) ? COLORS.gold : navText,
+                  }}
                 >
                   {link.title}
                 </Link>
               ))}
+
+              {/* Stories Dropdown */}
+              <div
+                className="relative py-6 -my-6"
+                onMouseEnter={() => setDropdown("stories")}
+                onMouseLeave={() => setDropdown(null)}
+              >
+                <button
+                  className="text-sm font-bold tracking-wide flex items-center gap-1 transition hover:opacity-70"
+                  style={{
+                    color:
+                      pathname.startsWith("/gallery") || pathname.startsWith("/blog")
+                        ? COLORS.gold
+                        : navText,
+                  }}
+                  type="button"
+                >
+                  Stories
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+
+                {dropdown === "stories" && (
+                  <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3">
+                    <div
+                      className="w-[360px] rounded-3xl p-5 grid grid-cols-1 gap-3"
+                      style={{
+                        background: "rgba(255,253,248,0.94)",
+                        backdropFilter: "blur(24px)",
+                        WebkitBackdropFilter: "blur(24px)",
+                        border: `1px solid ${COLORS.border}`,
+                        boxShadow: "0 25px 80px rgba(58,45,36,0.16)",
+                      }}
+                    >
+                      {storyLinks.map((item) => {
+                        const Icon = item.icon
+
+                        return (
+                          <Link
+                            key={item.title}
+                            href={item.href}
+                            className="flex gap-4 p-4 rounded-2xl transition hover:-translate-y-0.5"
+                            style={{
+                              background: COLORS.cream,
+                              border: `1px solid ${COLORS.border}`,
+                            }}
+                          >
+                            <div
+                              className="w-11 h-11 rounded-full flex items-center justify-center shrink-0"
+                              style={{
+                                background: "rgba(216,154,61,0.15)",
+                                border: "1px solid rgba(216,154,61,0.25)",
+                                color: COLORS.gold,
+                              }}
+                            >
+                              <Icon className="w-5 h-5" />
+                            </div>
+
+                            <div>
+                              <p
+                                className="font-black text-sm"
+                                style={{ color: COLORS.text }}
+                              >
+                                {item.title}
+                              </p>
+
+                              <p
+                                className="text-xs mt-1 leading-relaxed"
+                                style={{ color: COLORS.muted }}
+                              >
+                                {item.desc}
+                              </p>
+                            </div>
+                          </Link>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Desktop CTA */}
             <Link
               href="/booking"
-              className="hidden lg:inline-flex px-6 py-3 rounded-full text-white text-xs font-black tracking-widest uppercase transition hover:-translate-y-0.5"
+              className="hidden lg:inline-flex px-6 py-3 rounded-full text-white text-xs font-black tracking-widest uppercase transition hover:-translate-y-0.5 shrink-0"
               style={{
                 background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
                 boxShadow: "0 12px 24px rgba(166,106,44,0.25)",
@@ -283,6 +425,7 @@ export default function Navbar() {
                   >
                     Travel With
                   </p>
+
                   <p
                     className="script-font text-xl -mt-1"
                     style={{ color: COLORS.gold }}
@@ -306,56 +449,20 @@ export default function Navbar() {
             </div>
 
             <div className="space-y-2">
-              {mainLinks.map((link) => (
+              {mobileLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
                   className="block px-4 py-3 rounded-2xl font-bold text-sm"
                   style={{
-                    color: COLORS.text,
+                    color: isActive(link.href) ? COLORS.gold : COLORS.text,
                     background: "rgba(247,241,232,0.85)",
                   }}
                 >
                   {link.title}
                 </Link>
               ))}
-            </div>
-
-            <div className="mt-8">
-              <p
-                className="text-xs font-black tracking-widest uppercase mb-3"
-                style={{ color: COLORS.bronze }}
-              >
-                Programs
-              </p>
-
-              <div className="grid grid-cols-1 gap-2">
-                {programLinks.map((item) => {
-                  const Icon = item.icon
-
-                  return (
-                    <Link
-                      key={item.title}
-                      href={item.href}
-                      onClick={() => setOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 rounded-2xl"
-                      style={{ background: "rgba(247,241,232,0.85)" }}
-                    >
-                      <Icon
-                        className="w-4 h-4"
-                        style={{ color: COLORS.bronze }}
-                      />
-                      <span
-                        className="text-sm font-bold"
-                        style={{ color: COLORS.text }}
-                      >
-                        {item.title}
-                      </span>
-                    </Link>
-                  )
-                })}
-              </div>
             </div>
 
             <Link
@@ -377,10 +484,11 @@ export default function Navbar() {
               }}
             >
               <div className="flex items-center gap-3 mb-3">
-                <Camera
+                <Target
                   className="w-5 h-5"
                   style={{ color: COLORS.bronze }}
                 />
+
                 <p
                   className="font-black text-sm"
                   style={{ color: COLORS.text }}

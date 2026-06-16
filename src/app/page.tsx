@@ -349,7 +349,7 @@ export default function Home() {
       </div>
     </Reveal>
 
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-5">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
       {programs.map((item, i) => {
         const Icon =
           (LucideIcons as any)[item.icon] || (LucideIcons as any).Circle
@@ -770,7 +770,7 @@ export default function Home() {
       </div>
     </Reveal>
 
-    <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
       {[
         { end: 12450, label: "Trees Planted", icon: "TreePine" },
         { end: 8320, label: "Students Supported", icon: "GraduationCap" },
@@ -981,7 +981,7 @@ export default function Home() {
       </Reveal>
 
       <Reveal delay={120}>
-        <div className="relative min-h-[560px] flex items-center justify-center overflow-hidden">
+        <div className="relative min-h-[520px] sm:min-h-[560px] flex items-center justify-center overflow-hidden">
           {testimonials.map((item, i) => {
             const isActive = i === activeTestimonial
             const isPrev =
@@ -1019,7 +1019,7 @@ export default function Home() {
                 onClick={() => setActiveTestimonial(i)}
                 className="absolute rounded-[2rem] transition-all duration-700 ease-out"
                 style={{
-                  width: "360px",
+                  width: "min(360px, calc(100vw - 48px))",
                   height: "450px",
                   background: "rgba(255,255,255,0.86)",
                   border: `1px solid ${COLORS.border}`,
@@ -1214,7 +1214,7 @@ export default function Home() {
           <Reveal key={b.title} delay={i * 100}>
             <a
               href="/blog"
-              className="group grid grid-cols-1 sm:grid-cols-[0.95fr_1.05fr] rounded-[2rem] overflow-hidden h-[267px] transition-all duration-300 hover:-translate-y-2"
+              className="group grid grid-cols-1 sm:grid-cols-[0.95fr_1.05fr] rounded-[2rem] overflow-hidden min-h-[267px] transition-all duration-300 hover:-translate-y-2"
               style={{
                 background: COLORS.softCream,
                 border: `1px solid ${COLORS.border}`,

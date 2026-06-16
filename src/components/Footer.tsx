@@ -19,10 +19,11 @@ const quickLinks = [
   { title: "Programs", href: "/programs" },
   { title: "Destinations", href: "/destinations" },
   { title: "Impact Projects", href: "/impact" },
+  { title: "Gallery", href: "/gallery" },
   { title: "Blog", href: "/blog" },
+  { title: "About Us", href: "/about" },
   { title: "Contact", href: "/contact" },
 ]
-
 const programLinks = [
   { title: "Meditation", href: "/programs" },
   { title: "Yoga & Wellness", href: "/wellness" },
@@ -120,7 +121,7 @@ export default function Footer() {
         </div>
 
         {/* Footer columns */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-13">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-12">
           {/* Brand column */}
           <div>
             <Link href="/" className="inline-flex items-center gap-4 mb-5">
@@ -322,7 +323,7 @@ export default function Footer() {
             color: "rgba(255,255,255,0.5)",
           }}
         >
-          © 2024 Travel With Purpose. All rights reserved.
+          © 2026 Travel With Purpose. All rights reserved.  
         </div>
       </div>
     </footer>

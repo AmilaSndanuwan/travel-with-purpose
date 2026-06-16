@@ -7,6 +7,7 @@ import Footer from "../components/Footer"
 import BackToTop from "../components/BackToTop"
 import WhatsAppButton from "../components/WhatsAppButton"
 
+
 const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
@@ -28,7 +29,14 @@ export const metadata: Metadata = {
   },
   description:
     "Discover meaningful travel experiences in Sri Lanka through wellness retreats, volunteering, eco-tourism, cultural immersion and adventure journeys.",
-  keywords: [
+  formatDetection: {
+  telephone: false,
+  email: false,
+  address: false,
+},
+  
+  
+    keywords: [
     "Sri Lanka travel",
     "Volunteer tourism",
     "Meditation retreats",
@@ -52,8 +60,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`${montserrat.variable} ${dancing.variable}`}>
+    <html lang="en" suppressHydrationWarning>
+  <body
+    suppressHydrationWarning
+    className={`${montserrat.variable} ${dancing.variable}`}
+  >
         <Navbar />
         {children}
         <Footer />
