@@ -38,7 +38,7 @@ const destinations = [
     region: "Central Highlands",
     desc: "Cultural capital of Sri Lanka, home to the Temple of the Tooth Relic and peaceful mountain retreats.",
     image:
-      "https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=1000",
+      "kandy.jpg",
     experiences: 25,
     bestFor: "Culture & Retreats",
     icon: Landmark,
@@ -49,7 +49,7 @@ const destinations = [
     region: "Cultural Triangle",
     desc: "Ancient rock fortress surrounded by jungle, village life and unforgettable sunrise viewpoints.",
     image:
-      "https://images.unsplash.com/photo-1567157577867-05ccb1388e66?w=1000",
+      "sigiriya.jpg",
     experiences: 18,
     bestFor: "History & Adventure",
     icon: Mountain,
@@ -60,7 +60,7 @@ const destinations = [
     region: "Hill Country",
     desc: "A scenic mountain village known for tea estates, hiking trails, waterfalls and slow travel experiences.",
     image:
-      "https://images.unsplash.com/photo-1586016413664-864c0dd76f53?w=1000",
+      "ella.jpg",
     experiences: 22,
     bestFor: "Hiking & Nature",
     icon: TreePine,
@@ -71,7 +71,7 @@ const destinations = [
     region: "Tea Country",
     desc: "Cool climate, colonial charm and beautiful tea plantations surrounded by misty mountain scenery.",
     image:
-      "https://images.unsplash.com/photo-1562602833-0f4ab2fc46e3?w=1000",
+      "nuwaraeliya.jpg",
     experiences: 14,
     bestFor: "Tea & Wellness",
     icon: Leaf,
@@ -82,7 +82,7 @@ const destinations = [
     region: "South Coast",
     desc: "Historic fort city with Dutch architecture, coastal culture, art spaces and meaningful local experiences.",
     image:
-      "https://images.unsplash.com/photo-1588416936097-41850ab3d86d?w=1000",
+      "galle.jpg",
     experiences: 16,
     bestFor: "Heritage & Coast",
     icon: Building2,
@@ -93,7 +93,7 @@ const destinations = [
     region: "Wildlife Region",
     desc: "A beautiful wildlife destination famous for elephant safaris, bird watching and nature conservation.",
     image:
-      "https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=1000",
+      "udawalawe.jpg",
     experiences: 12,
     bestFor: "Wildlife Safari",
     icon: Camera,
@@ -104,7 +104,7 @@ const destinations = [
     region: "Golden Coast",
     desc: "A peaceful beach destination for Ayurveda, yoga, river experiences and relaxing coastal wellness.",
     image:
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1000",
+      "bentota.jpg",
     experiences: 11,
     bestFor: "Beach Wellness",
     icon: Waves,
@@ -115,7 +115,7 @@ const destinations = [
     region: "Mountain Edge",
     desc: "A quiet hill town with tea fields, viewpoints, organic farming and sustainable living experiences.",
     image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1000",
+      "haputale.jpg",
     experiences: 13,
     bestFor: "Agriculture & Eco",
     icon: Tent,
