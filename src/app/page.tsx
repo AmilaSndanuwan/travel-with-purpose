@@ -66,11 +66,11 @@ const experiences = [
 ]
 
 const destinations = [
-  { name: "Kandy", img: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=900" },
-  { name: "Ella", img: "https://images.unsplash.com/photo-1586016413664-864c0dd76f53?w=900" },
-  { name: "Sigiriya", img: "https://images.unsplash.com/photo-1567157577867-05ccb1388e66?w=900" },
-  { name: "Galle", img: "https://images.unsplash.com/photo-1588416936097-41850ab3d86d?w=900" },
-  { name: "Nuwara Eliya", img: "https://images.unsplash.com/photo-1562602833-0f4ab2fc46e3?w=900" },
+  { name: "Kandy", img: "kandy.jpg" },
+  { name: "Ella", img: "ella.jpg" },
+  { name: "Sigiriya", img: "sigiriya.jpg" },
+  { name: "Galle", img: "galle.jpg" },
+  { name: "Nuwara Eliya", img: "nuwaraeliya.jpg" },
 ]
 
 const blogPosts = [
