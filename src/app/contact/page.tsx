@@ -83,11 +83,50 @@ const socialLinks = [
 
 export default function Contact() {
   const [sent, setSent] = useState(false)
+const [loading, setLoading] = useState(false)
+const [error, setError] = useState("")
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault()
+  setError("")
+  setLoading(true)
+
+  try {
+    const form = e.currentTarget
+    const formData = new FormData(form)
+
+    const payload = {
+      name: String(formData.get("name") || ""),
+      email: String(formData.get("email") || ""),
+      phone: String(formData.get("phone") || ""),
+      inquiryType: String(formData.get("inquiryType") || "General Inquiry"),
+      subject: String(formData.get("subject") || ""),
+      message: String(formData.get("message") || ""),
+    }
+
+    const response = await fetch("/api/contact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+
+    const result = await response.json()
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Failed to save contact message")
+    }
+
     setSent(true)
+    form.reset()
+  } catch (err) {
+    console.error(err)
+    setError("Message save කරන්න බැරි වුණා. Please try again.")
+  } finally {
+    setLoading(false)
   }
+} 
 
   return (
     <main style={{ background: COLORS.cream, color: COLORS.text }}>
@@ -443,6 +482,7 @@ export default function Contact() {
 
                         <input
                           required
+                          name="name"
                           type="text"
                           placeholder="Enter your name"
                           className="w-full rounded-2xl px-4 py-4 text-sm outline-none"
@@ -464,6 +504,7 @@ export default function Contact() {
 
                         <input
                           required
+                          name="email"
                           type="email"
                           placeholder="Enter your email"
                           className="w-full rounded-2xl px-4 py-4 text-sm outline-none"
@@ -486,6 +527,7 @@ export default function Contact() {
                         </label>
 
                         <input
+                          name="phone"
                           type="tel"
                           placeholder="Enter phone number"
                           className="w-full rounded-2xl px-4 py-4 text-sm outline-none"
@@ -506,6 +548,7 @@ export default function Contact() {
                         </label>
 
                         <select
+                          name="inquiryType"
                           className="w-full rounded-2xl px-4 py-4 text-sm outline-none"
                           style={{
                             background: COLORS.cream,
@@ -532,6 +575,7 @@ export default function Contact() {
 
                       <input
                         required
+                        name="subject"
                         type="text"
                         placeholder="Enter subject"
                         className="w-full rounded-2xl px-4 py-4 text-sm outline-none"
@@ -553,6 +597,7 @@ export default function Contact() {
 
                       <textarea
                         required
+                        name="message"
                         placeholder="Tell us about your journey..."
                         rows={5}
                         className="w-full rounded-2xl px-4 py-4 text-sm outline-none resize-none"
@@ -563,15 +608,28 @@ export default function Contact() {
                         }}
                       />
                     </div>
-
+                        {error && (
+                         <div
+                          className="rounded-2xl p-4 text-sm font-bold"
+                          style={{
+                              background: "rgba(217,74,56,0.10)",
+                              border: "1px solid rgba(217,74,56,0.20)",
+                              color: "#D94A38",
+                         }}
+                    >
+                              {error}
+                     </div>
+                    )}
                     <button
                       type="submit"
-                      className="w-full inline-flex items-center justify-center gap-3 py-4 rounded-full text-white text-sm font-black tracking-widest uppercase transition hover:-translate-y-1"
+                      disabled={loading}
+                      className="w-full inline-flex items-center justify-center gap-3 py-4 rounded-full text-white text-sm font-black tracking-widest uppercase transition hover:-translate-y-1 disabled:opacity-60 disabled:cursor-not-allowed"
                       style={{
                         background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
                       }}
                     >
                       Send Message
+                      {loading ? "Sending Message..." : "Send Message"}
                       <Send className="w-4 h-4" />
                     </button>
 
@@ -685,6 +743,6 @@ export default function Contact() {
           </a>
         </div>
       </section>
-    </main>
+    </main> 
   )
 }

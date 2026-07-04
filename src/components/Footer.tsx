@@ -1,3 +1,6 @@
+"use client"
+
+import { useState, type FormEvent } from "react"
 import Link from "next/link"
 import { Mail, MapPin, Palmtree, Phone, Send } from "lucide-react"
 import {
@@ -48,6 +51,42 @@ const socialLinks = [
 ]
 
 export default function Footer() {
+  const [email, setEmail] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState("")
+  const [error, setError] = useState("")
+
+  const handleNewsletterSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setMessage("")
+    setError("")
+    setLoading(true)
+
+    try {
+      const response = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      })
+
+      const result = await response.json()
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Failed to subscribe")
+      }
+
+      setMessage("Subscribed successfully!")
+      setEmail("")
+    } catch (err) {
+      console.error(err)
+      setError("Subscribe කරන්න බැරි වුණා. Please try again.")
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <footer
       className="relative overflow-hidden text-white"
@@ -240,50 +279,51 @@ export default function Footer() {
             </p>
 
             {/* Glassmorphism newsletter input */}
-            <div
-              className="group flex rounded-full overflow-hidden mb-6 transition-all duration-300"
-              style={{
-                background: "rgba(255,255,255,0.08)",
-                border: `1px solid ${COLORS.borderLight}`,
-                backdropFilter: "blur(14px)",
-                WebkitBackdropFilter: "blur(14px)",
-                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
-              }}
-            >
-              <input
-                type="email"
-                placeholder="Your email"
-                className="w-full min-w-0 px-4 py-3 bg-transparent outline-none text-sm placeholder:text-white/45 text-white"
-              />
+            
+<form
+  onSubmit={handleNewsletterSubmit}
+  className="group flex rounded-full overflow-hidden mb-3 transition-all duration-300"
+  style={{
+    background: "rgba(255,255,255,0.08)",
+    border: `1px solid ${COLORS.borderLight}`,
+    backdropFilter: "blur(14px)",
+    WebkitBackdropFilter: "blur(14px)",
+    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
+  }}
+>
+  <input
+    required
+    type="email"
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+    placeholder="Your email"
+    className="w-full min-w-0 px-4 py-3 bg-transparent outline-none text-sm placeholder:text-white/45 text-white"
+  />
 
-              <button
-                aria-label="Subscribe"
-                className="w-12 flex items-center justify-center shrink-0 transition-all duration-300 group-hover:shadow-[0_0_24px_rgba(216,154,61,0.45)]"
-                style={{
-                  background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
-                }}
-              >
-                <Send className="w-4 h-4 text-white transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </button>
-            </div>
+  <button
+    type="submit"
+    disabled={loading}
+    aria-label="Subscribe"
+    className="w-12 flex items-center justify-center shrink-0 transition-all duration-300 group-hover:shadow-[0_0_24px_rgba(216,154,61,0.45)] disabled:opacity-60 disabled:cursor-not-allowed"
+    style={{
+      background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
+    }}
+  >
+    <Send className="w-4 h-4 text-white transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+  </button>
+</form>
 
-            {/* Follow Us title */}
-            <div className="flex items-center gap-3 mb-4">
-              <div
-                className="h-px flex-1"
-                style={{ background: "rgba(216,154,61,0.35)" }}
-              />
-              <p
-                className="text-xs font-black tracking-[0.2em] uppercase"
-                style={{ color: COLORS.gold }}
-              >
-                Follow Us
-              </p>
-              <div
-                className="h-px flex-1"
-                style={{ background: "rgba(216,154,61,0.35)" }}
-              />
-            </div>
+{message && (
+  <p className="text-xs font-bold mb-4" style={{ color: COLORS.gold }}>
+    {message}
+  </p>
+)}
+
+{error && (
+  <p className="text-xs font-bold mb-4" style={{ color: "#ff8a7a" }}>
+    {error}
+  </p>
+)}
 
             {/* Premium social icons */}
             <div className="flex gap-3">

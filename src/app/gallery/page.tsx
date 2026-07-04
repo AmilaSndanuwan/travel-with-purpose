@@ -244,7 +244,7 @@ export default function Gallery() {
                   }}
                 >
                   Book Journey
-                </a>
+                </a>     
               </div>
             </div>
           </Reveal>

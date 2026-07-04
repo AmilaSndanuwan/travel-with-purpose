@@ -107,10 +107,12 @@ const trustItems = [
 ]
 
 export default function Booking() {
-  const [persons, setPersons] = useState(1)
-  const [selectedProgramTitle, setSelectedProgramTitle] = useState(programs[0].title)
-  const [submitted, setSubmitted] = useState(false)
-  const [wishlist, setWishlist] = useState(false)
+const [persons, setPersons] = useState(1)
+const [selectedProgramTitle, setSelectedProgramTitle] = useState(programs[0].title)
+const [submitted, setSubmitted] = useState(false)
+const [wishlist, setWishlist] = useState(false)
+const [loading, setLoading] = useState(false)
+const [error, setError] = useState("")
 
   const selectedProgram =
     programs.find((program) => program.title === selectedProgramTitle) ?? programs[0]
@@ -118,10 +120,58 @@ export default function Booking() {
   const pricePerPerson = selectedProgram.price
   const total = pricePerPerson * persons
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault()
+  setError("")
+  setLoading(true)
+
+  try {
+    const form = e.currentTarget
+    const formData = new FormData(form)
+
+    const payload = {
+      programName: selectedProgram.title,
+      bookingDate: String(formData.get("bookingDate") || ""),
+      participants: persons,
+      name: String(formData.get("name") || ""),
+      email: String(formData.get("email") || ""),
+      phone: String(formData.get("phone") || ""),
+      totalPrice: total,
+    }
+
+    const response = await fetch("/api/bookings", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+
+    const text = await response.text()
+
+    let result
+    try {
+      result = JSON.parse(text)
+    } catch {
+      console.error("API returned non-JSON response:", text)
+      throw new Error("API returned an HTML/error page instead of JSON")
+    }
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Failed to save booking")
+    }
+
     setSubmitted(true)
+    form.reset()
+    setPersons(1)
+    setSelectedProgramTitle(programs[0].title)
+  } catch (err) {
+    console.error(err)
+    setError("Booking request save කරන්න බැරි වුණා. Please try again.")
+  } finally {
+    setLoading(false)
   }
+}
 
   return (
     <main style={{ background: COLORS.cream, color: COLORS.text }}>
@@ -516,6 +566,7 @@ export default function Booking() {
 
                           <input
                             required
+                            name="bookingDate"
                             type="date"
                             className="w-full rounded-2xl px-4 py-4 text-sm outline-none"
                             style={{
@@ -564,6 +615,7 @@ export default function Booking() {
 
                           <input
                             required
+                            name="name"
                             type="text"
                             placeholder="Enter your name"
                             className="w-full rounded-2xl px-4 py-4 text-sm outline-none"
@@ -590,6 +642,7 @@ export default function Booking() {
                             />
                             <input
                               required
+                              name="email"
                               type="email"
                               placeholder="Enter your email"
                               className="w-full rounded-2xl pl-11 pr-4 py-4 text-sm outline-none"
@@ -618,6 +671,7 @@ export default function Booking() {
                           />
                           <input
                             required
+                            name="phone"
                             type="tel"
                             placeholder="Enter your phone number"
                             className="w-full rounded-2xl pl-11 pr-4 py-4 text-sm outline-none"
@@ -661,14 +715,30 @@ export default function Booking() {
                         </div>
                       </div>
 
+                      {error && (
+                        <div
+                            className="rounded-2xl p-4 text-sm font-bold"
+                            style={{
+                            background: "rgba(217,74,56,0.10)",
+                            border: "1px solid rgba(217,74,56,0.20)",
+                            color: "#D94A38",
+                            }}
+                        >
+                      {error}
+                    </div>
+                      )}
+
+
                       <button
                         type="submit"
+                        disabled={loading}
                         className="w-full inline-flex items-center justify-center gap-3 py-4 rounded-full text-white text-sm font-black tracking-widest uppercase transition hover:-translate-y-1"
                         style={{
                           background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
                         }}
                       >
-                        Continue to Booking
+                        
+                        {loading ? "Saving Booking..." : "Continue to Booking"}
                         <CreditCard className="w-4 h-4" />
                       </button>
 
