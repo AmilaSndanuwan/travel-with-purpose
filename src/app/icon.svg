@@ -1,0 +1,8 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="120" fill="#2A1E16"/>
+  <circle cx="256" cy="256" r="170" fill="#D89A3D" opacity="0.18"/>
+  <path d="M256 92C202 158 174 215 174 263C174 319 211 358 256 358C301 358 338 319 338 263C338 215 310 158 256 92Z" fill="#D89A3D"/>
+  <path d="M256 142C224 190 209 229 209 263C209 294 229 316 256 316C283 316 303 294 303 263C303 229 288 190 256 142Z" fill="#2A1E16" opacity="0.9"/>
+  <path d="M151 392C205 368 307 368 361 392" stroke="#D89A3D" stroke-width="22" stroke-linecap="round"/>
+  <text x="256" y="443" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" font-weight="800" letter-spacing="4" fill="#FFFDF8">TWP</text>
+</svg>

@@ -1,12 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import Reveal from "../../components/Reveal"
 import {
-  ArrowRight,
   BadgeCheck,
   CalendarDays,
-  CheckCircle2,
   Clock,
   CreditCard,
   Heart,
@@ -33,60 +31,23 @@ const COLORS = {
   border: "rgba(58,45,36,0.12)",
 }
 
-const programs = [
-  {
-    title: "7-Day Silent Retreat",
-    location: "Kandy, Sri Lanka",
-    duration: "7 Days",
-    impact: "High Impact",
-    groupSize: "10 - 15",
-    price: 450,
-    rating: 4.9,
-    image:
-      "https://images.unsplash.com/photo-1545389336-cf090694435e?w=1000",
-    desc: "A peaceful meditation retreat designed for inner clarity, temple connection and mindful rest.",
-    includes: ["Accommodation", "Daily meals", "Guided sessions", "Certificate"],
-  },
-  {
-    title: "Surf & Yoga Package",
-    location: "Weligama, Sri Lanka",
-    duration: "7 Days",
-    impact: "Wellness Impact",
-    groupSize: "8 - 12",
-    price: 550,
-    rating: 4.8,
-    image:
-      "https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=1000",
-    desc: "A balanced coastal journey with surfing, yoga, healthy meals and beachside relaxation.",
-    includes: ["Yoga classes", "Surf lessons", "Beach stay", "Daily meals"],
-  },
-  {
-    title: "Organic Farming Program",
-    location: "Haputale, Sri Lanka",
-    duration: "5 Days",
-    impact: "Community Impact",
-    groupSize: "6 - 10",
-    price: 320,
-    rating: 4.7,
-    image:
-      "https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=1000",
-    desc: "Learn organic farming, tea culture and sustainable village living in Sri Lanka.",
-    includes: ["Farm work", "Village stay", "Local meals", "Guide support"],
-  },
-  {
-    title: "Ayurveda Healing Retreat",
-    location: "Bentota, Sri Lanka",
-    duration: "5 Days",
-    impact: "Wellness Impact",
-    groupSize: "5 - 10",
-    price: 480,
-    rating: 4.8,
-    image:
-      "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=1000",
-    desc: "Traditional Sri Lankan Ayurveda treatments with nature healing, rest and wellness care.",
-    includes: ["Ayurveda care", "Wellness meals", "Consultation", "Relaxation"],
-  },
-]
+type Program = {
+  id: number
+  title: string
+  slug: string
+  location: string
+  description: string
+  duration: string
+  groupSize: string
+  impact: string
+  rating: string
+  price: number
+  imageUrl: string
+  tags: string
+  isActive: boolean
+  createdAt: string
+  updatedAt: string
+}
 
 const trustItems = [
   {
@@ -106,72 +67,129 @@ const trustItems = [
   },
 ]
 
+const splitTags = (tags: string) => {
+  return tags
+    .split(",")
+    .map((tag) => tag.trim())
+    .filter(Boolean)
+}
+
 export default function Booking() {
-const [persons, setPersons] = useState(1)
-const [selectedProgramTitle, setSelectedProgramTitle] = useState(programs[0].title)
-const [submitted, setSubmitted] = useState(false)
-const [wishlist, setWishlist] = useState(false)
-const [loading, setLoading] = useState(false)
-const [error, setError] = useState("")
+  const [programs, setPrograms] = useState<Program[]>([])
+  const [selectedProgramSlug, setSelectedProgramSlug] = useState("")
+  const [persons, setPersons] = useState(1)
+  const [submitted, setSubmitted] = useState(false)
+  const [wishlist, setWishlist] = useState(false)
 
-  const selectedProgram =
-    programs.find((program) => program.title === selectedProgramTitle) ?? programs[0]
+  const [programLoading, setProgramLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState("")
 
-  const pricePerPerson = selectedProgram.price
+  useEffect(() => {
+    const loadPrograms = async () => {
+      setProgramLoading(true)
+      setError("")
+
+      try {
+        const response = await fetch("/api/programs", {
+          cache: "no-store",
+        })
+
+        const result = await response.json()
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || "Failed to load programs")
+        }
+
+        const data: Program[] = result.data || []
+        setPrograms(data)
+
+        const params = new URLSearchParams(window.location.search)
+        const programSlugFromUrl = params.get("program")
+
+        const matchedProgram = data.find(
+          (program) => program.slug === programSlugFromUrl
+        )
+
+        setSelectedProgramSlug(matchedProgram?.slug || data[0]?.slug || "")
+      } catch (err) {
+        console.error(err)
+        setError("Programs load කරන්න බැරි වුණා. Please try again.")
+      } finally {
+        setProgramLoading(false)
+      }
+    }
+
+    loadPrograms()
+  }, [])
+
+  const selectedProgram = useMemo(() => {
+    return (
+      programs.find((program) => program.slug === selectedProgramSlug) ||
+      programs[0] ||
+      null
+    )
+  }, [programs, selectedProgramSlug])
+
+  const pricePerPerson = selectedProgram?.price || 0
   const total = pricePerPerson * persons
 
- const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault()
-  setError("")
-  setLoading(true)
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setError("")
+    setSaving(true)
 
-  try {
-    const form = e.currentTarget
-    const formData = new FormData(form)
-
-    const payload = {
-      programName: selectedProgram.title,
-      bookingDate: String(formData.get("bookingDate") || ""),
-      participants: persons,
-      name: String(formData.get("name") || ""),
-      email: String(formData.get("email") || ""),
-      phone: String(formData.get("phone") || ""),
-      totalPrice: total,
-    }
-
-    const response = await fetch("/api/bookings", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    })
-
-    const text = await response.text()
-
-    let result
     try {
-      result = JSON.parse(text)
-    } catch {
-      console.error("API returned non-JSON response:", text)
-      throw new Error("API returned an HTML/error page instead of JSON")
-    }
+      if (!selectedProgram) {
+        throw new Error("No program selected")
+      }
 
-    if (!response.ok || !result.success) {
-      throw new Error(result.message || "Failed to save booking")
-    }
+      const form = e.currentTarget
+      const formData = new FormData(form)
 
-    setSubmitted(true)
-    form.reset()
-    setPersons(1)
-    setSelectedProgramTitle(programs[0].title)
-  } catch (err) {
-    console.error(err)
-    setError("Booking request save කරන්න බැරි වුණා. Please try again.")
-  } finally {
-    setLoading(false)
+      const payload = {
+        programName: selectedProgram.title,
+        bookingDate: String(formData.get("bookingDate") || ""),
+        participants: persons,
+        name: String(formData.get("name") || ""),
+        email: String(formData.get("email") || ""),
+        phone: String(formData.get("phone") || ""),
+        totalPrice: total,
+      }
+
+      const response = await fetch("/api/bookings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      })
+
+      const text = await response.text()
+
+      let result
+      try {
+        result = JSON.parse(text)
+      } catch {
+        console.error("API returned non-JSON response:", text)
+        throw new Error("API returned an HTML/error page instead of JSON")
+      }
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Failed to save booking")
+      }
+
+      setSubmitted(true)
+      form.reset()
+      setPersons(1)
+      setSelectedProgramSlug(programs[0]?.slug || "")
+    } catch (err) {
+      console.error(err)
+      setError("Booking request save කරන්න බැරි වුණා. Please try again.")
+    } finally {
+      setSaving(false)
+    }
   }
-}
 
   return (
     <main style={{ background: COLORS.cream, color: COLORS.text }}>
@@ -218,6 +236,7 @@ const [error, setError] = useState("")
                   className="w-2 h-2 rounded-full"
                   style={{ background: COLORS.gold }}
                 />
+
                 <p
                   className="text-xs font-black tracking-[0.22em] uppercase"
                   style={{ color: COLORS.gold }}
@@ -268,7 +287,7 @@ const [error, setError] = useState("")
         </div>
       </section>
 
-      {/* Booking Area */}
+            {/* Booking Area */}
       <section
         id="booking-form"
         className="py-24 px-6"
@@ -312,160 +331,225 @@ const [error, setError] = useState("")
                   boxShadow: "0 25px 70px rgba(58,45,36,0.10)",
                 }}
               >
-                <div className="relative h-[360px] overflow-hidden">
-                  <img
-                    src={selectedProgram.image}
-                    alt={selectedProgram.title}
-                    className="w-full h-full object-cover"
-                  />
+                {programLoading ? (
+                  <div className="p-10 text-center">
+                    <Sparkles
+                      className="w-12 h-12 mx-auto mb-4 animate-pulse"
+                      style={{ color: COLORS.gold }}
+                    />
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
-
-                  <div className="absolute top-5 left-5">
-                    <span
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest text-white"
-                      style={{
-                        background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
-                      }}
-                    >
-                      <Sparkles className="w-4 h-4" />
-                      Featured Experience
-                    </span>
-                  </div>
-
-                  <div className="absolute bottom-6 left-6 right-6 text-white">
-                    <h3 className="text-3xl font-black leading-tight">
-                      {selectedProgram.title}
+                    <h3 className="text-2xl font-black mb-2">
+                      Loading Programs...
                     </h3>
 
-                    <p className="text-white/75 text-sm flex items-center gap-2 mt-2">
-                      <MapPin className="w-4 h-4" />
-                      {selectedProgram.location}
+                    <p style={{ color: COLORS.muted }}>
+                      Please wait while we load the latest CMS programs.
                     </p>
                   </div>
-                </div>
+                ) : !selectedProgram ? (
+                  <div className="p-10 text-center">
+                    <Sparkles
+                      className="w-12 h-12 mx-auto mb-4"
+                      style={{ color: COLORS.gold }}
+                    />
 
-                <div className="p-6">
-                  <p
-                    className="leading-relaxed mb-6"
-                    style={{ color: COLORS.muted }}
-                  >
-                    {selectedProgram.desc}
-                  </p>
+                    <h3 className="text-2xl font-black mb-2">
+                      No Programs Available
+                    </h3>
 
-                  <div className="grid grid-cols-2 gap-4 mb-6">
-                    <div
-                      className="rounded-2xl p-4"
-                      style={{
-                        background: COLORS.cream,
-                        border: `1px solid ${COLORS.border}`,
-                      }}
-                    >
-                      <Clock className="w-5 h-5 mb-2" style={{ color: COLORS.gold }} />
-                      <p className="text-xs font-black uppercase tracking-widest" style={{ color: COLORS.muted }}>
-                        Duration
-                      </p>
-                      <p className="font-black" style={{ color: COLORS.text }}>
-                        {selectedProgram.duration}
-                      </p>
-                    </div>
-
-                    <div
-                      className="rounded-2xl p-4"
-                      style={{
-                        background: COLORS.cream,
-                        border: `1px solid ${COLORS.border}`,
-                      }}
-                    >
-                      <Users className="w-5 h-5 mb-2" style={{ color: COLORS.gold }} />
-                      <p className="text-xs font-black uppercase tracking-widest" style={{ color: COLORS.muted }}>
-                        Group Size
-                      </p>
-                      <p className="font-black" style={{ color: COLORS.text }}>
-                        {selectedProgram.groupSize}
-                      </p>
-                    </div>
-
-                    <div
-                      className="rounded-2xl p-4"
-                      style={{
-                        background: COLORS.cream,
-                        border: `1px solid ${COLORS.border}`,
-                      }}
-                    >
-                      <Leaf className="w-5 h-5 mb-2" style={{ color: COLORS.gold }} />
-                      <p className="text-xs font-black uppercase tracking-widest" style={{ color: COLORS.muted }}>
-                        Impact
-                      </p>
-                      <p className="font-black" style={{ color: COLORS.text }}>
-                        {selectedProgram.impact}
-                      </p>
-                    </div>
-
-                    <div
-                      className="rounded-2xl p-4"
-                      style={{
-                        background: COLORS.cream,
-                        border: `1px solid ${COLORS.border}`,
-                      }}
-                    >
-                      <Star
-                        className="w-5 h-5 mb-2"
-                        fill={COLORS.gold}
-                        style={{ color: COLORS.gold }}
-                      />
-                      <p className="text-xs font-black uppercase tracking-widest" style={{ color: COLORS.muted }}>
-                        Rating
-                      </p>
-                      <p className="font-black" style={{ color: COLORS.text }}>
-                        {selectedProgram.rating}
-                      </p>
-                    </div>
+                    <p style={{ color: COLORS.muted }}>
+                      Please add active programs from the admin CMS first.
+                    </p>
                   </div>
+                ) : (
+                  <>
+                    <div className="relative h-[360px] overflow-hidden">
+                      <img
+                        src={selectedProgram.imageUrl}
+                        alt={selectedProgram.title}
+                        className="w-full h-full object-cover"
+                      />
 
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {selectedProgram.includes.map((item) => (
-                      <span
-                        key={item}
-                        className="px-3 py-2 rounded-full text-xs font-black"
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
+
+                      <div className="absolute top-5 left-5">
+                        <span
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest text-white"
+                          style={{
+                            background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
+                          }}
+                        >
+                          <Sparkles className="w-4 h-4" />
+                          Featured Experience
+                        </span>
+                      </div>
+
+                      <div className="absolute bottom-6 left-6 right-6 text-white">
+                        <h3 className="text-3xl font-black leading-tight">
+                          {selectedProgram.title}
+                        </h3>
+
+                        <p className="text-white/75 text-sm flex items-center gap-2 mt-2">
+                          <MapPin className="w-4 h-4" />
+                          {selectedProgram.location}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="p-6">
+                      <p
+                        className="leading-relaxed mb-6"
+                        style={{ color: COLORS.muted }}
+                      >
+                        {selectedProgram.description}
+                      </p>
+
+                      <div className="grid grid-cols-2 gap-4 mb-6">
+                        <div
+                          className="rounded-2xl p-4"
+                          style={{
+                            background: COLORS.cream,
+                            border: `1px solid ${COLORS.border}`,
+                          }}
+                        >
+                          <Clock
+                            className="w-5 h-5 mb-2"
+                            style={{ color: COLORS.gold }}
+                          />
+
+                          <p
+                            className="text-xs font-black uppercase tracking-widest"
+                            style={{ color: COLORS.muted }}
+                          >
+                            Duration
+                          </p>
+
+                          <p className="font-black" style={{ color: COLORS.text }}>
+                            {selectedProgram.duration}
+                          </p>
+                        </div>
+
+                        <div
+                          className="rounded-2xl p-4"
+                          style={{
+                            background: COLORS.cream,
+                            border: `1px solid ${COLORS.border}`,
+                          }}
+                        >
+                          <Users
+                            className="w-5 h-5 mb-2"
+                            style={{ color: COLORS.gold }}
+                          />
+
+                          <p
+                            className="text-xs font-black uppercase tracking-widest"
+                            style={{ color: COLORS.muted }}
+                          >
+                            Group Size
+                          </p>
+
+                          <p className="font-black" style={{ color: COLORS.text }}>
+                            {selectedProgram.groupSize}
+                          </p>
+                        </div>
+                                                <div
+                          className="rounded-2xl p-4"
+                          style={{
+                            background: COLORS.cream,
+                            border: `1px solid ${COLORS.border}`,
+                          }}
+                        >
+                          <Leaf
+                            className="w-5 h-5 mb-2"
+                            style={{ color: COLORS.gold }}
+                          />
+
+                          <p
+                            className="text-xs font-black uppercase tracking-widest"
+                            style={{ color: COLORS.muted }}
+                          >
+                            Impact
+                          </p>
+
+                          <p className="font-black" style={{ color: COLORS.text }}>
+                            {selectedProgram.impact}
+                          </p>
+                        </div>
+
+                        <div
+                          className="rounded-2xl p-4"
+                          style={{
+                            background: COLORS.cream,
+                            border: `1px solid ${COLORS.border}`,
+                          }}
+                        >
+                          <Star
+                            className="w-5 h-5 mb-2"
+                            fill={COLORS.gold}
+                            style={{ color: COLORS.gold }}
+                          />
+
+                          <p
+                            className="text-xs font-black uppercase tracking-widest"
+                            style={{ color: COLORS.muted }}
+                          >
+                            Rating
+                          </p>
+
+                          <p className="font-black" style={{ color: COLORS.text }}>
+                            {selectedProgram.rating}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-wrap gap-2 mb-6">
+                        {splitTags(selectedProgram.tags).map((item) => (
+                          <span
+                            key={item}
+                            className="px-3 py-2 rounded-full text-xs font-black"
+                            style={{
+                              background: "rgba(216,154,61,0.10)",
+                              color: COLORS.bronze,
+                            }}
+                          >
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div
+                        className="rounded-[1.5rem] p-5"
                         style={{
-                          background: "rgba(216,154,61,0.10)",
-                          color: COLORS.bronze,
+                          background:
+                            "linear-gradient(135deg, rgba(216,154,61,0.14), rgba(94,111,82,0.10))",
+                          border: "1px solid rgba(216,154,61,0.20)",
                         }}
                       >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
+                        <p
+                          className="text-xs font-black tracking-widest uppercase"
+                          style={{ color: COLORS.muted }}
+                        >
+                          Starting From
+                        </p>
 
-                  <div
-                    className="rounded-[1.5rem] p-5"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, rgba(216,154,61,0.14), rgba(94,111,82,0.10))",
-                      border: "1px solid rgba(216,154,61,0.20)",
-                    }}
-                  >
-                    <p
-                      className="text-xs font-black tracking-widest uppercase"
-                      style={{ color: COLORS.muted }}
-                    >
-                      Starting From
-                    </p>
+                        <p
+                          className="text-4xl font-black mt-1"
+                          style={{ color: COLORS.bronze }}
+                        >
+                          ${pricePerPerson}
+                        </p>
 
-                    <p className="text-4xl font-black mt-1" style={{ color: COLORS.bronze }}>
-                      ${pricePerPerson}
-                    </p>
-
-                    <p className="text-sm" style={{ color: COLORS.muted }}>
-                      Per Person
-                    </p>
-                  </div>
-                </div>
+                        <p className="text-sm" style={{ color: COLORS.muted }}>
+                          Per Person
+                        </p>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             </Reveal>
 
-                        {/* Booking Form */}
+            {/* Booking Form */}
             <Reveal delay={120}>
               <div
                 className="rounded-[2rem] p-6 md:p-8"
@@ -494,13 +578,19 @@ const [error, setError] = useState("")
                       Booking Request Sent!
                     </h3>
 
-                    <p className="max-w-md mx-auto leading-relaxed" style={{ color: COLORS.muted }}>
+                    <p
+                      className="max-w-md mx-auto leading-relaxed"
+                      style={{ color: COLORS.muted }}
+                    >
                       Thank you. Our team will contact you shortly with
                       confirmation, availability and payment details.
                     </p>
 
                     <button
-                      onClick={() => setSubmitted(false)}
+                      onClick={() => {
+                        setSubmitted(false)
+                        setError("")
+                      }}
                       className="mt-8 inline-flex items-center justify-center px-6 py-3 rounded-full text-white text-xs font-black tracking-widest uppercase"
                       style={{ background: COLORS.text }}
                     >
@@ -524,7 +614,10 @@ const [error, setError] = useState("")
                         BOOKING FORM
                       </h2>
 
-                      <p className="mt-4 leading-relaxed" style={{ color: COLORS.muted }}>
+                      <p
+                        className="mt-4 leading-relaxed"
+                        style={{ color: COLORS.muted }}
+                      >
                         Select your preferred program and send your booking
                         request.
                       </p>
@@ -540,22 +633,28 @@ const [error, setError] = useState("")
                         </label>
 
                         <select
-                          value={selectedProgramTitle}
-                          onChange={(e) => setSelectedProgramTitle(e.target.value)}
-                          className="w-full rounded-2xl px-4 py-4 text-sm outline-none"
+                          value={selectedProgramSlug}
+                          onChange={(e) => setSelectedProgramSlug(e.target.value)}
+                          disabled={programLoading || programs.length === 0}
+                          className="w-full rounded-2xl px-4 py-4 text-sm outline-none disabled:opacity-60 disabled:cursor-not-allowed"
                           style={{
                             background: COLORS.cream,
                             border: `1px solid ${COLORS.border}`,
                             color: COLORS.text,
                           }}
                         >
-                          {programs.map((program) => (
-                            <option key={program.title}>{program.title}</option>
-                          ))}
+                          {programs.length === 0 ? (
+                            <option value="">No programs available</option>
+                          ) : (
+                            programs.map((program) => (
+                              <option key={program.id} value={program.slug}>
+                                {program.title}
+                              </option>
+                            ))
+                          )}
                         </select>
                       </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div>
                           <label
                             className="text-sm font-black mb-2 block"
@@ -640,6 +739,7 @@ const [error, setError] = useState("")
                               className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4"
                               style={{ color: COLORS.muted }}
                             />
+
                             <input
                               required
                               name="email"
@@ -669,6 +769,7 @@ const [error, setError] = useState("")
                             className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4"
                             style={{ color: COLORS.muted }}
                           />
+
                           <input
                             required
                             name="phone"
@@ -693,12 +794,18 @@ const [error, setError] = useState("")
                           border: "1px solid rgba(216,154,61,0.20)",
                         }}
                       >
-                        <div className="flex justify-between mb-3" style={{ color: COLORS.muted }}>
+                        <div
+                          className="flex justify-between mb-3"
+                          style={{ color: COLORS.muted }}
+                        >
                           <p>Price Per Person</p>
                           <p>${pricePerPerson}</p>
                         </div>
 
-                        <div className="flex justify-between mb-3" style={{ color: COLORS.muted }}>
+                        <div
+                          className="flex justify-between mb-3"
+                          style={{ color: COLORS.muted }}
+                        >
                           <p>Participants</p>
                           <p>{persons}</p>
                         </div>
@@ -717,28 +824,26 @@ const [error, setError] = useState("")
 
                       {error && (
                         <div
-                            className="rounded-2xl p-4 text-sm font-bold"
-                            style={{
+                          className="rounded-2xl p-4 text-sm font-bold"
+                          style={{
                             background: "rgba(217,74,56,0.10)",
                             border: "1px solid rgba(217,74,56,0.20)",
                             color: "#D94A38",
-                            }}
+                          }}
                         >
-                      {error}
-                    </div>
+                          {error}
+                        </div>
                       )}
-
 
                       <button
                         type="submit"
-                        disabled={loading}
-                        className="w-full inline-flex items-center justify-center gap-3 py-4 rounded-full text-white text-sm font-black tracking-widest uppercase transition hover:-translate-y-1"
+                        disabled={saving || programLoading || !selectedProgram}
+                        className="w-full inline-flex items-center justify-center gap-3 py-4 rounded-full text-white text-sm font-black tracking-widest uppercase transition hover:-translate-y-1 disabled:opacity-60 disabled:cursor-not-allowed"
                         style={{
                           background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
                         }}
                       >
-                        
-                        {loading ? "Saving Booking..." : "Continue to Booking"}
+                        {saving ? "Saving Booking..." : "Continue to Booking"}
                         <CreditCard className="w-4 h-4" />
                       </button>
 
@@ -795,11 +900,17 @@ const [error, setError] = useState("")
                     <Icon className="w-7 h-7" />
                   </div>
 
-                  <h3 className="font-black text-lg mb-2" style={{ color: COLORS.text }}>
+                  <h3
+                    className="font-black text-lg mb-2"
+                    style={{ color: COLORS.text }}
+                  >
                     {item.title}
                   </h3>
 
-                  <p className="text-sm leading-relaxed" style={{ color: COLORS.muted }}>
+                  <p
+                    className="text-sm leading-relaxed"
+                    style={{ color: COLORS.muted }}
+                  >
                     {item.desc}
                   </p>
                 </div>

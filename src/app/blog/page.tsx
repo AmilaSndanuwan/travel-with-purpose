@@ -1,15 +1,17 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import Reveal from "../../components/Reveal"
 import {
   ArrowRight,
   BookOpen,
   CalendarDays,
   Camera,
+  Frown,
   HeartHandshake,
   Leaf,
   Newspaper,
+  RefreshCcw,
   Search,
   Sparkles,
   Tag,
@@ -28,138 +30,116 @@ const COLORS = {
   border: "rgba(58,45,36,0.12)",
 }
 
-const blogs = [
-  {
-    id: 1,
-    category: "Travel Stories",
-    title: "10 Hidden Places You Must Visit in Sri Lanka",
-    description:
-      "Discover the most beautiful hidden gems across the island, from misty mountains to quiet coastal escapes.",
-    date: "May 10, 2024",
-    author: "Travel Team",
-    readTime: "6 min read",
-    image:
-      "https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=900",
-  },
-  {
-    id: 2,
-    category: "Meditation",
-    title: "How Meditation Retreats Can Transform Your Mind",
-    description:
-      "A personal journey through silence, mindfulness, temple spaces and peaceful reflection.",
-    date: "May 5, 2024",
-    author: "Wellness Guide",
-    readTime: "5 min read",
-    image:
-      "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=900",
-  },
-  {
-    id: 3,
-    category: "Volunteer Stories",
-    title: "Volunteer Abroad: Stories That Inspire",
-    description:
-      "Real stories from volunteers who supported communities and discovered deeper meaning through travel.",
-    date: "Apr 28, 2024",
-    author: "Impact Team",
-    readTime: "7 min read",
-    image:
-      "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=900",
-  },
-  {
-    id: 4,
-    category: "Sri Lanka Guide",
-    title: "A Complete Guide to Ayurveda in Sri Lanka",
-    description:
-      "Everything you need to know about traditional Sri Lankan healing, herbal care and wellness retreats.",
-    date: "Apr 20, 2024",
-    author: "Healing Team",
-    readTime: "8 min read",
-    image:
-      "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=900",
-  },
-  {
-    id: 5,
-    category: "Sustainable Travel",
-    title: "Why Sustainable Travel Matters More Than Ever",
-    description:
-      "How responsible tourism can support communities, protect nature and preserve local culture.",
-    date: "Apr 15, 2024",
-    author: "Eco Travel Team",
-    readTime: "6 min read",
-    image:
-      "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=900",
-  },
-  {
-    id: 6,
-    category: "Sri Lanka Guide",
-    title: "Best Time to Visit Sri Lanka",
-    description:
-      "A month-by-month guide to planning your Sri Lanka journey based on weather, regions and activities.",
-    date: "Apr 10, 2024",
-    author: "Travel Team",
-    readTime: "5 min read",
-    image:
-      "https://images.unsplash.com/photo-1586016413664-864c0dd76f53?w=900",
-  },
-  {
-    id: 7,
-    category: "Culture",
-    title: "Village Life Experiences That Connect You With Sri Lanka",
-    description:
-      "Explore food, traditions, crafts, family hospitality and local stories through village experiences.",
-    date: "Apr 2, 2024",
-    author: "Culture Team",
-    readTime: "6 min read",
-    image:
-      "https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=900",
-  },
-  {
-    id: 8,
-    category: "Meditation",
-    title: "What To Expect From a Temple Stay Program",
-    description:
-      "A simple guide for travelers joining Buddhist temple stays, mindfulness programs and silent retreats.",
-    date: "Mar 26, 2024",
-    author: "Spiritual Guide",
-    readTime: "4 min read",
-    image:
-      "https://images.unsplash.com/photo-1545389336-cf090694435e?w=900",
-  },
-]
+type BlogPost = {
+  id: number
+  title: string
+  slug: string
+  category: string
+  excerpt: string
+  content: string
+  author: string
+  readTime: string
+  imageUrl: string
+  isActive: boolean
+  createdAt: string
+  updatedAt: string
+}
 
-const categories = [
-  { name: "All", icon: Newspaper },
-  { name: "Travel Stories", icon: Camera },
-  { name: "Meditation", icon: Sparkles },
-  { name: "Culture", icon: BookOpen },
-  { name: "Volunteer Stories", icon: HeartHandshake },
-  { name: "Sri Lanka Guide", icon: Tag },
-  { name: "Sustainable Travel", icon: Leaf },
-]
+const formatDate = (dateValue: string) => {
+  const date = new Date(dateValue)
+
+  if (Number.isNaN(date.getTime())) {
+    return "Latest"
+  }
+
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  })
+}
+
+const getCategoryIcon = (category: string) => {
+  const value = category.toLowerCase()
+
+  if (value.includes("travel")) return Camera
+  if (value.includes("meditation")) return Sparkles
+  if (value.includes("culture")) return BookOpen
+  if (value.includes("volunteer")) return HeartHandshake
+  if (value.includes("guide")) return Tag
+  if (value.includes("sustainable")) return Leaf
+
+  return Newspaper
+}
 
 export default function Blog() {
+  const [posts, setPosts] = useState<BlogPost[]>([])
   const [selected, setSelected] = useState("All")
   const [search, setSearch] = useState("")
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+
+  const loadPosts = async () => {
+    setLoading(true)
+    setError("")
+
+    try {
+      const response = await fetch("/api/blog", {
+        cache: "no-store",
+      })
+
+      const result = await response.json()
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Failed to load blog posts")
+      }
+
+      setPosts(result.data || [])
+    } catch (err) {
+      console.error(err)
+      setError("Blog posts load කරන්න බැරි වුණා. Please try again.")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    loadPosts()
+  }, [])
+
+  const categories = useMemo(() => {
+    const uniqueCategories = Array.from(
+      new Set(posts.map((post) => post.category).filter(Boolean))
+    )
+
+    return ["All", ...uniqueCategories]
+  }, [posts])
 
   const filtered = useMemo(() => {
-    return blogs.filter((blog) => {
-      const categoryMatch = selected === "All" || blog.category === selected
+    return posts.filter((post) => {
+      const categoryMatch = selected === "All" || post.category === selected
 
-      const searchMatch =
-        blog.title.toLowerCase().includes(search.toLowerCase()) ||
-        blog.description.toLowerCase().includes(search.toLowerCase()) ||
-        blog.category.toLowerCase().includes(search.toLowerCase())
+      const searchText = `
+        ${post.title}
+        ${post.category}
+        ${post.excerpt}
+        ${post.content}
+        ${post.author}
+      `.toLowerCase()
+
+      const searchMatch = searchText.includes(search.toLowerCase())
 
       return categoryMatch && searchMatch
     })
-  }, [selected, search])
+  }, [posts, selected, search])
 
-  const featuredBlog = filtered[0] ?? blogs[0]
+  const featuredBlog = filtered[0] || null
   const otherBlogs = filtered.slice(1)
 
   return (
     <main style={{ background: COLORS.cream, color: COLORS.text }}>
-      {/* Hero */}
+
+            {/* Hero */}
       <section className="relative min-h-[72vh] flex items-center overflow-hidden px-6 pt-28 pb-20">
         <div
           className="absolute inset-0"
@@ -202,6 +182,7 @@ export default function Blog() {
                   className="w-2 h-2 rounded-full"
                   style={{ background: COLORS.gold }}
                 />
+
                 <p
                   className="text-xs font-black tracking-[0.22em] uppercase"
                   style={{ color: COLORS.gold }}
@@ -292,14 +273,14 @@ export default function Blog() {
             </div>
 
             <div className="flex flex-wrap gap-3">
-              {categories.map((cat) => {
-                const Icon = cat.icon
-                const active = selected === cat.name
+              {categories.map((category) => {
+                const Icon = category === "All" ? Newspaper : getCategoryIcon(category)
+                const active = selected === category
 
                 return (
                   <button
-                    key={cat.name}
-                    onClick={() => setSelected(cat.name)}
+                    key={category}
+                    onClick={() => setSelected(category)}
                     className="inline-flex items-center gap-2 px-4 py-3 rounded-full text-xs font-black uppercase tracking-widest transition hover:-translate-y-0.5"
                     style={{
                       background: active
@@ -312,7 +293,7 @@ export default function Blog() {
                     }}
                   >
                     <Icon className="w-4 h-4" />
-                    {cat.name}
+                    {category}
                   </button>
                 )
               })}
@@ -355,7 +336,64 @@ export default function Blog() {
             </div>
           </Reveal>
 
-          {filtered.length === 0 ? (
+          {loading ? (
+            <div
+              className="text-center py-24 rounded-[2rem]"
+              style={{
+                background: COLORS.softCream,
+                border: `1px solid ${COLORS.border}`,
+              }}
+            >
+              <Sparkles
+                className="mx-auto mb-4 h-14 w-14 animate-pulse"
+                style={{ color: COLORS.gold }}
+              />
+
+              <h3
+                className="font-black text-2xl mb-2"
+                style={{ color: COLORS.text }}
+              >
+                Loading blog posts...
+              </h3>
+
+              <p style={{ color: COLORS.muted }}>
+                Please wait while we load the latest CMS stories.
+              </p>
+            </div>
+          ) : error ? (
+            <div
+              className="text-center py-24 rounded-[2rem]"
+              style={{
+                background: COLORS.softCream,
+                border: `1px solid ${COLORS.border}`,
+              }}
+            >
+              <Frown
+                className="mx-auto mb-4 h-14 w-14"
+                style={{ color: "#D94A38" }}
+              />
+
+              <h3
+                className="font-black text-2xl mb-2"
+                style={{ color: COLORS.text }}
+              >
+                Something went wrong
+              </h3>
+
+              <p style={{ color: COLORS.muted }}>{error}</p>
+
+              <button
+                onClick={loadPosts}
+                className="mt-8 inline-flex items-center justify-center gap-3 px-7 py-4 rounded-full text-white text-sm font-black tracking-widest uppercase"
+                style={{
+                  background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
+                }}
+              >
+                <RefreshCcw className="w-4 h-4" />
+                Try Again
+              </button>
+            </div>
+          ) : filtered.length === 0 ? (
             <div
               className="text-center py-24 rounded-[2rem]"
               style={{
@@ -382,85 +420,87 @@ export default function Blog() {
           ) : (
             <>
               {/* Featured Blog */}
-              <Reveal>
-                <article
-                  className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] rounded-[2rem] overflow-hidden mb-8"
-                  style={{
-                    background: COLORS.softCream,
-                    border: `1px solid ${COLORS.border}`,
-                    boxShadow: "0 25px 70px rgba(58,45,36,0.10)",
-                  }}
-                >
-                  <div className="relative min-h-[420px] overflow-hidden">
-                    <img
-                      src={featuredBlog.image}
-                      alt={featuredBlog.title}
-                      className="absolute inset-0 w-full h-full object-cover transition duration-700 hover:scale-105"
-                    />
+              {featuredBlog && (
+                <Reveal>
+                  <article
+                    className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] rounded-[2rem] overflow-hidden mb-8"
+                    style={{
+                      background: COLORS.softCream,
+                      border: `1px solid ${COLORS.border}`,
+                      boxShadow: "0 25px 70px rgba(58,45,36,0.10)",
+                    }}
+                  >
+                    <div className="relative min-h-[420px] overflow-hidden">
+                      <img
+                        src={featuredBlog.imageUrl}
+                        alt={featuredBlog.title}
+                        className="absolute inset-0 w-full h-full object-cover transition duration-700 hover:scale-105"
+                      />
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent lg:hidden" />
-                  </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent lg:hidden" />
+                    </div>
 
-                  <div className="p-8 md:p-10 flex flex-col justify-center">
-                    <div className="flex flex-wrap items-center gap-3 mb-5">
-                      <span
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest text-white"
-                        style={{
-                          background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
-                        }}
+                    <div className="p-8 md:p-10 flex flex-col justify-center">
+                      <div className="flex flex-wrap items-center gap-3 mb-5">
+                        <span
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest text-white"
+                          style={{
+                            background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
+                          }}
+                        >
+                          <Tag className="w-4 h-4" />
+                          {featuredBlog.category}
+                        </span>
+
+                        <span
+                          className="inline-flex items-center gap-2 text-sm"
+                          style={{ color: COLORS.muted }}
+                        >
+                          <CalendarDays className="w-4 h-4" />
+                          {formatDate(featuredBlog.createdAt)}
+                        </span>
+                      </div>
+
+                                            <h3
+                        className="text-3xl md:text-5xl font-black leading-tight"
+                        style={{ color: COLORS.text }}
                       >
-                        <Tag className="w-4 h-4" />
-                        {featuredBlog.category}
-                      </span>
+                        {featuredBlog.title}
+                      </h3>
 
-                      <span
-                        className="inline-flex items-center gap-2 text-sm"
+                      <p
+                        className="mt-5 leading-relaxed text-lg"
                         style={{ color: COLORS.muted }}
                       >
-                        <CalendarDays className="w-4 h-4" />
-                        {featuredBlog.date}
-                      </span>
+                        {featuredBlog.excerpt}
+                      </p>
+
+                      <div
+                        className="flex flex-wrap items-center gap-5 mt-7 text-sm"
+                        style={{ color: COLORS.muted }}
+                      >
+                        <span className="inline-flex items-center gap-2">
+                          <User className="w-4 h-4" />
+                          {featuredBlog.author}
+                        </span>
+
+                        <span>{featuredBlog.readTime}</span>
+                      </div>
+
+                      <a
+                        href={`/blog/${featuredBlog.slug}`}
+                        className="mt-8 inline-flex w-fit items-center gap-2 px-6 py-3 rounded-full text-white text-xs font-black tracking-widest uppercase transition hover:translate-x-1"
+                        style={{
+                          background: COLORS.text,
+                        }}
+                      >
+                        Read Article
+                        <ArrowRight className="w-4 h-4" />
+                      </a>
                     </div>
-
-                    <h3
-                      className="text-3xl md:text-5xl font-black leading-tight"
-                      style={{ color: COLORS.text }}
-                    >
-                      {featuredBlog.title}
-                    </h3>
-
-                    <p
-                      className="mt-5 leading-relaxed text-lg"
-                      style={{ color: COLORS.muted }}
-                    >
-                      {featuredBlog.description}
-                    </p>
-
-                    <div
-                      className="flex flex-wrap items-center gap-5 mt-7 text-sm"
-                      style={{ color: COLORS.muted }}
-                    >
-                      <span className="inline-flex items-center gap-2">
-                        <User className="w-4 h-4" />
-                        {featuredBlog.author}
-                      </span>
-
-                      <span>{featuredBlog.readTime}</span>
-                    </div>
-
-                    <a
-                      href="#"
-                      className="mt-8 inline-flex w-fit items-center gap-2 px-6 py-3 rounded-full text-white text-xs font-black tracking-widest uppercase transition hover:translate-x-1"
-                      style={{
-                        background: COLORS.text,
-                      }}
-                    >
-                      Read Article
-                      <ArrowRight className="w-4 h-4" />
-                    </a>
-                  </div>
-                </article>
-              </Reveal>
+                  </article>
+                </Reveal>
+              )}
 
               {/* Blog Cards */}
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7 items-stretch">
@@ -476,7 +516,7 @@ export default function Blog() {
                     >
                       <div className="relative h-64 overflow-hidden shrink-0">
                         <img
-                          src={blog.image}
+                          src={blog.imageUrl}
                           alt={blog.title}
                           className="w-full h-full object-cover transition duration-700 group-hover:scale-110"
                         />
@@ -503,7 +543,7 @@ export default function Blog() {
                           style={{ color: COLORS.muted }}
                         >
                           <CalendarDays className="w-4 h-4" />
-                          {blog.date}
+                          {formatDate(blog.createdAt)}
                         </div>
 
                         <h3
@@ -517,7 +557,7 @@ export default function Blog() {
                           className="text-sm leading-relaxed mt-3 mb-5 min-h-[66px]"
                           style={{ color: COLORS.muted }}
                         >
-                          {blog.description}
+                          {blog.excerpt}
                         </p>
 
                         <div
@@ -529,7 +569,7 @@ export default function Blog() {
                           </span>
 
                           <a
-                            href="#"
+                            href={`/blog/${blog.slug}`}
                             className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest transition group-hover:translate-x-1"
                             style={{ color: COLORS.bronze }}
                           >
@@ -547,7 +587,7 @@ export default function Blog() {
         </div>
       </section>
 
-      {/* CTA */}
+            {/* CTA */}
       <section
         className="relative py-24 px-6 text-center overflow-hidden"
         style={{

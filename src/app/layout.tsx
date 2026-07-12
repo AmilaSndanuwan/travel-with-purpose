@@ -23,34 +23,77 @@ const dancing = Dancing_Script({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://travelwithpurpose.lk"),
+
   title: {
-    default: "Travel With Purpose",
+    default: "Travel With Purpose | Meaningful Travel Experiences in Sri Lanka",
     template: "%s | Travel With Purpose",
   },
+
   description:
-    "Discover meaningful travel experiences in Sri Lanka through wellness retreats, volunteering, eco-tourism, cultural immersion and adventure journeys.",
-  formatDetection: {
-  telephone: false,
-  email: false,
-  address: false,
-},
-  
-  
-    keywords: [
-    "Sri Lanka travel",
-    "Volunteer tourism",
-    "Meditation retreats",
-    "Yoga retreats Sri Lanka",
-    "Eco tourism",
-    "Adventure travel",
-    "Cultural tourism",
+    "Discover meaningful travel experiences in Sri Lanka through wellness retreats, volunteering, eco-tourism, cultural immersion, adventure journeys and community impact programs.",
+
+  keywords: [
     "Travel With Purpose",
+    "Sri Lanka travel",
+    "Meaningful travel Sri Lanka",
+    "Volunteer tourism Sri Lanka",
+    "Wellness retreats Sri Lanka",
+    "Yoga retreats Sri Lanka",
+    "Meditation retreats Sri Lanka",
+    "Eco tourism Sri Lanka",
+    "Cultural tourism Sri Lanka",
+    "Adventure travel Sri Lanka",
+    "Community impact travel",
+    "Sustainable tourism Sri Lanka",
   ],
+
+  authors: [{ name: "Travel With Purpose" }],
+  creator: "Travel With Purpose",
+  publisher: "Travel With Purpose",
+
+  formatDetection: {
+    telephone: false,
+    email: false,
+    address: false,
+  },
+
   openGraph: {
-    title: "Travel With Purpose",
-    description: "Transform your journey through impact tourism in Sri Lanka.",
+    title: "Travel With Purpose | Meaningful Travel Experiences in Sri Lanka",
+    description:
+      "Transform your journey through wellness, culture, volunteering, nature and community impact experiences in Sri Lanka.",
+    url: "https://travelwithpurpose.lk",
+    siteName: "Travel With Purpose",
     type: "website",
     locale: "en_US",
+    countryName: "Sri Lanka",
+
+    images: [
+  {
+    url: "/opengraph-image",
+    width: 1200,
+    height: 630,
+    alt: "Travel With Purpose - Meaningful Travel Experiences in Sri Lanka",
+  },
+],
+
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Travel With Purpose | Meaningful Travel Experiences in Sri Lanka",
+    description:
+      "Explore Sri Lanka through wellness, culture, nature, volunteering and community impact journeys.",
+      images: ["/twitter-image"],
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
   },
 }
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState, useEffect} from "react"
+import { useEffect, useMemo, useState } from "react"
 import Reveal from "../../components/Reveal"
 import {
   ArrowRight,
@@ -10,7 +10,6 @@ import {
   Clock,
   Frown,
   Globe2,
-  Heart,
   Leaf,
   MapPin,
   Mountain,
@@ -36,112 +35,23 @@ const COLORS = {
   border: "rgba(58,45,36,0.12)",
 }
 
-const programs = [
-  {
-    id: 1,
-    category: "Meditation",
-    title: "Temple Stay Experience",
-    location: "Kandy, Sri Lanka",
-    days: 3,
-    price: 180,
-    impact: "High Impact",
-    rating: 4.9,
-    image:
-      "https://images.unsplash.com/photo-1545389336-cf090694435e?w=900",
-    desc: "Experience peaceful temple living, guided mindfulness and Buddhist cultural practices.",
-  },
-  {
-    id: 2,
-    category: "Adventure",
-    title: "Surf & Yoga Package",
-    location: "Weligama, Sri Lanka",
-    days: 7,
-    price: 550,
-    impact: "Medium Impact",
-    rating: 4.8,
-    image:
-      "https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=900",
-    desc: "Balance ocean adventure with daily yoga sessions and coastal wellness experiences.",
-  },
-  {
-    id: 3,
-    category: "Agriculture",
-    title: "Organic Farming Program",
-    location: "Haputale, Sri Lanka",
-    days: 5,
-    price: 320,
-    impact: "Community Impact",
-    rating: 4.7,
-    image:
-      "https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=900",
-    desc: "Learn organic farming, tea culture and sustainable village living in Sri Lanka.",
-  },
-  {
-    id: 4,
-    category: "Meditation",
-    title: "Buddhist Mindfulness Journey",
-    location: "Kandy, Sri Lanka",
-    days: 7,
-    price: 420,
-    impact: "High Impact",
-    rating: 4.9,
-    image:
-      "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=900",
-    desc: "A deeper mindfulness journey through meditation, silence and spiritual reflection.",
-  },
-  {
-    id: 5,
-    category: "Wildlife",
-    title: "Wildlife Safari Adventure",
-    location: "Udawalawe, Sri Lanka",
-    days: 1,
-    price: 120,
-    impact: "Eco Impact",
-    rating: 4.8,
-    image:
-      "https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=900",
-    desc: "Explore elephant habitats and wildlife conservation areas with local nature guides.",
-  },
-  {
-    id: 6,
-    category: "Cultural",
-    title: "Traditional Cooking Class",
-    location: "Galle, Sri Lanka",
-    days: 1,
-    price: 75,
-    impact: "Cultural Impact",
-    rating: 4.6,
-    image:
-      "https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=900",
-    desc: "Cook authentic Sri Lankan meals with local families and discover cultural food stories.",
-  },
-  {
-    id: 7,
-    category: "Volunteer",
-    title: "Community Teaching Program",
-    location: "Kandy, Sri Lanka",
-    days: 14,
-    price: 680,
-    impact: "High Impact",
-    rating: 4.9,
-    image:
-      "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=900",
-    desc: "Support local education through English practice, youth activities and cultural exchange.",
-  },
-  {
-    id: 8,
-    category: "Wellness",
-    title: "Ayurveda Healing Retreat",
-    location: "Bentota, Sri Lanka",
-    days: 5,
-    price: 480,
-    impact: "Wellness Impact",
-    rating: 4.8,
-    image:
-      "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=900",
-    desc: "Relax with Ayurveda treatments, nature healing, yoga and mindful recovery practices.",
-  },
-]
+type Program = {
+  id: number
+  title: string
+  slug: string
+  location: string
+  description: string
+  duration: string
+  groupSize: string
+  impact: string
+  rating: string
+  price: number
+  imageUrl: string
+  tags: string
+  isActive: boolean
+  createdAt: string
+  updatedAt: string
+}
 
 const categories = [
   { name: "All", icon: Globe2 },
@@ -154,61 +64,170 @@ const categories = [
   { name: "Wellness", icon: Sparkles },
 ]
 
-export default function Programs() {
-  const [category, setCategory] = useState("All")
-  useEffect(() => {
-  const applyHashCategory = () => {
-    const hash = decodeURIComponent(
-      window.location.hash.replace("#", "")
-    ).toLowerCase()
+const extractDays = (duration: string) => {
+  const match = duration.match(/\d+/)
+  return match ? Number(match[0]) : 30
+}
 
-    const categoryMap: Record<string, string> = {
-      all: "All",
-      meditation: "Meditation",
-      adventure: "Adventure",
-      culture: "Culture",
-      cultural: "Culture",
-      wildlife: "Wildlife",
-    }
+const getProgramCategory = (program: Program) => {
+  const text = `
+    ${program.title}
+    ${program.description}
+    ${program.impact}
+    ${program.tags}
+  `.toLowerCase()
 
-    const nextCategory = categoryMap[hash]
-
-    if (nextCategory) {
-      setCategory(nextCategory)
-
-      setTimeout(() => {
-        document
-          .getElementById("program-list")
-          ?.scrollIntoView({ behavior: "smooth", block: "start" })
-      }, 100)
-    }
+  if (text.includes("meditation") || text.includes("mindful") || text.includes("temple")) {
+    return "Meditation"
   }
 
-  applyHashCategory()
-  window.addEventListener("hashchange", applyHashCategory)
+  if (text.includes("adventure") || text.includes("surf") || text.includes("hike")) {
+    return "Adventure"
+  }
 
-  return () => window.removeEventListener("hashchange", applyHashCategory)
-}, [])
+  if (
+    text.includes("agriculture") ||
+    text.includes("farm") ||
+    text.includes("organic") ||
+    text.includes("tea")
+  ) {
+    return "Agriculture"
+  }
+
+  if (text.includes("wildlife") || text.includes("safari") || text.includes("elephant")) {
+    return "Wildlife"
+  }
+
+  if (
+    text.includes("cultural") ||
+    text.includes("culture") ||
+    text.includes("cooking") ||
+    text.includes("traditional")
+  ) {
+    return "Cultural"
+  }
+
+  if (text.includes("volunteer") || text.includes("teaching") || text.includes("community")) {
+    return "Volunteer"
+  }
+
+  if (
+    text.includes("wellness") ||
+    text.includes("ayurveda") ||
+    text.includes("yoga") ||
+    text.includes("healing")
+  ) {
+    return "Wellness"
+  }
+
+  return "All"
+}
+
+export default function Programs() {
+  const [programs, setPrograms] = useState<Program[]>([])
+  const [category, setCategory] = useState("All")
   const [maxPrice, setMaxPrice] = useState(1000)
   const [maxDays, setMaxDays] = useState(30)
   const [search, setSearch] = useState("")
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+
+  useEffect(() => {
+    const loadPrograms = async () => {
+      setLoading(true)
+      setError("")
+
+      try {
+        const response = await fetch("/api/programs", {
+          cache: "no-store",
+        })
+
+        const result = await response.json()
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || "Failed to load programs")
+        }
+
+        setPrograms(result.data || [])
+      } catch (err) {
+        console.error(err)
+        setError("Programs load කරන්න බැරි වුණා. Please try again.")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadPrograms()
+  }, [])
+
+  useEffect(() => {
+    const applyHashCategory = () => {
+      const hash = decodeURIComponent(
+        window.location.hash.replace("#", "")
+      ).toLowerCase()
+
+      const categoryMap: Record<string, string> = {
+        all: "All",
+        meditation: "Meditation",
+        adventure: "Adventure",
+        agriculture: "Agriculture",
+        wildlife: "Wildlife",
+        culture: "Cultural",
+        cultural: "Cultural",
+        volunteer: "Volunteer",
+        wellness: "Wellness",
+      }
+
+      const nextCategory = categoryMap[hash]
+
+      if (nextCategory) {
+        setCategory(nextCategory)
+
+        setTimeout(() => {
+          document
+            .getElementById("program-list")
+            ?.scrollIntoView({ behavior: "smooth", block: "start" })
+        }, 100)
+      }
+    }
+
+    applyHashCategory()
+    window.addEventListener("hashchange", applyHashCategory)
+
+    return () => window.removeEventListener("hashchange", applyHashCategory)
+  }, [])
 
   const filtered = useMemo(() => {
     return programs.filter((program) => {
+      const programCategory = getProgramCategory(program)
+      const categoryText = `
+        ${programCategory}
+        ${program.title}
+        ${program.description}
+        ${program.impact}
+        ${program.tags}
+      `.toLowerCase()
+
       const categoryMatch =
-        category === "All" || program.category === category
+        category === "All" || categoryText.includes(category.toLowerCase())
 
       const priceMatch = program.price <= maxPrice
-      const daysMatch = program.days <= maxDays
+      const daysMatch = extractDays(program.duration) <= maxDays
 
-      const searchMatch =
-        program.title.toLowerCase().includes(search.toLowerCase()) ||
-        program.location.toLowerCase().includes(search.toLowerCase()) ||
-        program.category.toLowerCase().includes(search.toLowerCase())
+      const searchText = `
+        ${program.title}
+        ${program.location}
+        ${program.description}
+        ${program.impact}
+        ${program.tags}
+        ${program.duration}
+      `.toLowerCase()
+
+      const searchMatch = searchText.includes(search.toLowerCase())
 
       return categoryMatch && priceMatch && daysMatch && searchMatch
     })
-  }, [category, maxPrice, maxDays, search])
+  }, [programs, category, maxPrice, maxDays, search])
 
   const resetFilters = () => {
     setCategory("All")
@@ -219,7 +238,8 @@ export default function Programs() {
 
   return (
     <main style={{ background: COLORS.cream, color: COLORS.text }}>
-      {/* Hero */}
+
+            {/* Hero */}
       <section className="relative min-h-[72vh] flex items-center overflow-hidden px-6 pt-28 pb-20">
         <div
           className="absolute inset-0"
@@ -258,56 +278,57 @@ export default function Programs() {
                   backdropFilter: "blur(14px)",
                 }}
               >
-              <span
-                className="w-2 h-2 rounded-full"
-                style={{ background: COLORS.gold }}
-              />
-              <p
-                className="text-xs font-black tracking-[0.22em] uppercase"
-                style={{ color: COLORS.gold }}
-              >
-                Purposeful travel programs
+                <span
+                  className="w-2 h-2 rounded-full"
+                  style={{ background: COLORS.gold }}
+                />
+
+                <p
+                  className="text-xs font-black tracking-[0.22em] uppercase"
+                  style={{ color: COLORS.gold }}
+                >
+                  Purposeful travel programs
+                </p>
+              </div>
+
+              <p className="script-font text-5xl" style={{ color: COLORS.gold }}>
+                Explore Our
               </p>
+
+              <h1 className="text-5xl md:text-7xl font-black tracking-widest text-white leading-none mt-2">
+                PROGRAMS
+              </h1>
+
+              <p className="text-white/78 mt-6 max-w-2xl leading-relaxed text-base md:text-lg">
+                Discover meaningful Sri Lanka travel experiences through
+                meditation, adventure, culture, volunteering, wildlife, wellness
+                and community impact.
+              </p>
+
+              <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                <a
+                  href="#program-list"
+                  className="inline-flex justify-center px-7 py-4 rounded-full text-white text-sm font-black tracking-widest uppercase transition hover:-translate-y-1"
+                  style={{
+                    background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
+                  }}
+                >
+                  Browse Programs
+                </a>
+
+                <a
+                  href="/contact"
+                  className="inline-flex justify-center px-7 py-4 rounded-full text-white text-sm font-black tracking-widest uppercase transition hover:-translate-y-1"
+                  style={{
+                    border: "1px solid rgba(255,255,255,0.32)",
+                    background: "rgba(255,255,255,0.08)",
+                    backdropFilter: "blur(14px)",
+                  }}
+                >
+                  Ask For Help
+                </a>
+              </div>
             </div>
-
-            <p className="script-font text-5xl" style={{ color: COLORS.gold }}>
-              Explore Our
-            </p>
-
-            <h1 className="text-5xl md:text-7xl font-black tracking-widest text-white leading-none mt-2">
-              PROGRAMS
-            </h1>
-
-            <p className="text-white/78 mt-6 max-w-2xl leading-relaxed text-base md:text-lg">
-              Discover meaningful Sri Lanka travel experiences through
-              meditation, adventure, culture, volunteering, wildlife, wellness
-              and community impact.
-            </p>
-
-            <div className="mt-8 flex flex-col sm:flex-row gap-4">
-              <a
-                href="#program-list"
-                className="inline-flex justify-center px-7 py-4 rounded-full text-white text-sm font-black tracking-widest uppercase transition hover:-translate-y-1"
-                style={{
-                  background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
-                }}
-              >
-                Browse Programs
-              </a>
-
-              <a
-                href="/contact"
-                className="inline-flex justify-center px-7 py-4 rounded-full text-white text-sm font-black tracking-widest uppercase transition hover:-translate-y-1"
-                style={{
-                  border: "1px solid rgba(255,255,255,0.32)",
-                  background: "rgba(255,255,255,0.08)",
-                  backdropFilter: "blur(14px)",
-                }}
-              >
-                Ask For Help
-              </a>
-            </div>
-          </div>
           </Reveal>
         </div>
       </section>
@@ -333,58 +354,58 @@ export default function Programs() {
                 backdropFilter: "blur(18px)",
               }}
             >
-  {/* Search input */}
-  <div className="relative mb-5">
-    <Search
-      className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5"
-      style={{ color: COLORS.muted }}
-    />
+              {/* Search input */}
+              <div className="relative mb-5">
+                <Search
+                  className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5"
+                  style={{ color: COLORS.muted }}
+                />
 
-    <input
-      value={search}
-      onChange={(e) => setSearch(e.target.value)}
-      placeholder="Search programs, locations, categories..."
-      className="w-full rounded-full py-4 pl-14 pr-5 outline-none text-sm"
-      style={{
-        background: COLORS.softCream,
-        border: `1px solid ${COLORS.border}`,
-        color: COLORS.text,
-        minHeight: "56px",
-      }}
-    />
-  </div>
+                <input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search programs, locations, categories..."
+                  className="w-full rounded-full py-4 pl-14 pr-5 outline-none text-sm"
+                  style={{
+                    background: COLORS.softCream,
+                    border: `1px solid ${COLORS.border}`,
+                    color: COLORS.text,
+                    minHeight: "56px",
+                  }}
+                />
+              </div>
 
-  {/* Category buttons */}
-  <div className="flex flex-wrap gap-3">
-    {categories.map((cat) => {
-      const Icon = cat.icon
-      const active = category === cat.name
+              {/* Category buttons */}
+              <div className="flex flex-wrap gap-3">
+                {categories.map((cat) => {
+                  const Icon = cat.icon
+                  const active = category === cat.name
 
-      return (
-        <button
-          key={cat.name}
-          onClick={() => setCategory(cat.name)}
-          className="inline-flex items-center gap-2 px-4 py-3 rounded-full text-xs font-black uppercase tracking-widest transition hover:-translate-y-0.5"
-          style={{
-            background: active
-              ? `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`
-              : COLORS.softCream,
-            color: active ? "white" : COLORS.text,
-            border: active
-              ? "1px solid transparent"
-              : `1px solid ${COLORS.border}`,
-          }}
-        >
-          <Icon className="w-4 h-4" />
-          {cat.name}
-        </button>
-      )
-    })}
-  </div>
-</div>
+                  return (
+                    <button
+                      key={cat.name}
+                      onClick={() => setCategory(cat.name)}
+                      className="inline-flex items-center gap-2 px-4 py-3 rounded-full text-xs font-black uppercase tracking-widest transition hover:-translate-y-0.5"
+                      style={{
+                        background: active
+                          ? `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`
+                          : COLORS.softCream,
+                        color: active ? "white" : COLORS.text,
+                        border: active
+                          ? "1px solid transparent"
+                          : `1px solid ${COLORS.border}`,
+                      }}
+                    >
+                      <Icon className="w-4 h-4" />
+                      {cat.name}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
           </Reveal>
 
-          <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-8">
             {/* Sidebar */}
             <aside
               className="lg:sticky lg:top-28 h-fit rounded-[2rem] p-6"
@@ -409,6 +430,7 @@ export default function Programs() {
                   <h2 className="font-black text-lg" style={{ color: COLORS.text }}>
                     Filter Programs
                   </h2>
+
                   <p className="text-sm" style={{ color: COLORS.muted }}>
                     Find your ideal journey
                   </p>
@@ -442,7 +464,10 @@ export default function Programs() {
                     className="w-full accent-[#D89A3D]"
                   />
 
-                  <div className="flex justify-between text-xs mt-2" style={{ color: COLORS.muted }}>
+                  <div
+                    className="flex justify-between text-xs mt-2"
+                    style={{ color: COLORS.muted }}
+                  >
                     <span>$50</span>
                     <span>$1000</span>
                   </div>
@@ -474,7 +499,10 @@ export default function Programs() {
                     className="w-full accent-[#D89A3D]"
                   />
 
-                  <div className="flex justify-between text-xs mt-2" style={{ color: COLORS.muted }}>
+                  <div
+                    className="flex justify-between text-xs mt-2"
+                    style={{ color: COLORS.muted }}
+                  >
                     <span>1 Day</span>
                     <span>30 Days</span>
                   </div>
@@ -539,7 +567,53 @@ export default function Programs() {
                 </p>
               </div>
 
-              {filtered.length === 0 ? (
+              {loading ? (
+                <div
+                  className="text-center py-24 rounded-[2rem]"
+                  style={{
+                    background: COLORS.softCream,
+                    border: `1px solid ${COLORS.border}`,
+                  }}
+                >
+                  <Sparkles
+                    className="mx-auto mb-4 h-14 w-14 animate-pulse"
+                    style={{ color: COLORS.gold }}
+                  />
+
+                  <h3
+                    className="font-black text-2xl mb-2"
+                    style={{ color: COLORS.text }}
+                  >
+                    Loading programs...
+                  </h3>
+
+                  <p style={{ color: COLORS.muted }}>
+                    Please wait while we load the latest programs.
+                  </p>
+                </div>
+              ) : error ? (
+                <div
+                  className="text-center py-24 rounded-[2rem]"
+                  style={{
+                    background: COLORS.softCream,
+                    border: `1px solid ${COLORS.border}`,
+                  }}
+                >
+                  <Frown
+                    className="mx-auto mb-4 h-14 w-14"
+                    style={{ color: "#D94A38" }}
+                  />
+
+                  <h3
+                    className="font-black text-2xl mb-2"
+                    style={{ color: COLORS.text }}
+                  >
+                    Something went wrong
+                  </h3>
+
+                  <p style={{ color: COLORS.muted }}>{error}</p>
+                </div>
+              ) : filtered.length === 0 ? (
                 <div
                   className="text-center py-24 rounded-[2rem]"
                   style={{
@@ -560,135 +634,151 @@ export default function Programs() {
                   </h3>
 
                   <p style={{ color: COLORS.muted }}>
-                    Try adjusting your filters or search keyword.
+                    Try adjusting your filters or add programs from CMS.
                   </p>
                 </div>
-              ) : (
+
+                              ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-7">
-                  {filtered.map((program, index) => (
-                    <Reveal key={program.id} delay={index * 65} className="block h-full">
-                      <article
-                        className="group h-full rounded-[2rem] overflow-hidden transition-all duration-500 hover:-translate-y-2 flex flex-col"
-                        style={{
-                          background: COLORS.softCream,
-                          border: `1px solid ${COLORS.border}`,
-                          boxShadow: "0 18px 50px rgba(58,45,36,0.08)",
-                        }}
+                  {filtered.map((program, index) => {
+                    const programCategory = getProgramCategory(program)
+
+                    return (
+                      <Reveal
+                        key={program.id}
+                        delay={index * 65}
+                        className="block h-full"
                       >
-                      <div className="relative h-64 overflow-hidden shrink-0">
-                        <img
-                          src={program.image}
-                          alt={program.title}
-                          className="w-full h-full object-cover transition duration-700 group-hover:scale-110"
-                        />
-
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
-
-                        <div className="absolute top-5 left-5">
-                          <span
-                            className="px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest text-white"
-                            style={{
-                              background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
-                            }}
-                          >
-                            {program.category}
-                          </span>
-                        </div>
-
-                        <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between">
-                          <div className="flex items-center gap-1 text-white">
-                            <Star
-                              className="w-4 h-4"
-                              fill={COLORS.gold}
-                              style={{ color: COLORS.gold }}
+                        <article
+                          className="group h-full rounded-[2rem] overflow-hidden transition-all duration-500 hover:-translate-y-2 flex flex-col"
+                          style={{
+                            background: COLORS.softCream,
+                            border: `1px solid ${COLORS.border}`,
+                            boxShadow: "0 18px 50px rgba(58,45,36,0.08)",
+                          }}
+                        >
+                          <div className="relative h-64 overflow-hidden shrink-0">
+                            <img
+                              src={program.imageUrl}
+                              alt={program.title}
+                              className="w-full h-full object-cover transition duration-700 group-hover:scale-110"
                             />
-                            <span className="text-sm font-black">
-                              {program.rating}
-                            </span>
+
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
+
+                            <div className="absolute top-5 left-5">
+                              <span
+                                className="px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest text-white"
+                                style={{
+                                  background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
+                                }}
+                              >
+                                {programCategory}
+                              </span>
+                            </div>
+
+                            <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between">
+                              <div className="flex items-center gap-1 text-white">
+                                <Star
+                                  className="w-4 h-4"
+                                  fill={COLORS.gold}
+                                  style={{ color: COLORS.gold }}
+                                />
+
+                                <span className="text-sm font-black">
+                                  {program.rating}
+                                </span>
+                              </div>
+
+                              <span className="text-xs text-white/80">
+                                {program.impact}
+                              </span>
+                            </div>
                           </div>
 
-                          <span className="text-xs text-white/80">
-                            {program.impact}
-                          </span>
-                        </div>
-                      </div>
+                          <div className="p-6 flex flex-col flex-1">
+                            <h3
+                              className="text-xl font-black leading-tight mb-3 min-h-[56px]"
+                              style={{ color: COLORS.text }}
+                            >
+                              {program.title}
+                            </h3>
 
-                      <div className="p-6 flex flex-col flex-1">
-                        <h3
-                          className="text-xl font-black leading-tight mb-3 min-h-[56px]"
-                          style={{ color: COLORS.text }}
-                        >
-                          {program.title}
-                        </h3>
-
-                        <p
-                          className="text-sm leading-relaxed mb-5 min-h-[72px]"
-                          style={{ color: COLORS.muted }}
-                        >
-                          {program.desc}
-                        </p>
-
-                        <div className="space-y-3 mb-6 min-h-[96px]">
-                          <p
-                            className="flex items-center gap-2 text-sm"
-                            style={{ color: COLORS.muted }}
-                          >
-                            <MapPin className="w-4 h-4" style={{ color: COLORS.gold }} />
-                            {program.location}
-                          </p>
-
-                          <p
-                            className="flex items-center gap-2 text-sm"
-                            style={{ color: COLORS.muted }}
-                          >
-                            <Clock className="w-4 h-4" style={{ color: COLORS.gold }} />
-                            {program.days} {program.days === 1 ? "Day" : "Days"}
-                          </p>
-
-                          <p
-                            className="flex items-center gap-2 text-sm"
-                            style={{ color: COLORS.muted }}
-                          >
-                            <CalendarDays
-                              className="w-4 h-4"
-                              style={{ color: COLORS.gold }}
-                            />
-                            Flexible schedule
-                          </p>
-                        </div>
-
-                        <div className="flex items-center justify-between gap-4 mt-auto pt-2">
-                          <div>
                             <p
-                              className="text-xs uppercase tracking-widest font-black"
+                              className="text-sm leading-relaxed mb-5 min-h-[72px]"
                               style={{ color: COLORS.muted }}
                             >
-                              From
+                              {program.description}
                             </p>
 
-                            <p
-                              className="text-2xl font-black"
-                              style={{ color: COLORS.bronze }}
-                            >
-                              ${program.price}
-                            </p>
+                            <div className="space-y-3 mb-6 min-h-[96px]">
+                              <p
+                                className="flex items-center gap-2 text-sm"
+                                style={{ color: COLORS.muted }}
+                              >
+                                <MapPin
+                                  className="w-4 h-4"
+                                  style={{ color: COLORS.gold }}
+                                />
+                                {program.location}
+                              </p>
+
+                              <p
+                                className="flex items-center gap-2 text-sm"
+                                style={{ color: COLORS.muted }}
+                              >
+                                <Clock
+                                  className="w-4 h-4"
+                                  style={{ color: COLORS.gold }}
+                                />
+                                {program.duration}
+                              </p>
+
+                              <p
+                                className="flex items-center gap-2 text-sm"
+                                style={{ color: COLORS.muted }}
+                              >
+                                <CalendarDays
+                                  className="w-4 h-4"
+                                  style={{ color: COLORS.gold }}
+                                />
+                                Flexible schedule
+                              </p>
+                            </div>
+
+                            <div className="flex items-center justify-between gap-4 mt-auto pt-2">
+                              <div>
+                                <p
+                                  className="text-xs uppercase tracking-widest font-black"
+                                  style={{ color: COLORS.muted }}
+                                >
+                                  From
+                                </p>
+
+                                <p
+                                  className="text-2xl font-black"
+                                  style={{ color: COLORS.bronze }}
+                                >
+                                  ${program.price}
+                                </p>
+                              </div>
+
+                              <a
+                                href={`/programs/${program.slug}`}
+                                className="inline-flex shrink-0 whitespace-nowrap items-center gap-2 px-4 sm:px-5 py-3 rounded-full text-white text-xs font-black tracking-widest uppercase transition group-hover:translate-x-1"
+                                style={{
+                                  background: COLORS.text,
+                                }}
+                              >
+                                View Details
+                                <ArrowRight className="w-4 h-4" />
+                              </a>
+                            </div>
                           </div>
-
-                          <a
-                            href="/booking"
-                           className="inline-flex shrink-0 whitespace-nowrap items-center gap-2 px-4 sm:px-5 py-3 rounded-full text-white text-xs font-black tracking-widest uppercase transition group-hover:translate-x-1"
-                            style={{
-                              background: COLORS.text,
-                            }}
-                          >
-                            View Details
-                            <ArrowRight className="w-4 h-4" />
-                          </a>
-                        </div>
-                      </div>
-                    </article>
-                  </Reveal>
-                  ))}
+                        </article>
+                      </Reveal>
+                    )
+                  })}
                 </div>
               )}
             </section>
@@ -710,26 +800,26 @@ export default function Programs() {
               Need help choosing?
             </p>
 
-          <h2 className="text-4xl md:text-6xl font-black tracking-widest text-white mt-2">
-            BUILD YOUR OWN JOURNEY
-          </h2>
+            <h2 className="text-4xl md:text-6xl font-black tracking-widest text-white mt-2">
+              BUILD YOUR OWN JOURNEY
+            </h2>
 
-          <p className="text-white/70 mt-6 max-w-2xl mx-auto leading-relaxed">
-            Tell us your travel goals and we will help you choose the perfect
-            purpose-driven experience in Sri Lanka.
-          </p>
+            <p className="text-white/70 mt-6 max-w-2xl mx-auto leading-relaxed">
+              Tell us your travel goals and we will help you choose the perfect
+              purpose-driven experience in Sri Lanka.
+            </p>
 
-          <a
-            href="/contact"
-            className="mt-8 inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full text-white text-sm font-black tracking-widest uppercase transition hover:-translate-y-1"
-            style={{
-              background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
-            }}
-          >
-            Contact Us
-            <Wallet className="w-4 h-4" />
-          </a>
-        </div>
+            <a
+              href="/contact"
+              className="mt-8 inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full text-white text-sm font-black tracking-widest uppercase transition hover:-translate-y-1"
+              style={{
+                background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
+              }}
+            >
+              Contact Us
+              <Wallet className="w-4 h-4" />
+            </a>
+          </div>
         </Reveal>
       </section>
     </main>

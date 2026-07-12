@@ -41,3 +41,92 @@ model NewsletterSubscriber {
 
   @@map("newsletter_subscribers")
 }
+
+
+model Program {
+  id          Int      @id @default(autoincrement())
+  title       String
+  slug        String   @unique
+  location    String
+  description String   @db.Text
+  duration    String
+  groupSize   String
+  impact      String
+  rating      String
+  price       Int
+  imageUrl    String   @db.Text
+  tags        String   @db.Text
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("programs")
+}
+
+model Destination {
+  id          Int      @id @default(autoincrement())
+  title       String
+  slug        String   @unique
+  location    String
+  region      String
+  description String   @db.Text
+  bestTime    String
+  imageUrl    String   @db.Text
+  highlights  String   @db.Text
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("destinations")
+}
+
+model BlogPost {
+  id          Int      @id @default(autoincrement())
+  title       String
+  slug        String   @unique
+  category    String
+  excerpt     String   @db.Text
+  content     String   @db.Text
+  author      String
+  readTime    String
+  imageUrl    String   @db.Text
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("blog_posts")
+}
+
+model GalleryItem {
+  id          Int      @id @default(autoincrement())
+  title       String
+  category    String
+  location    String
+  description String   @db.Text
+  imageUrl    String   @db.Text
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("gallery_items")
+}
+
+model SiteSetting {
+  id           Int      @id @default(autoincrement())
+  companyName  String
+  email        String
+  phone        String
+  whatsapp     String
+  website      String
+  heroTitle    String   @db.Text
+  heroSubtitle String   @db.Text
+  footerText   String   @db.Text
+  facebookUrl  String?
+  instagramUrl String?
+  linkedinUrl  String?
+  youtubeUrl   String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("site_settings")
+}

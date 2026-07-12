@@ -22,6 +22,7 @@ const COLORS = {
   text: "#3A2D24",
   muted: "#7B6B5F",
   border: "rgba(58,45,36,0.12)",
+  olive: "#5E6F52",
 }
 
 type Booking = {
@@ -305,6 +306,96 @@ export default function AdminDashboard() {
             </button>
           )}
         </div>
+
+          {/* CMS Management */}
+<section
+  className="rounded-[2rem] p-6 md:p-8 mb-10"
+  style={{
+    background: COLORS.softCream,
+    border: `1px solid ${COLORS.border}`,
+    boxShadow: "0 18px 50px rgba(58,45,36,0.08)",
+  }}
+>
+  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+    <div>
+      <p
+        className="text-xs font-black tracking-[0.22em] uppercase mb-2"
+        style={{ color: COLORS.bronze }}
+      >
+        Website Content Management
+      </p>
+
+      <h2
+        className="text-2xl md:text-3xl font-black tracking-widest uppercase"
+        style={{ color: COLORS.text }}
+      >
+        CMS MANAGEMENT
+      </h2>
+
+      <p className="mt-3 max-w-2xl text-sm leading-relaxed" style={{ color: COLORS.muted }}>
+        Manage website content such as programs, prices, descriptions and images
+        without editing the code.
+      </p>
+    </div>
+
+   <div className="flex flex-col sm:flex-row flex-wrap gap-3">
+  <a
+    href="/admin/programs"
+    className="inline-flex items-center justify-center px-6 py-4 rounded-full text-white text-sm font-black tracking-widest uppercase transition hover:-translate-y-1"
+    style={{
+      background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
+    }}
+  >
+    Open Programs CMS
+  </a>
+
+  <a
+    href="/admin/destinations"
+    className="inline-flex items-center justify-center px-6 py-4 rounded-full text-white text-sm font-black tracking-widest uppercase transition hover:-translate-y-1"
+    style={{
+      background: COLORS.text,
+    }}
+  >
+    Open Destinations CMS
+  </a>
+
+  <a
+    href="/admin/blog"
+    className="inline-flex items-center justify-center px-6 py-4 rounded-full text-white text-sm font-black tracking-widest uppercase transition hover:-translate-y-1"
+    style={{
+      background: COLORS.olive,
+    }}
+  >
+    Open Blog CMS
+  </a>
+
+  <a
+    href="/admin/gallery"
+    className="inline-flex items-center justify-center px-6 py-4 rounded-full text-white text-sm font-black tracking-widest uppercase transition hover:-translate-y-1"
+    style={{
+      background: COLORS.dark,
+    }}
+  >
+    Open Gallery CMS
+  </a>
+
+  <a
+    href="/admin/settings"
+    className="inline-flex items-center justify-center px-6 py-4 rounded-full text-white text-sm font-black tracking-widest uppercase transition hover:-translate-y-1"
+    style={{
+      background: `linear-gradient(135deg, ${COLORS.olive}, ${COLORS.dark})`,
+    }}
+  >
+    Open Site Settings
+  </a>
+</div>
+  </div>
+</section>
+
+
+
+
+
 
                 {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">

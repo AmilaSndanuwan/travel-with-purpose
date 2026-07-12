@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Reveal from "../../components/Reveal"
 import {
   ArrowRight,
@@ -29,32 +29,29 @@ const COLORS = {
   border: "rgba(58,45,36,0.12)",
 }
 
-const contactCards = [
-  {
-    title: "WhatsApp",
-    value: "+94 77 123 4567",
-    desc: "Chat with our travel team",
-    icon: MessageCircle,
-    href: "https://wa.me/94771234567",
-    button: "Chat on WhatsApp",
-  },
-  {
-    title: "Email",
-    value: "info@travelwithpurpose.com",
-    desc: "Send your inquiry anytime",
-    icon: Mail,
-    href: "mailto:info@travelwithpurpose.com",
-    button: "Send Email",
-  },
-  {
-    title: "Location",
-    value: "Kandy, Sri Lanka",
-    desc: "Travel With Purpose office",
-    icon: MapPin,
-    href: "#map",
-    button: "View Map",
-  },
-]
+type ContactSettings = {
+  email: string
+  phone: string
+  whatsapp: string
+  website: string
+  facebookUrl: string
+  instagramUrl: string
+  linkedinUrl: string
+  youtubeUrl: string
+}
+
+const DEFAULT_CONTACTS: ContactSettings = {
+  email: "info@travelwithpurpose.com",
+  phone: "+94 77 123 4567",
+  whatsapp: "+94771234567",
+  website: "https://travelwithpurpose.lk",
+  facebookUrl: "https://facebook.com",
+  instagramUrl: "https://instagram.com",
+  linkedinUrl: "https://linkedin.com",
+  youtubeUrl: "https://youtube.com",
+}
+
+
 
 const supportItems = [
   {
@@ -74,17 +71,87 @@ const supportItems = [
   },
 ]
 
-const socialLinks = [
-  { name: "FB", label: "Facebook" },
-  { name: "IN", label: "LinkedIn" },
-  { name: "IG", label: "Instagram" },
-  { name: "YT", label: "YouTube" },
-]
 
 export default function Contact() {
   const [sent, setSent] = useState(false)
 const [loading, setLoading] = useState(false)
 const [error, setError] = useState("")
+
+const [contacts, setContacts] = useState<ContactSettings>(DEFAULT_CONTACTS)
+
+useEffect(() => {
+  const loadContactSettings = async () => {
+    try {
+      const response = await fetch("/api/site-settings", {
+        cache: "no-store",
+      })
+
+      const result = await response.json()
+
+      if (response.ok && result.success && result.data) {
+        setContacts({
+          email: result.data.email || DEFAULT_CONTACTS.email,
+          phone: result.data.phone || DEFAULT_CONTACTS.phone,
+          whatsapp: result.data.whatsapp || DEFAULT_CONTACTS.whatsapp,
+          website: result.data.website || DEFAULT_CONTACTS.website,
+          facebookUrl: result.data.facebookUrl || DEFAULT_CONTACTS.facebookUrl,
+          instagramUrl: result.data.instagramUrl || DEFAULT_CONTACTS.instagramUrl,
+          linkedinUrl: result.data.linkedinUrl || DEFAULT_CONTACTS.linkedinUrl,
+          youtubeUrl: result.data.youtubeUrl || DEFAULT_CONTACTS.youtubeUrl,
+        })
+      }
+    } catch (err) {
+      console.error("Failed to load contact settings:", err)
+    }
+  }
+
+  loadContactSettings()
+}, [])
+
+const cleanWhatsapp = contacts.whatsapp.replace(/[^0-9]/g, "")
+const whatsappHref = `https://wa.me/${cleanWhatsapp}`
+
+const contactCards = [
+  {
+    title: "WhatsApp",
+    value: contacts.whatsapp,
+    desc: "Chat with our travel team",
+    icon: MessageCircle,
+    href: whatsappHref,
+    button: "Chat on WhatsApp",
+  },
+  {
+    title: "Phone",
+    value: contacts.phone,
+    desc: "Call our travel team",
+    icon: Phone,
+    href: `tel:${contacts.phone.replace(/\s+/g, "")}`,
+    button: "Call Now",
+  },
+  {
+    title: "Email",
+    value: contacts.email,
+    desc: "Send your inquiry anytime",
+    icon: Mail,
+    href: `mailto:${contacts.email}`,
+    button: "Send Email",
+  },
+  {
+    title: "Website",
+    value: contacts.website,
+    desc: "Visit our official website",
+    icon: Globe2,
+    href: contacts.website,
+    button: "Visit Website",
+  },
+]
+
+const socialLinks = [
+  { name: "FB", label: "Facebook", href: contacts.facebookUrl },
+  { name: "IN", label: "LinkedIn", href: contacts.linkedinUrl },
+  { name: "IG", label: "Instagram", href: contacts.instagramUrl },
+  { name: "YT", label: "YouTube", href: contacts.youtubeUrl },
+].filter((social) => social.href && social.href.trim() !== "")
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault()
@@ -207,7 +274,7 @@ const [error, setError] = useState("")
                 </a>
 
                 <a
-                  href="https://wa.me/94771234567"
+                  href={whatsappHref}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex justify-center px-7 py-4 rounded-full text-white text-sm font-black tracking-widest uppercase transition hover:-translate-y-1"
@@ -257,7 +324,7 @@ const [error, setError] = useState("")
             </div>
           </Reveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
             {contactCards.map((card, i) => {
               const Icon = card.icon
 
@@ -387,19 +454,22 @@ const [error, setError] = useState("")
                 </p>
 
                 <div className="flex flex-wrap gap-3">
-                  {socialLinks.map((social) => (
-                    <button
-                      key={social.label}
-                      className="w-12 h-12 rounded-full flex items-center justify-center text-xs font-black transition hover:-translate-y-1"
-                      style={{
-                        background: COLORS.text,
-                        color: "white",
-                      }}
-                      aria-label={social.label}
-                    >
-                      {social.name}
-                    </button>
-                  ))}
+                 {socialLinks.map((social) => (
+  <a
+    key={social.label}
+    href={social.href}
+    target="_blank"
+    rel="noreferrer"
+    className="w-12 h-12 rounded-full flex items-center justify-center text-xs font-black transition hover:-translate-y-1"
+    style={{
+      background: COLORS.text,
+      color: "white",
+    }}
+    aria-label={social.label}
+  >
+    {social.name}
+  </a>
+))}
                 </div>
               </div>
             </div>
@@ -628,7 +698,6 @@ const [error, setError] = useState("")
                         background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
                       }}
                     >
-                      Send Message
                       {loading ? "Sending Message..." : "Send Message"}
                       <Send className="w-4 h-4" />
                     </button>

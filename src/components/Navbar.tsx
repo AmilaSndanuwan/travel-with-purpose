@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import {
   ChevronDown,
   HeartHandshake,
@@ -103,6 +103,24 @@ export default function Navbar() {
       document.body.style.overflow = ""
     }
   }, [open])
+
+  useEffect(() => {
+  setOpen(false)
+  setDropdown(null)
+}, [pathname])
+
+useEffect(() => {
+  const handleEscape = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      setOpen(false)
+      setDropdown(null)
+    }
+  }
+
+  window.addEventListener("keydown", handleEscape)
+
+  return () => window.removeEventListener("keydown", handleEscape)
+}, [])
 
   const navText = scrolled ? COLORS.text : "#ffffff"
 
@@ -220,9 +238,10 @@ export default function Navbar() {
 
                         return (
                           <Link
-                            key={item.title}
-                            href={item.href}
-                            className="flex gap-4 p-4 rounded-2xl transition hover:-translate-y-0.5"
+  key={item.title}
+  href={item.href}
+  onClick={() => setDropdown(null)}
+  className="flex gap-4 p-4 rounded-2xl transition hover:-translate-y-0.5"
                             style={{
                               background: COLORS.cream,
                               border: `1px solid ${COLORS.border}`,
@@ -314,6 +333,7 @@ export default function Navbar() {
                           <Link
                             key={item.title}
                             href={item.href}
+                            onClick={() => setDropdown(null)}
                             className="flex gap-4 p-4 rounded-2xl transition hover:-translate-y-0.5"
                             style={{
                               background: COLORS.cream,
@@ -456,9 +476,11 @@ export default function Navbar() {
                   onClick={() => setOpen(false)}
                   className="block px-4 py-3 rounded-2xl font-bold text-sm"
                   style={{
-                    color: isActive(link.href) ? COLORS.gold : COLORS.text,
-                    background: "rgba(247,241,232,0.85)",
-                  }}
+  color: isActive(link.href) ? "white" : COLORS.text,
+  background: isActive(link.href)
+    ? `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`
+    : "rgba(247,241,232,0.85)",
+}}
                 >
                   {link.title}
                 </Link>

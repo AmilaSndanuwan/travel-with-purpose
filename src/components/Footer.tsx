@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, type FormEvent } from "react"
+import { useEffect, useState, type FormEvent } from "react"
 import Link from "next/link"
-import { Mail, MapPin, Palmtree, Phone, Send } from "lucide-react"
+import { Mail, MapPin, MessageCircle, Palmtree, Phone, Send } from "lucide-react"
 import {
   FaFacebookF,
   FaInstagram,
@@ -17,6 +17,26 @@ const COLORS = {
   borderLight: "rgba(255,255,255,0.12)",
 }
 
+type ContactSettings = {
+  email: string
+  phone: string
+  whatsapp: string
+  facebookUrl: string
+  instagramUrl: string
+  youtubeUrl: string
+  linkedinUrl: string
+}
+
+const DEFAULT_CONTACTS: ContactSettings = {
+  email: "info@travelwithpurpose.com",
+  phone: "+94 77 123 4567",
+  whatsapp: "+94771234567",
+  facebookUrl: "https://facebook.com",
+  instagramUrl: "https://instagram.com",
+  youtubeUrl: "https://youtube.com",
+  linkedinUrl: "https://linkedin.com",
+}
+
 const quickLinks = [
   { title: "Home", href: "/" },
   { title: "Programs", href: "/programs" },
@@ -27,6 +47,7 @@ const quickLinks = [
   { title: "About Us", href: "/about" },
   { title: "Contact", href: "/contact" },
 ]
+
 const programLinks = [
   { title: "Meditation", href: "/programs" },
   { title: "Yoga & Wellness", href: "/wellness" },
@@ -43,18 +64,48 @@ const supportLinks = [
   { title: "Refund Policy", href: "/contact" },
 ]
 
-const socialLinks = [
-  { icon: FaFacebookF, href: "https://facebook.com" },
-  { icon: FaInstagram, href: "https://instagram.com" },
-  { icon: FaYoutube, href: "https://youtube.com" },
-  { icon: FaLinkedinIn, href: "https://linkedin.com" },
-]
-
 export default function Footer() {
   const [email, setEmail] = useState("")
+  const [contacts, setContacts] = useState<ContactSettings>(DEFAULT_CONTACTS)
+
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState("")
   const [error, setError] = useState("")
+
+  useEffect(() => {
+    const loadContactSettings = async () => {
+      try {
+        const response = await fetch("/api/site-settings", {
+          cache: "no-store",
+        })
+
+        const result = await response.json()
+
+        if (response.ok && result.success && result.data) {
+          setContacts({
+            email: result.data.email || DEFAULT_CONTACTS.email,
+            phone: result.data.phone || DEFAULT_CONTACTS.phone,
+            whatsapp: result.data.whatsapp || DEFAULT_CONTACTS.whatsapp,
+            facebookUrl: result.data.facebookUrl || DEFAULT_CONTACTS.facebookUrl,
+            instagramUrl: result.data.instagramUrl || DEFAULT_CONTACTS.instagramUrl,
+            youtubeUrl: result.data.youtubeUrl || DEFAULT_CONTACTS.youtubeUrl,
+            linkedinUrl: result.data.linkedinUrl || DEFAULT_CONTACTS.linkedinUrl,
+          })
+        }
+      } catch (err) {
+        console.error("Failed to load footer contact settings:", err)
+      }
+    }
+
+    loadContactSettings()
+  }, [])
+
+  const socialLinks = [
+    { icon: FaFacebookF, href: contacts.facebookUrl, label: "Facebook" },
+    { icon: FaInstagram, href: contacts.instagramUrl, label: "Instagram" },
+    { icon: FaYoutube, href: contacts.youtubeUrl, label: "YouTube" },
+    { icon: FaLinkedinIn, href: contacts.linkedinUrl, label: "LinkedIn" },
+  ]
 
   const handleNewsletterSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -105,7 +156,6 @@ export default function Footer() {
       />
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8 pt-16 md:pt-20 pb-8">
-        {/* Top CTA */}
         <div
           className="rounded-3xl p-6 md:p-8 mb-14 flex flex-col lg:flex-row lg:items-center justify-between gap-6"
           style={{
@@ -159,9 +209,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Footer columns */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-12">
-          {/* Brand column */}
           <div>
             <Link href="/" className="inline-flex items-center gap-4 mb-5">
               <div
@@ -196,19 +244,37 @@ export default function Footer() {
                 Kandy, Sri Lanka
               </p>
 
-              <p className="flex items-center gap-3 text-sm" style={{ color: COLORS.mutedLight }}>
+              <a
+                href={`tel:${contacts.phone.replace(/\s+/g, "")}`}
+                className="flex items-center gap-3 text-sm transition hover:text-[#D89A3D]"
+                style={{ color: COLORS.mutedLight }}
+              >
                 <Phone className="w-4 h-4 shrink-0" style={{ color: COLORS.gold }} />
-                +94 77 123 4567
-              </p>
+                {contacts.phone}
+              </a>
 
-              <p className="flex items-center gap-3 text-sm break-all" style={{ color: COLORS.mutedLight }}>
+              <a
+                href={`https://wa.me/${contacts.whatsapp.replace(/[^0-9]/g, "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 text-sm transition hover:text-[#D89A3D]"
+                style={{ color: COLORS.mutedLight }}
+              >
+                <MessageCircle className="w-4 h-4 shrink-0" style={{ color: COLORS.gold }} />
+                {contacts.whatsapp}
+              </a>
+
+              <a
+                href={`mailto:${contacts.email}`}
+                className="flex items-center gap-3 text-sm break-all transition hover:text-[#D89A3D]"
+                style={{ color: COLORS.mutedLight }}
+              >
                 <Mail className="w-4 h-4 shrink-0" style={{ color: COLORS.gold }} />
-                info@travelwithpurpose.com
-              </p>
+                {contacts.email}
+              </a>
             </div>
           </div>
 
-          {/* Quick links column */}
           <div>
             <h3 className="font-black text-sm tracking-widest uppercase mb-5">
               Quick Links
@@ -228,7 +294,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Programs column */}
           <div>
             <h3 className="font-black text-sm tracking-widest uppercase mb-5">
               Programs
@@ -248,7 +313,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Support column */}
           <div>
             <h3 className="font-black text-sm tracking-widest uppercase mb-5">
               Support
@@ -268,7 +332,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Newsletter column */}
           <div>
             <h3 className="font-black text-sm tracking-widest uppercase mb-5">
               Newsletter
@@ -278,64 +341,62 @@ export default function Footer() {
               Subscribe to get updates and offers.
             </p>
 
-            {/* Glassmorphism newsletter input */}
-            
-<form
-  onSubmit={handleNewsletterSubmit}
-  className="group flex rounded-full overflow-hidden mb-3 transition-all duration-300"
-  style={{
-    background: "rgba(255,255,255,0.08)",
-    border: `1px solid ${COLORS.borderLight}`,
-    backdropFilter: "blur(14px)",
-    WebkitBackdropFilter: "blur(14px)",
-    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
-  }}
->
-  <input
-    required
-    type="email"
-    value={email}
-    onChange={(e) => setEmail(e.target.value)}
-    placeholder="Your email"
-    className="w-full min-w-0 px-4 py-3 bg-transparent outline-none text-sm placeholder:text-white/45 text-white"
-  />
+            <form
+              onSubmit={handleNewsletterSubmit}
+              className="group flex rounded-full overflow-hidden mb-3 transition-all duration-300"
+              style={{
+                background: "rgba(255,255,255,0.08)",
+                border: `1px solid ${COLORS.borderLight}`,
+                backdropFilter: "blur(14px)",
+                WebkitBackdropFilter: "blur(14px)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
+              }}
+            >
+              <input
+                required
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Your email"
+                className="w-full min-w-0 px-4 py-3 bg-transparent outline-none text-sm placeholder:text-white/45 text-white"
+              />
 
-  <button
-    type="submit"
-    disabled={loading}
-    aria-label="Subscribe"
-    className="w-12 flex items-center justify-center shrink-0 transition-all duration-300 group-hover:shadow-[0_0_24px_rgba(216,154,61,0.45)] disabled:opacity-60 disabled:cursor-not-allowed"
-    style={{
-      background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
-    }}
-  >
-    <Send className="w-4 h-4 text-white transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-  </button>
-</form>
+              <button
+                type="submit"
+                disabled={loading}
+                aria-label="Subscribe"
+                className="w-12 flex items-center justify-center shrink-0 transition-all duration-300 group-hover:shadow-[0_0_24px_rgba(216,154,61,0.45)] disabled:opacity-60 disabled:cursor-not-allowed"
+                style={{
+                  background: `linear-gradient(135deg, ${COLORS.bronze}, ${COLORS.gold})`,
+                }}
+              >
+                <Send className="w-4 h-4 text-white transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </button>
+            </form>
 
-{message && (
-  <p className="text-xs font-bold mb-4" style={{ color: COLORS.gold }}>
-    {message}
-  </p>
-)}
+            {message && (
+              <p className="text-xs font-bold mb-4" style={{ color: COLORS.gold }}>
+                {message}
+              </p>
+            )}
 
-{error && (
-  <p className="text-xs font-bold mb-4" style={{ color: "#ff8a7a" }}>
-    {error}
-  </p>
-)}
+            {error && (
+              <p className="text-xs font-bold mb-4" style={{ color: "#ff8a7a" }}>
+                {error}
+              </p>
+            )}
 
-            {/* Premium social icons */}
             <div className="flex gap-3">
-              {socialLinks.map((social, index) => {
+              {socialLinks.map((social) => {
                 const Icon = social.icon
 
                 return (
                   <a
-                    key={index}
+                    key={social.label}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={social.label}
                     className="w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:scale-110 hover:shadow-[0_0_20px_rgba(216,154,61,0.35)] group"
                     style={{
                       background: "rgba(255,255,255,0.08)",
@@ -355,7 +416,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom copyright */}
         <div
           className="mt-14 pt-6 text-center text-xs"
           style={{
@@ -363,7 +423,7 @@ export default function Footer() {
             color: "rgba(255,255,255,0.5)",
           }}
         >
-          © 2026 Travel With Purpose. All rights reserved.  
+          © 2026 Travel With Purpose. All rights reserved.
         </div>
       </div>
     </footer>

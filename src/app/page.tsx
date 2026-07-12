@@ -16,7 +16,37 @@ const COLORS = {
   muted: "#7B6B5F",
   border: "rgba(58,45,36,0.12)",
 }
+type SiteSettings = {
+  companyName: string
+  email: string
+  phone: string
+  whatsapp: string
+  website: string
+  heroTitle: string
+  heroSubtitle: string
+  footerText: string
+  facebookUrl: string
+  instagramUrl: string
+  linkedinUrl: string
+  youtubeUrl: string
+}
 
+const DEFAULT_SETTINGS: SiteSettings = {
+  companyName: "Travel With Purpose",
+  email: "info@travelwithpurpose.lk",
+  phone: "+94 77 000 0000",
+  whatsapp: "+94770000000",
+  website: "https://travelwithpurpose.lk",
+  heroTitle: "Travel With Purpose",
+  heroSubtitle:
+    "Giving you the opportunity to give back, learn and grow as you experience the most amazing places in Sri Lanka.",
+  footerText:
+    "Start your meaningful journey today and discover Sri Lanka through purpose, wellness and community impact.",
+  facebookUrl: "",
+  instagramUrl: "",
+  linkedinUrl: "",
+  youtubeUrl: "",
+}
 const programs = [
   { icon: "Moon", title: "Meditation", desc: "Silent retreats", href: "/programs" },
   { icon: "Heart", title: "Yoga & Wellness", desc: "Ayurveda & healing", href: "/wellness" },
@@ -123,6 +153,48 @@ const testimonials = [
 
 export default function Home() {
   const [activeTestimonial, setActiveTestimonial] = useState(0)
+  const [settings, setSettings] = useState<SiteSettings>(DEFAULT_SETTINGS)
+
+const heroTitleText = settings.heroTitle.trim() || DEFAULT_SETTINGS.heroTitle
+const heroTitleWords = heroTitleText.split(/\s+/)
+const heroAccentWord = heroTitleWords.length > 1 ? heroTitleWords[heroTitleWords.length - 1] : "Purpose"
+const heroMainWords =
+  heroTitleWords.length > 1
+    ? heroTitleWords.slice(0,-1)
+    : ["Travel", "With"]
+useEffect(() => {
+  const loadSettings = async () => {
+    try {
+      const response = await fetch("/api/site-settings", {
+        cache: "no-store",
+      })
+
+      const result = await response.json()
+
+      if (response.ok && result.success && result.data) {
+        setSettings({
+          companyName: result.data.companyName || DEFAULT_SETTINGS.companyName,
+          email: result.data.email || DEFAULT_SETTINGS.email,
+          phone: result.data.phone || DEFAULT_SETTINGS.phone,
+          whatsapp: result.data.whatsapp || DEFAULT_SETTINGS.whatsapp,
+          website: result.data.website || DEFAULT_SETTINGS.website,
+          heroTitle: result.data.heroTitle || DEFAULT_SETTINGS.heroTitle,
+          heroSubtitle: result.data.heroSubtitle || DEFAULT_SETTINGS.heroSubtitle,
+          footerText: result.data.footerText || DEFAULT_SETTINGS.footerText,
+          facebookUrl: result.data.facebookUrl || "",
+          instagramUrl: result.data.instagramUrl || "",
+          linkedinUrl: result.data.linkedinUrl || "",
+          youtubeUrl: result.data.youtubeUrl || "",
+        })
+      }
+    } catch (error) {
+      console.error("Failed to load site settings:", error)
+    }
+  }
+
+  loadSettings()
+}, [])
+
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -167,31 +239,32 @@ export default function Home() {
               className="font-black text-[10px] sm:text-xs tracking-[0.16em] uppercase leading-relaxed"
               style={{ color: COLORS.gold }}
             >
-              Transform your journey through impact tourism
+              {settings.companyName}
             </p>
           </div>
         </Reveal>
 
         <Reveal delay={80}>
           <div className="leading-none mb-5">
-            <span className="block font-black text-white tracking-[0.08em] text-[clamp(3.2rem,15vw,6.3rem)]">
-              TRAVEL
-            </span>
+            {heroMainWords.map((word) => (
+  <span
+    key={word}
+    className="block font-black text-white tracking-[0.08em] text-[clamp(3.2rem,15vw,6.3rem)] uppercase"
+  >
+    {word}
+  </span>
+))}
 
-            <span className="block font-black text-white tracking-[0.08em] text-[clamp(3.2rem,15vw,6.3rem)]">
-              WITH
-            </span>
-
-            <span
-              className="block script-font"
-              style={{
-                color: COLORS.gold,
-                fontSize: "clamp(3rem,13vw,6.5rem)",
-                lineHeight: "0.9",
-              }}
-            >
-              Purpose
-            </span>
+<span
+  className="block script-font"
+  style={{
+    color: COLORS.gold,
+    fontSize: "clamp(3rem,13vw,6.5rem)",
+    lineHeight: "0.9",
+  }}
+>
+  {heroAccentWord}
+</span>
           </div>
         </Reveal>
 
@@ -203,8 +276,7 @@ export default function Home() {
     textShadow: "0 2px 12px rgba(0,0,0,0.35)",
   }}
 >
-            Giving you the opportunity to give back, learn and grow as you
-            experience the most amazing places in Sri Lanka.
+            {settings.heroSubtitle}
           </p>
         </Reveal>
 
@@ -1304,8 +1376,7 @@ export default function Home() {
         className="max-w-2xl mx-auto mb-8 text-base md:text-lg leading-relaxed"
         style={{ color: "rgba(255,255,255,0.75)" }}
       >
-        Start your meaningful journey today and discover Sri Lanka through
-        purpose, wellness and community impact.
+       {settings.footerText}
       </p>
 
       <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
